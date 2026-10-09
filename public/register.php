@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php require __DIR__."/../ajax/app.php"; if ($logged=current_user()) go(destination($logged)); $chosen_id=(int)($_GET["lender_id"]??0); if ($chosen_id && !selected_lender($chosen_id)) fail_form("Please choose an approved lender.","public/lenders.php"); ?><!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -41,7 +41,7 @@
                 <div class="brand">
 
                     <img
-                        src="./logo/utangwiselogo.png"
+                        src="../logo/utangwiselogo.png"
                         alt="Utang Wise Logo"
                         class="brand-logo"
                     >
@@ -133,7 +133,7 @@
                         </h1>
 
                         <p>
-                            Join Utang Wise and get started today.
+                            <?php if ($chosen_id): $chosen=selected_lender($chosen_id); ?>Apply as a loaner with <?= e($chosen["user_fn"]." ".$chosen["user_ln"]) ?>.<?php else: ?>Join Utang Wise and get started today.<?php endif; ?>
                         </p>
 
                     </div>
@@ -144,10 +144,10 @@
                     ================================================== -->
 
                     <form
-                        action="#"
+                        action="../ajax/save_register.php"
                         method="POST"
                         id="registerForm"
-                    >
+                    ><?php csrf(); notice(); ?><input type="hidden" name="lender_id" value="<?= (int)$chosen_id ?>">
 
 
                         <div class="account-type-group">
@@ -165,7 +165,7 @@
                                     <input
                                         type="radio"
                                         name="account_type"
-                                        value="lender"
+                                        value="lender" <?= !$chosen_id ? "checked" : "disabled" ?>
                                        
                                     >
 
@@ -205,7 +205,7 @@
                                     <input
                                         type="radio"
                                         name="account_type"
-                                        value="loaner"
+                                        value="loaner" <?= $chosen_id ? "checked" : "" ?>
                                         
                                     >
 
@@ -555,121 +555,8 @@
                     }
                 );
 
-            });
+            });</script>
 
-            
-        // Add registration
-        $("#addConForm").on("submit", function (e) {
-
-            e.preventDefault();
-
-            let fname = $.trim($("#user_fn").val());
-            let lname = $.trim($("#user_ln").val());
-            let eml = $.trim($("#email").val());
-            let phnum = $.trim($("#phone").val());
-            let pass = $("#password").val();
-
-            // Remove previous validation
-            $("#addConForm input").removeClass("is-invalid");
-
-            // Required fields
-            if (fname === "") {
-                alert("Please enter first name.");
-                $("#user_fn")
-                    .addClass("is-invalid")
-                    .focus();
-                return;
-            }
-
-            if (lname === "") {
-                alert("Please enter last name.");
-                $("#user_ln")
-                    .addClass("is-invalid")
-                    .focus();
-                return;
-            }
-
-            if (eml === "") {
-                alert("Please enter email.");
-                $("#email")
-                    .addClass("is-invalid")
-                    .focus();
-                return;
-            }
-
-            if (phnum === "") {
-                alert("Please enter phone number.");
-                $("#phone")
-                    .addClass("is-invalid")
-                    .focus();
-                return;
-            }
-
-            if (pass === "") {
-                alert("Please enter password.");
-                $("#password")
-                    .addClass("is-invalid")
-                    .focus();
-                return;
-            }
-
-            let eml_pattern =
-                /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
-
-            let ph_pattern =
-                /^[0-9]{11}$/;
-
-            if (!eml_pattern.test(eml)) {
-                alert("Please enter a valid email address.");
-                $("#email")
-                    .addClass("is-invalid")
-                    .focus();
-                return;
-            }
-
-            if (!ph_pattern.test(phnum)) {
-                alert("Please enter an 11-digit phone number.");
-                $("#ph_num")
-                    .addClass("is-invalid")
-                    .focus();
-                return;
-            }
-
-            $.ajax({
-                url: "ajax/save_register.php",
-                type: "POST",
-                data: $(this).serialize(),
-
-                success: function (response) {
-
-                    alert(response);
-
-                    // Reset form
-                    $("#registerForm")[0].reset();
-
-                    // Remove validation classes
-                    $("#registerForm input")
-                        .removeClass("is-invalid");
-
-            
-                },
-
-                error: function (xhr, status, error) {
-                    alert("An error occurred while saving the contact.");
-                    console.error(error);
-                }
-            });
-
-        });
-
-
-        // Remove invalid class when user starts typing
-        $("#registerForm input").on("input", function () {
-            $(this).removeClass("is-invalid");
-        });
-
-    </script>
-
-</body>
+<script>document.querySelector('input[value="loaner"]').addEventListener("change",function(){if(!<?= (int)$chosen_id ?>)location.href="lenders.php";});</script></body>
 
 </html>
