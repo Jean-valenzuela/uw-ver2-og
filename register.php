@@ -1,4 +1,4 @@
-<?php require __DIR__."/../ajax/app.php"; if ($logged=current_user()) go(destination($logged)); $chosen_id=(int)($_GET["lender_id"]??0); if ($chosen_id && !selected_lender($chosen_id)) fail_form("Please choose an approved lender.","public/lenders.php"); ?><!DOCTYPE html>
+<?php require __DIR__."/ajax/app.php"; if ($logged=current_user()) go(destination($logged)); $chosen_id=(int)($_GET["lender_id"]??0); if ($chosen_id && !selected_lender($chosen_id)) fail_form("Please choose an approved lender.","lenders.php"); ?><!DOCTYPE html>
 <html lang="en">
 
 <head>
