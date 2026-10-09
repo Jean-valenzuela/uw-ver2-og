@@ -1,7 +1,7 @@
 <?php
     $host=getenv("UW_DB_HOST") ?: "localhost";
     $u=getenv("UW_DB_USER") ?: "root";
-    $p=getenv("UW_DB_PASSWORD") ?: "";
+    $p=getenv("UW_DB_PASSWORD") ?: "utangwise";
     $dbase=getenv("UW_DB_NAME") ?: "uw-ver2";
 
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -12,6 +12,7 @@
     }
 
     $conn->set_charset("utf8mb4");
+    $conn->query("SET time_zone = '+08:00'");
     
 
 
