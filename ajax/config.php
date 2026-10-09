@@ -1,7 +1,7 @@
 <?php
     $host="localhost";
     $u="root";
-    $p="utangwise";
+    $p="";
     $dbase="uw-ver2";
 
     $conn = new mysqli($host,$u,$p,$dbase);
