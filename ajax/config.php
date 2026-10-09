@@ -1,7 +1,7 @@
 <?php
     $host="localhost";
     $u="root";
-    $p="";
+    $p="utangwise";
     $dbase="uw-ver2";
 
     $conn = new mysqli($host,$u,$p,$dbase);
@@ -12,5 +12,6 @@
 
     $conn->set_charset("utf8mb4");
     
+
 
 ?>
