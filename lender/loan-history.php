@@ -1,3 +1,4 @@
+<?php require_once __DIR__.'/../helpers/lending.php'; $lenderAccount=lender_user(); ?>
 <!DOCTYPE html>
 <html lang="en">
 

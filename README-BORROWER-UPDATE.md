@@ -1,5 +1,7 @@
 # Borrower profiling, account review and logout update
 
+This documents the earlier borrower phase. For this combined release, follow README-LENDER-UPDATE.md, which supersedes the lender-work section below and includes the additional SQL and Gmail setup.
+
 ## Install in XAMPP
 
 1. Back up your existing application folder and database.

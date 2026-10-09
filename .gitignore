@@ -1,0 +1,3 @@
+/config/mail.local.php
+*.private.php
+*.eml

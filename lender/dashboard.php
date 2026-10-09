@@ -1,3 +1,4 @@
+<?php require_once __DIR__.'/../helpers/lending.php'; $lenderAccount=lender_user(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +39,7 @@
         </div>
 
 
-        <nav class="sidebar-menu">
+        <nav class="sidebar-menu"><a href="applications.php" class="menu-item"><span class="material-symbols-outlined">description</span>Applications</a>
 
             <a href="dashboard.php" class="menu-item active">
                 <span class="material-symbols-outlined">home</span>
@@ -64,7 +65,7 @@
 
             </a>
 
-            <a href="#" class="menu-item">
+            <a href="extension-requests.php" class="menu-item">
 
                 <span class="material-symbols-outlined">
                     schedule
@@ -72,13 +73,11 @@
 
                 Extension Requests
 
-                <span class="menu-badge">
-                    1
-                </span>
+                
 
             </a>
 
-            <a href="#" class="menu-item">
+            <a href="loans.php" class="menu-item">
                 <span class="material-symbols-outlined">
                     account_balance_wallet
                 </span>
@@ -128,12 +127,7 @@
                 Help & Support
             </a>
 
-            <a href="#" class="menu-item">
-                <span class="material-symbols-outlined">
-                    logout
-                </span>
-                Log Out
-            </a>
+            <form method="post" action="../ajax/logout.php"><?php csrf(); ?><button type="submit" class="menu-item">Log out</button></form>
 
         </nav>
 
