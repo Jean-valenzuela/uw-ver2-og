@@ -1,17 +1,17 @@
 <?php
-    $host="localhost";
-    $u="u133616505_uwver2";
-    $p="Utangwise1";
-    $dbase="u133616505_uwver2";
+$config = require dirname(__DIR__, 2) . '/uw-private-db.php';
 
-    $conn = new mysqli($host,$u,$p,$dbase);
+$conn = new mysqli(
+    $config['host'],
+    $config['user'],
+    $config['password'],
+    $config['database']
+);
 
-    if($conn->connect_error){
-        die("database connection failed: " . $conn->connect_error);
-    }
+if ($conn->connect_error) {
+    error_log('Database connection failed: ' . $conn->connect_error);
+    http_response_code(500);
+    exit('Database connection failed.');
+}
 
-    $conn->set_charset("utf8mb4");
-    
-
-
-?>
+$conn->set_charset('utf8mb4');
