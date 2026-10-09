@@ -104,13 +104,17 @@ body {
     align-items: center;
     justify-content: center;
 
+    background-image: url('./logo/utangwiselogo.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
     border: 2px solid var(--gold);
     border-radius: 11px;
 
     color: var(--gold);
 
-    font-family: Georgia, serif;
-    font-size: 22px;
+    
 }
 
 

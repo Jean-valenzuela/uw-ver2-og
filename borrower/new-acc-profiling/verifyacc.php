@@ -1,3 +1,4 @@
+<?php $step='verifyacc'; require __DIR__.'/../../ajax/profiling_page.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +7,12 @@
 
     <title>Verify Account | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/verifyacc.css">
+    <link rel="stylesheet" href="../../assets/css/verifyacc.css">
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-</head>
+<link rel="stylesheet" href="../../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -104,13 +105,7 @@
             </div>
 
 
-            <div class="progress-item">
-                <div class="progress-dot"></div>
-
-                <div class="progress-text">
-                    <h3>Agreements</h3>
-                </div>
-            </div>
+            
 
 
             <div class="progress-item last">
@@ -156,11 +151,11 @@
 
             <div class="topbar-space"></div>
 
-            <div class="user-area">
+            <?php borrower_logout_button(); ?><div class="user-area">
 
                 <span>
                     Welcome,
-                    <strong>riri iyakin</strong>
+                    <strong><?= e($u['user_fn']) ?></strong>
                 </span>
 
                 <span class="material-symbols-outlined">
@@ -190,7 +185,7 @@
                 <div class="hero-copy">
 
                     <span class="step-label">
-                        STEP 2 OF 6
+                        COMPLETE YOUR PROFILE
                     </span>
 
                     <h1>
@@ -237,7 +232,7 @@
 
 
                 <!-- 1 -->
-                <article class="verify-card">
+                <article class="verify-card <?= !empty($complete['idverification']) ? 'uw-completed' : '' ?>">
 
                     <div class="card-top">
 
@@ -270,12 +265,12 @@
 
                     </a>
 
-                </article>
+                <p class="uw-step-status"><?= !empty($complete['idverification']) ? '✓ Completed' : 'Not completed' ?></p></article>
 
 
 
                 <!-- 2 -->
-                <article class="verify-card">
+                <article class="verify-card <?= !empty($complete['personal-details']) ? 'uw-completed' : '' ?>">
 
                     <div class="card-top">
 
@@ -312,12 +307,12 @@
 
                     </a>
 
-                </article>
+                <p class="uw-step-status"><?= !empty($complete['personal-details']) ? '✓ Completed' : 'Not completed' ?></p></article>
 
 
 
                 <!-- 3 -->
-                <article class="verify-card">
+                <article class="verify-card <?= !empty($complete['financial-details']) ? 'uw-completed' : '' ?>">
 
                     <div class="card-top">
 
@@ -354,12 +349,12 @@
 
                     </a>
 
-                </article>
+                <p class="uw-step-status"><?= !empty($complete['financial-details']) ? '✓ Completed' : 'Not completed' ?></p></article>
 
 
 
                 <!-- 4 -->
-                <article class="verify-card">
+                <article class="verify-card <?= !empty($complete['reference-person']) ? 'uw-completed' : '' ?>">
 
                     <div class="card-top">
 
@@ -396,12 +391,12 @@
 
                     </a>
 
-                </article>
+                <p class="uw-step-status"><?= !empty($complete['reference-person']) ? '✓ Completed' : 'Not completed' ?></p></article>
 
 
 
                 <!-- 5 -->
-                <article class="verify-card">
+                <article class="verify-card <?= !empty($complete['loan-preferences']) ? 'uw-completed' : '' ?>">
 
                     <div class="card-top">
 
@@ -438,49 +433,12 @@
 
                     </a>
 
-                </article>
+                <p class="uw-step-status"><?= !empty($complete['loan-preferences']) ? '✓ Completed' : 'Not completed' ?></p></article>
 
 
 
                 <!-- 6 -->
-                <article class="verify-card">
-
-                    <div class="card-top">
-
-                        <div class="card-icon">
-                            <span class="material-symbols-outlined">
-                                contract
-                            </span>
-                        </div>
-
-                        <div class="card-copy">
-                            <h2>
-                                6. Agreements
-                            </h2>
-
-                            <p>
-                                Read and agree to our legal
-                                terms and conditions to proceed.
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <a href="agreements.php" class="card-button">
-
-                        <span class="material-symbols-outlined">
-                            shield
-                        </span>
-
-                        Review
-
-                        <span class="material-symbols-outlined arrow">
-                            chevron_right
-                        </span>
-
-                    </a>
-
-                </article>
+                
 
 
             </div>
@@ -488,7 +446,7 @@
 
 
             <!-- BOTTOM SUPPORT -->
-            <div class="support-bar">
+            <p><a href="ready-for-review.php" class="card-button">Ready for Review →</a></p><div class="support-bar">
 
                 <div class="support-item">
 

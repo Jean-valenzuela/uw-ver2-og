@@ -13,7 +13,7 @@
 
     <link
         rel="stylesheet"
-        href="../assets/css/register.css"
+        href="assets/css/style.css"
     >
 
     <!-- Google Fonts -->
@@ -41,7 +41,7 @@
                 <div class="brand">
 
                     <img
-                        src="../logo/utangwiselogo.png"
+                        src="../assets/logo/utangwiselogo.png"
                         alt="Utang Wise Logo"
                         class="brand-logo"
                     >
@@ -143,11 +143,8 @@
                          REGISTER FORM
                     ================================================== -->
 
-                    <form
-                        action="../ajax/save_register.php"
-                        method="POST"
-                        id="registerForm"
-                    ><?php csrf(); notice(); ?><input type="hidden" name="lender_id" value="<?= (int)$chosen_id ?>">
+                    <form action="../ajax/register_borrower.php"method="POST" id="registerForm">
+                        <?php csrf(); notice(); ?><input type="hidden" name="lender_id" value="<?= (int)$chosen_id ?>">
 
 
                         <div class="account-type-group">

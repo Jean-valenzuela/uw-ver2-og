@@ -1,5 +1,6 @@
+<?php require_once __DIR__.'/../ajax/borrower.php'; $borrowerAccount = borrower_user(); ?>
 <?php
-session_start();
+
 
 /*
 |--------------------------------------------------------------------------
@@ -109,7 +110,7 @@ function initials($name)
 
     <link rel="stylesheet" href="css/datatables.min.css">
 
-</head>
+<link rel="stylesheet" href="../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -245,16 +246,7 @@ function initials($name)
 
         <div class="bottom-menu">
 
-            <a
-                href="logout.php"
-                class="menu-item"
-            >
-                <span class="material-symbols-outlined">
-                    logout
-                </span>
-
-                <span>Log Out</span>
-            </a>
+            <?php borrower_logout_button(); ?>
 
         </div>
 

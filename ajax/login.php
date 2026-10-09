@@ -1,4 +1,3 @@
-
 <?php
 
 require __DIR__ . '/app.php';
@@ -90,6 +89,11 @@ db(
     [$key]
 );
 
+// Pending/rejected borrowers do not receive an authenticated session.
+if ((int)$u['user_type_id'] === 2 && in_array($u['account_status'], ['pending', 'rejected'], true)) {
+    unset($_SESSION['uid']);
+    fail_form($u['account_status'] === 'pending' ? 'Your application is under lender review. You can log in after approval.' : 'Your application was rejected. Please contact your lender for details.', $back);
+}
 // Regenerate session ID for security
 session_regenerate_id(true);
 

@@ -1,3 +1,4 @@
+<?php $step = 'reference-person'; require __DIR__.'/../../ajax/profiling_page.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +8,7 @@
 
     <title>Reference Person | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/reference-person.css">
+    <link rel="stylesheet" href="../../assets/css/reference-person.css">
 
     <!-- Google Fonts -->
     <link
@@ -20,7 +21,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
         rel="stylesheet"
     >
-</head>
+<link rel="stylesheet" href="../../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -168,15 +169,7 @@
 
 
             <!-- AGREEMENTS -->
-            <div class="progress-item">
-
-                <div class="progress-dot"></div>
-
-                <div class="progress-text">
-                    <h3>Agreements</h3>
-                </div>
-
-            </div>
+            
 
 
             <!-- REVIEW -->
@@ -230,11 +223,11 @@
 
             <div class="topbar-space"></div>
 
-            <div class="user-area">
+            <?php borrower_logout_button(); ?><div class="user-area">
 
                 <span class="welcome-text">
                     Welcome,
-                    <strong>Juan Dela Cruz</strong>
+                    <strong><?= e($u['user_fn'].' '.$u['user_ln']) ?></strong>
                 </span>
 
                 <span class="material-symbols-outlined">
@@ -271,7 +264,7 @@
                 <div class="hero-copy">
 
                     <span class="step-label">
-                        STEP 5 OF 6
+                        STEP 4 OF 5
                     </span>
 
 
@@ -351,7 +344,7 @@
                 ====================================== -->
                 <section class="form-card">
 
-                    <form action="#" method="POST">
+                    <form action="../../ajax/save_borrower.php" method="POST" enctype="multipart/form-data" data-borrower-form><?php csrf(); notice(); ?><input type="hidden" name="step" value="reference-person">
 
 
                         <!-- =============================
@@ -379,7 +372,7 @@
                                         id="reference_name"
                                         name="reference_name"
                                         placeholder="Enter full name"
-                                    >
+                                     required value="<?= e($values['reference_name'] ?? '') ?>">
 
                                 </div>
 
@@ -394,37 +387,37 @@
                                     <select
                                         id="relationship"
                                         name="relationship"
-                                    >
+                                     required>
 
-                                        <option value="" selected disabled>
+                                        <option value="" <?= ($values['relationship'] ?? '') === '' ? 'selected' : '' ?> disabled>
                                             Select relationship
                                         </option>
 
-                                        <option value="parent">
+                                        <option value="parent" <?= ($values['relationship'] ?? '') === 'parent' ? 'selected' : '' ?>>
                                             Parent
                                         </option>
 
-                                        <option value="sibling">
+                                        <option value="sibling" <?= ($values['relationship'] ?? '') === 'sibling' ? 'selected' : '' ?>>
                                             Sibling
                                         </option>
 
-                                        <option value="relative">
+                                        <option value="relative" <?= ($values['relationship'] ?? '') === 'relative' ? 'selected' : '' ?>>
                                             Relative
                                         </option>
 
-                                        <option value="friend">
+                                        <option value="friend" <?= ($values['relationship'] ?? '') === 'friend' ? 'selected' : '' ?>>
                                             Friend
                                         </option>
 
-                                        <option value="coworker">
+                                        <option value="coworker" <?= ($values['relationship'] ?? '') === 'coworker' ? 'selected' : '' ?>>
                                             Co-worker
                                         </option>
 
-                                        <option value="employer">
+                                        <option value="employer" <?= ($values['relationship'] ?? '') === 'employer' ? 'selected' : '' ?>>
                                             Employer
                                         </option>
 
-                                        <option value="other">
+                                        <option value="other" <?= ($values['relationship'] ?? '') === 'other' ? 'selected' : '' ?>>
                                             Other
                                         </option>
 
@@ -450,8 +443,8 @@
                                             type="tel"
                                             id="reference_contact"
                                             name="reference_contact"
-                                            placeholder="912 345 6789"
-                                        >
+                                            placeholder="9123456789"
+                                         required inputmode="numeric" maxlength="10" pattern="9[0-9]{9}" title="10 digits starting with 9" value="<?= e($values['reference_contact'] ?? '') ?>">
 
                                     </div>
 
@@ -471,7 +464,7 @@
                                         id="reference_email"
                                         name="reference_email"
                                         placeholder="Enter email address"
-                                    >
+                                     value="<?= e($values['reference_email'] ?? '') ?>">
 
                                 </div>
 
@@ -488,7 +481,7 @@
                                         id="reference_occupation"
                                         name="reference_occupation"
                                         placeholder="Enter occupation"
-                                    >
+                                     value="<?= e($values['reference_occupation'] ?? '') ?>">
 
                                 </div>
 
@@ -505,7 +498,7 @@
                                         id="reference_company"
                                         name="reference_company"
                                         placeholder="Enter company or organization"
-                                    >
+                                     value="<?= e($values['reference_company'] ?? '') ?>">
 
                                 </div>
 
@@ -518,140 +511,8 @@
                         <!-- =============================
                              ADDRESS
                         ============================== -->
-                        <div class="form-section">
-
-                            <h2>
-                                2. Address
-                            </h2>
-
-
-                            <!-- FIRST ADDRESS ROW -->
-                            <div class="address-grid address-top">
-
-
-                                <div class="form-group">
-
-                                    <label for="reference_street">
-                                        House No. / Street
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reference_street"
-                                        name="reference_street"
-                                        placeholder="Enter house number and street"
-                                    >
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label for="reference_barangay">
-                                        Barangay
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reference_barangay"
-                                        name="reference_barangay"
-                                        placeholder="Enter barangay"
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- SECOND ADDRESS ROW -->
-                            <div class="address-grid address-bottom">
-
-
-                                <div class="form-group">
-
-                                    <label for="reference_city">
-                                        City / Municipality
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reference_city"
-                                        name="reference_city"
-                                        placeholder="Enter city / municipality"
-                                    >
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label for="reference_province">
-                                        Province
-                                    </label>
-
-                                    <select
-                                        id="reference_province"
-                                        name="reference_province"
-                                    >
-
-                                        <option value="" selected disabled>
-                                            Select province
-                                        </option>
-
-                                        <option value="metro-manila">
-                                            Metro Manila
-                                        </option>
-
-                                        <option value="bulacan">
-                                            Bulacan
-                                        </option>
-
-                                        <option value="cavite">
-                                            Cavite
-                                        </option>
-
-                                        <option value="laguna">
-                                            Laguna
-                                        </option>
-
-                                        <option value="rizal">
-                                            Rizal
-                                        </option>
-
-                                        <option value="other">
-                                            Other
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label for="reference_zip">
-                                        ZIP Code
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="reference_zip"
-                                        name="reference_zip"
-                                        placeholder="Enter ZIP code"
-                                    >
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- =============================
-                             ADDITIONAL INFORMATION
-                        ============================== -->
-                        <div class="form-section">
+                        <?php borrower_address_fields('reference_', $values); ?>
+<div class="form-section">
 
                             <h2>
                                 3. Additional Information
@@ -669,7 +530,7 @@
                                     id="reference_notes"
                                     name="reference_notes"
                                     placeholder="Add any additional notes (optional)"
-                                ></textarea>
+                                ><?= e($values['reference_notes'] ?? '') ?></textarea>
 
                             </div>
 
@@ -849,5 +710,5 @@
 
 </div>
 
-</body>
+<script type="application/json" id="uw-profile-data"><?= json_encode($values, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script><script src="../../assets/js/borrower-profiling.js" defer></script></body>
 </html>

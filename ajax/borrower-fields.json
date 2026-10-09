@@ -1,0 +1,236 @@
+{
+  "idverification": {
+    "id_type": {
+      "required": true,
+      "options": [
+        "Passport",
+        "Driver's License",
+        "UMID / SSS ID",
+        "National ID",
+        "Voter's ID"
+      ]
+    }
+  },
+  "personal-details": {
+    "first_name": {
+      "required": true
+    },
+    "middle_name": {
+      "required": false
+    },
+    "last_name": {
+      "required": true
+    },
+    "birth_date": {
+      "required": true
+    },
+    "gender": {
+      "required": true,
+      "options": [
+        "male",
+        "female",
+        "prefer-not"
+      ]
+    },
+    "civil_status": {
+      "required": true,
+      "options": [
+        "single",
+        "married",
+        "widowed",
+        "separated"
+      ]
+    },
+    "nationality": {
+      "required": true,
+      "options": [
+        "Filipino",
+        "Other"
+      ]
+    },
+    "religion": {
+      "required": false,
+      "options": [
+        "Roman Catholic",
+        "Christian",
+        "Islam",
+        "Other",
+        "Prefer not to say"
+      ]
+    },
+    "tin": {
+      "required": false
+    },
+    "mobile": {
+      "required": true
+    },
+    "email": {
+      "required": false
+    },
+    "region": {
+      "required": true
+    },
+    "street": {
+      "required": true
+    },
+    "barangay": {
+      "required": true
+    },
+    "city": {
+      "required": true
+    },
+    "province": {
+      "required": true
+    },
+    "zip_code": {
+      "required": true
+    }
+  },
+  "financial-details": {
+    "employment_status": {
+      "required": true,
+      "options": [
+        "employed",
+        "self-employed",
+        "student",
+        "unemployed"
+      ]
+    },
+    "job_title": {
+      "required": false
+    },
+    "company": {
+      "required": false
+    },
+    "work_type": {
+      "required": false,
+      "options": [
+        "full-time",
+        "part-time",
+        "contractual",
+        "freelance"
+      ]
+    },
+    "years_job": {
+      "required": false,
+      "options": [
+        "less-than-1",
+        "1",
+        "2",
+        "3",
+        "4-plus"
+      ]
+    },
+    "gross_income": {
+      "required": true
+    },
+    "has_other_income": {
+      "required": false,
+      "options": [
+        "yes",
+        "no"
+      ]
+    },
+    "income_source": {
+      "required": false
+    },
+    "other_income": {
+      "required": false
+    },
+    "expenses": {
+      "required": true
+    },
+    "total_income": {
+      "required": false
+    },
+    "has_loans": {
+      "required": true,
+      "options": [
+        "yes",
+        "no"
+      ]
+    },
+    "loan_balance": {
+      "required": false
+    }
+  },
+  "reference-person": {
+    "reference_name": {
+      "required": true
+    },
+    "relationship": {
+      "required": true,
+      "options": [
+        "parent",
+        "sibling",
+        "relative",
+        "friend",
+        "coworker",
+        "employer",
+        "other"
+      ]
+    },
+    "reference_contact": {
+      "required": true
+    },
+    "reference_email": {
+      "required": false
+    },
+    "reference_occupation": {
+      "required": false
+    },
+    "reference_company": {
+      "required": false
+    },
+    "reference_region": {
+      "required": true
+    },
+    "reference_street": {
+      "required": true
+    },
+    "reference_barangay": {
+      "required": true
+    },
+    "reference_city": {
+      "required": true
+    },
+    "reference_province": {
+      "required": true
+    },
+    "reference_zip": {
+      "required": true
+    },
+    "reference_notes": {
+      "required": false
+    }
+  },
+  "loan-preferences": {
+    "loan_amount": {
+      "required": true
+    },
+    "loan_purpose": {
+      "required": true,
+      "options": [
+        "emergency",
+        "medical",
+        "education",
+        "business",
+        "bills",
+        "home",
+        "personal",
+        "other"
+      ]
+    },
+    "loan_term": {
+      "required": true,
+      "options": [
+        "3",
+        "6",
+        "12"
+      ]
+    },
+    "additional_information": {
+      "required": false
+    }
+  }
+}

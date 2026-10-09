@@ -16,7 +16,7 @@
     <!-- LOGIN CSS -->
     <link
         rel="stylesheet"
-        href="../assets/css/login.css"
+        href="assets/css/style.css"
     >
 
     <!-- DM SANS -->
@@ -50,7 +50,7 @@
                 <div class="brand">
 
                     <img
-                        src="../logo/utangwiselogo.png"
+                        src="../assets/logo/utangwiselogo.png"
                         alt="Utang Wise Logo"
                         class="brand-logo"
                     >

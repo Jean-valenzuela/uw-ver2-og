@@ -1,3 +1,4 @@
+<?php require_once __DIR__.'/../ajax/borrower.php'; $borrowerAccount = borrower_user(); ?>
 <?php
 
 /*
@@ -122,7 +123,7 @@ $repaymentSchedule = $_POST["repayment_schedule"] ?? "";
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-</head>
+<link rel="stylesheet" href="../assets/css/borrower-flow.css"></head>
 
 
 <body>
@@ -299,18 +300,7 @@ $repaymentSchedule = $_POST["repayment_schedule"] ?? "";
         <nav class="sidebar-menu bottom-menu">
 
 
-            <a
-                href="logout.php"
-                class="menu-item"
-            >
-
-                <span class="material-symbols-outlined">
-                    logout
-                </span>
-
-                Log Out
-
-            </a>
+            <?php borrower_logout_button(); ?>
 
         </nav>
 

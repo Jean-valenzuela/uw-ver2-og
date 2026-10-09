@@ -1,3 +1,4 @@
+<?php $step = 'financial-details'; require __DIR__.'/../../ajax/profiling_page.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +7,14 @@
 
     <title>Financial Details | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/financial-details.css">
+    <link rel="stylesheet" href="../../assets/css/financial-details.css">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
     <!-- Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-</head>
+<link rel="stylesheet" href="../../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -155,15 +156,7 @@
 
 
             <!-- AGREEMENTS -->
-            <div class="progress-item">
-
-                <div class="progress-dot"></div>
-
-                <div class="progress-text">
-                    <h3>Agreements</h3>
-                </div>
-
-            </div>
+            
 
 
             <!-- REVIEW -->
@@ -213,11 +206,11 @@
 
             <div class="topbar-space"></div>
 
-            <div class="user-area">
+            <?php borrower_logout_button(); ?><div class="user-area">
 
                 <span>
                     Welcome,
-                    <strong>Juan Dela Cruz</strong>
+                    <strong><?= e($u['user_fn'].' '.$u['user_ln']) ?></strong>
                 </span>
 
                 <span class="material-symbols-outlined">
@@ -250,7 +243,7 @@
                 <div class="hero-copy">
 
                     <span class="step-label">
-                        STEP 4 OF 6
+                        STEP 3 OF 5
                     </span>
 
                     <a href="verifyacc.php" class="back-link">
@@ -323,7 +316,7 @@
                 ========================== -->
                 <section class="form-card">
 
-                    <form action="#" method="POST">
+                    <form action="../../ajax/save_borrower.php" method="POST" enctype="multipart/form-data" data-borrower-form><?php csrf(); notice(); ?><input type="hidden" name="step" value="financial-details">
 
 
                         <!-- =========================
@@ -347,24 +340,24 @@
                                     <select
                                         id="employment_status"
                                         name="employment_status"
-                                    >
-                                        <option value="" selected disabled>
+                                     required>
+                                        <option value="" <?= ($values['employment_status'] ?? '') === '' ? 'selected' : '' ?> disabled>
                                             Select status
                                         </option>
 
-                                        <option value="employed">
+                                        <option value="employed" <?= ($values['employment_status'] ?? '') === 'employed' ? 'selected' : '' ?>>
                                             Employed
                                         </option>
 
-                                        <option value="self-employed">
+                                        <option value="self-employed" <?= ($values['employment_status'] ?? '') === 'self-employed' ? 'selected' : '' ?>>
                                             Self-Employed
                                         </option>
 
-                                        <option value="student">
+                                        <option value="student" <?= ($values['employment_status'] ?? '') === 'student' ? 'selected' : '' ?>>
                                             Student
                                         </option>
 
-                                        <option value="unemployed">
+                                        <option value="unemployed" <?= ($values['employment_status'] ?? '') === 'unemployed' ? 'selected' : '' ?>>
                                             Unemployed
                                         </option>
 
@@ -384,7 +377,7 @@
                                         id="job_title"
                                         name="job_title"
                                         placeholder="e.g. Software Engineer"
-                                    >
+                                     value="<?= e($values['job_title'] ?? '') ?>">
 
                                 </div>
 
@@ -400,7 +393,7 @@
                                         id="company"
                                         name="company"
                                         placeholder="e.g. ABC Corporation"
-                                    >
+                                     value="<?= e($values['company'] ?? '') ?>">
 
                                 </div>
 
@@ -415,23 +408,23 @@
                                         id="work_type"
                                         name="work_type"
                                     >
-                                        <option value="" selected disabled>
+                                        <option value="" <?= ($values['work_type'] ?? '') === '' ? 'selected' : '' ?> disabled>
                                             Select type
                                         </option>
 
-                                        <option value="full-time">
+                                        <option value="full-time" <?= ($values['work_type'] ?? '') === 'full-time' ? 'selected' : '' ?>>
                                             Full-time
                                         </option>
 
-                                        <option value="part-time">
+                                        <option value="part-time" <?= ($values['work_type'] ?? '') === 'part-time' ? 'selected' : '' ?>>
                                             Part-time
                                         </option>
 
-                                        <option value="contractual">
+                                        <option value="contractual" <?= ($values['work_type'] ?? '') === 'contractual' ? 'selected' : '' ?>>
                                             Contractual
                                         </option>
 
-                                        <option value="freelance">
+                                        <option value="freelance" <?= ($values['work_type'] ?? '') === 'freelance' ? 'selected' : '' ?>>
                                             Freelance
                                         </option>
 
@@ -450,27 +443,27 @@
                                         id="years_job"
                                         name="years_job"
                                     >
-                                        <option value="" selected disabled>
+                                        <option value="" <?= ($values['years_job'] ?? '') === '' ? 'selected' : '' ?> disabled>
                                             Select duration
                                         </option>
 
-                                        <option value="less-than-1">
+                                        <option value="less-than-1" <?= ($values['years_job'] ?? '') === 'less-than-1' ? 'selected' : '' ?>>
                                             Less than 1 year
                                         </option>
 
-                                        <option value="1">
+                                        <option value="1" <?= ($values['years_job'] ?? '') === '1' ? 'selected' : '' ?>>
                                             1 year
                                         </option>
 
-                                        <option value="2">
+                                        <option value="2" <?= ($values['years_job'] ?? '') === '2' ? 'selected' : '' ?>>
                                             2 years
                                         </option>
 
-                                        <option value="3">
+                                        <option value="3" <?= ($values['years_job'] ?? '') === '3' ? 'selected' : '' ?>>
                                             3 years
                                         </option>
 
-                                        <option value="4-plus">
+                                        <option value="4-plus" <?= ($values['years_job'] ?? '') === '4-plus' ? 'selected' : '' ?>>
                                             4+ years
                                         </option>
 
@@ -495,7 +488,7 @@
                                             name="gross_income"
                                             placeholder="e.g. 35,000"
                                             min="0"
-                                        >
+                                         required value="<?= e($values['gross_income'] ?? '') ?>">
 
                                     </div>
 
@@ -553,7 +546,7 @@
     </div>
 
     <div class="coe-file-name" id="coeFileName">
-        No file selected
+        <?= document_exists($u['user_id'], 'coe') ? 'Certificate saved. Choose a file only to replace it.' : 'No file selected' ?>
     </div>
 
 </div>
@@ -566,7 +559,7 @@
                         <div class="form-section">
 
                             <h2>
-                                2. Other Income
+                                2. Other Income (Optional)
                                 <span>(Optional)</span>
                             </h2>
 
@@ -584,7 +577,7 @@
                                         type="radio"
                                         name="has_other_income"
                                         value="yes"
-                                    >
+                                     <?= ($values['has_other_income'] ?? '') === 'yes' ? 'checked' : '' ?>>
 
                                     <span>Yes</span>
 
@@ -597,7 +590,7 @@
                                         type="radio"
                                         name="has_other_income"
                                         value="no"
-                                    >
+                                     <?= ($values['has_other_income'] ?? '') === 'no' ? 'checked' : '' ?>>
 
                                     <span>No</span>
 
@@ -619,7 +612,7 @@
                                         id="income_source"
                                         name="income_source"
                                         placeholder="e.g. Freelance, Business"
-                                    >
+                                     value="<?= e($values['income_source'] ?? '') ?>">
 
                                 </div>
 
@@ -640,25 +633,14 @@
                                             name="other_income"
                                             placeholder="e.g. 10,000"
                                             min="0"
-                                        >
+                                         value="<?= e($values['other_income'] ?? '') ?>">
 
                                     </div>
 
                                 </div>
 
 
-                                <button
-                                    type="button"
-                                    class="add-income-button"
-                                >
-
-                                    <span class="material-symbols-outlined">
-                                        add
-                                    </span>
-
-                                    Add Another Income
-
-                                </button>
+                                <p>Other income is optional. Enter the combined monthly amount from any additional sources.</p>
 
                             </div>
 
@@ -694,7 +676,7 @@
                                             name="expenses"
                                             placeholder="e.g. 20,000"
                                             min="0"
-                                        >
+                                         required value="<?= e($values['expenses'] ?? '') ?>">
 
                                     </div>
 
@@ -719,7 +701,7 @@
                                             name="total_income"
                                             placeholder="e.g. 35,000"
                                             min="0"
-                                        >
+                                         readonly value="<?= e($values['total_income'] ?? '') ?>">
 
                                     </div>
 
@@ -744,7 +726,7 @@
                                                 type="radio"
                                                 name="has_loans"
                                                 value="yes"
-                                            >
+                                             required <?= ($values['has_loans'] ?? '') === 'yes' ? 'checked' : '' ?>>
 
                                             <span>Yes</span>
 
@@ -757,7 +739,7 @@
                                                 type="radio"
                                                 name="has_loans"
                                                 value="no"
-                                            >
+                                             required <?= ($values['has_loans'] ?? '') === 'no' ? 'checked' : '' ?>>
 
                                             <span>No</span>
 
@@ -784,7 +766,7 @@
                                             name="loan_balance"
                                             placeholder="e.g. 50,000"
                                             min="0"
-                                        >
+                                         value="<?= e($values['loan_balance'] ?? '') ?>">
 
                                     </div>
 
@@ -952,5 +934,5 @@
 
 </div>
 
-</body>
+<script type="application/json" id="uw-profile-data"><?= json_encode($values, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script><script src="../../assets/js/borrower-profiling.js" defer></script></body>
 </html>

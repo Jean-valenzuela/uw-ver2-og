@@ -8,7 +8,7 @@
     <title>Applications | Utang Wise</title>
 
     <!-- APPLICATIONS CSS -->
-    <link rel="stylesheet" href="../css/applications.css">
+    <link rel="stylesheet" href="../assets/css/applications.css">
 
     <!-- DATATABLES -->
     <link rel="stylesheet" href="../css/datatables.min.css">

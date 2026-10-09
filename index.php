@@ -26,7 +26,7 @@
     <!-- CSS -->
     <link
         rel="stylesheet"
-        href="../assets/css/style.css"
+        href="assets/css/style.css"
     >
 </head>
 
@@ -99,7 +99,7 @@
                 href="register.php"
                 class="register-btn"
             >
-                Register
+                Lender Registration
             </a>
 
         </div>
@@ -208,7 +208,7 @@
                     href="register.php"
                     class="primary-btn"
                 >
-                    Get Started
+                    Get Started as Lender
 
                     <span class="material-symbols-outlined">
                         arrow_forward

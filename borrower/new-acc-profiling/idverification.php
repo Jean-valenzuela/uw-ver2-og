@@ -1,3 +1,4 @@
+<?php $step = 'idverification'; require __DIR__.'/../../ajax/profiling_page.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +7,12 @@
 
     <title>ID Verification | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/idverification.css">
+    <link rel="stylesheet" href="../../assets/css/idverification.css">
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-</head>
+<link rel="stylesheet" href="../../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -121,13 +122,7 @@
             </div>
 
 
-            <div class="progress-item">
-                <div class="progress-dot"></div>
-
-                <div class="progress-text">
-                    <h3>Agreements</h3>
-                </div>
-            </div>
+            
 
 
             <div class="progress-item last">
@@ -169,11 +164,11 @@
 
             <div class="topbar-space"></div>
 
-            <div class="user-area">
+            <?php borrower_logout_button(); ?><div class="user-area">
 
                 <span>
                     Welcome,
-                    <strong>Juan Dela Cruz</strong>
+                    <strong><?= e($u['user_fn'].' '.$u['user_ln']) ?></strong>
                 </span>
 
                 <span class="material-symbols-outlined">
@@ -204,7 +199,7 @@
                 <div class="hero-copy">
 
                     <span class="step-label">
-                        STEP 2 OF 6
+                        STEP 1 OF 5
                     </span>
 
                     <a href="verifyacc.php" class="back-link">
@@ -235,7 +230,7 @@
             <div class="verification-body">
 
                 <!-- LEFT LARGE PANEL -->
-                <section class="upload-panel">
+                <section class="upload-panel"><form action="../../ajax/save_borrower.php" method="POST" enctype="multipart/form-data" data-borrower-form><?php csrf(); notice(); ?><input type="hidden" name="step" value="idverification">
 
                     <h2>
                         1. Upload Your ID
@@ -247,7 +242,7 @@
                     </p>
 
 
-                    <div class="id-types">
+                    <input type="hidden" name="id_type" required value="<?= e($values['id_type'] ?? '') ?>"><div class="id-types">
 
                         <button type="button" class="id-type active">
 
@@ -313,80 +308,7 @@
 
 
                     <!-- FILE PREVIEW STATE -->
-                    <div class="upload-box">
-
-                        <div class="passport-preview">
-                            <div class="passport-title">
-                                PILIPINAS
-                            </div>
-
-                            <div class="passport-logo">
-                                ₱
-                            </div>
-
-                            <div class="passport-name">
-                                PASAPORTE
-                            </div>
-                        </div>
-
-
-                        <div class="file-info">
-
-                            <div class="file-name-row">
-
-                                <span class="status-check">
-                                    ✓
-                                </span>
-
-                                <div>
-                                    <h3>
-                                        passport_sample.jpg
-                                    </h3>
-
-                                    <p>
-                                        245 KB
-                                    </p>
-                                </div>
-
-                            </div>
-
-
-                            <div class="ready-status">
-                                ✓ File ready for upload
-                            </div>
-
-
-                            <div class="file-actions">
-
-                                <button type="button" class="change-file">
-
-                                    <span class="material-symbols-outlined">
-                                        upload
-                                    </span>
-
-                                    Change File
-
-                                </button>
-
-
-                                <button type="button" class="remove-file">
-
-                                    <span class="material-symbols-outlined">
-                                        delete
-                                    </span>
-
-                                    Remove
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="file-note">
+                    <div class="upload-box"><label for="valid_id">Select your ID file</label><input type="file" id="valid_id" name="valid_id" accept=".png,.jpg,.jpeg,.pdf"><p class="uw-file-status"><?php if(document_exists($u['user_id'],'valid_id')): ?>Your ID is saved. Choose a file only to replace it.<?php else: ?>No ID uploaded yet.<?php endif; ?></p></div><div class="file-note">
 
                         <p>
                             Make sure the ID is clear, not blurry,
@@ -453,7 +375,7 @@
                         </a>
 
 
-                        <a href="#" class="continue-button">
+                        <button type="submit" class="continue-button">
 
                             Continue
 
@@ -461,11 +383,11 @@
                                 arrow_forward
                             </span>
 
-                        </a>
+                        </button>
 
                     </div>
 
-                </section>
+                </form></section>
 
 
 
@@ -570,5 +492,5 @@
 
 </div>
 
-</body>
+<script type="application/json" id="uw-profile-data"><?= json_encode($values, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script><script src="../../assets/js/borrower-profiling.js" defer></script></body>
 </html>

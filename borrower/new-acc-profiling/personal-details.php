@@ -1,3 +1,4 @@
+<?php $step = 'personal-details'; require __DIR__.'/../../ajax/profiling_page.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +7,14 @@
 
     <title>Personal Details | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/personal-details.css">
+    <link rel="stylesheet" href="../../assets/css/personal-details.css">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
     <!-- Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-</head>
+<link rel="stylesheet" href="../../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -150,15 +151,7 @@
 
 
             <!-- AGREEMENTS -->
-            <div class="progress-item">
-
-                <div class="progress-dot"></div>
-
-                <div class="progress-text">
-                    <h3>Agreements</h3>
-                </div>
-
-            </div>
+            
 
 
             <!-- REVIEW -->
@@ -208,11 +201,11 @@
 
             <div class="topbar-space"></div>
 
-            <div class="user-area">
+            <?php borrower_logout_button(); ?><div class="user-area">
 
                 <span>
                     Welcome,
-                    <strong>Juan Dela Cruz</strong>
+                    <strong><?= e($u['user_fn'].' '.$u['user_ln']) ?></strong>
                 </span>
 
                 <span class="material-symbols-outlined">
@@ -244,7 +237,7 @@
                 <div class="hero-copy">
 
                     <span class="step-label">
-                        STEP 3 OF 6
+                        STEP 2 OF 5
                     </span>
 
                     <a href="verifyacc.php" class="back-link">
@@ -280,7 +273,7 @@
                 <!-- FORM -->
                 <section class="form-card">
 
-                    <form action="#" method="POST">
+                    <form action="../../ajax/save_borrower.php" method="POST" enctype="multipart/form-data" data-borrower-form><?php csrf(); notice(); ?><input type="hidden" name="step" value="personal-details">
 
 
                         <!-- BASIC INFORMATION -->
@@ -303,7 +296,7 @@
                                         id="first_name"
                                         name="first_name"
                                         placeholder="Enter first name"
-                                    >
+                                     required value="<?= e($values['first_name'] ?? '') ?>">
 
                                 </div>
 
@@ -320,7 +313,7 @@
                                         id="middle_name"
                                         name="middle_name"
                                         placeholder="Enter middle name"
-                                    >
+                                     value="<?= e($values['middle_name'] ?? '') ?>">
 
                                 </div>
 
@@ -336,7 +329,7 @@
                                         id="last_name"
                                         name="last_name"
                                         placeholder="Enter last name"
-                                    >
+                                     required value="<?= e($values['last_name'] ?? '') ?>">
 
                                 </div>
 
@@ -358,7 +351,7 @@
                                             type="date"
                                             id="birth_date"
                                             name="birth_date"
-                                        >
+                                         required max="<?= e((new DateTimeImmutable('today'))->modify('-21 years')->format('Y-m-d')) ?>" value="<?= e($values['birth_date'] ?? '') ?>">
 
                                     </div>
 
@@ -374,20 +367,20 @@
                                     <select
                                         id="gender"
                                         name="gender"
-                                    >
-                                        <option value="" selected disabled>
+                                     required>
+                                        <option value="" <?= ($values['gender'] ?? '') === '' ? 'selected' : '' ?> disabled>
                                             Select gender
                                         </option>
 
-                                        <option value="male">
+                                        <option value="male" <?= ($values['gender'] ?? '') === 'male' ? 'selected' : '' ?>>
                                             Male
                                         </option>
 
-                                        <option value="female">
+                                        <option value="female" <?= ($values['gender'] ?? '') === 'female' ? 'selected' : '' ?>>
                                             Female
                                         </option>
 
-                                        <option value="prefer-not">
+                                        <option value="prefer-not" <?= ($values['gender'] ?? '') === 'prefer-not' ? 'selected' : '' ?>>
                                             Prefer not to say
                                         </option>
 
@@ -405,24 +398,24 @@
                                     <select
                                         id="civil_status"
                                         name="civil_status"
-                                    >
-                                        <option value="" selected disabled>
+                                     required>
+                                        <option value="" <?= ($values['civil_status'] ?? '') === '' ? 'selected' : '' ?> disabled>
                                             Select civil status
                                         </option>
 
-                                        <option value="single">
+                                        <option value="single" <?= ($values['civil_status'] ?? '') === 'single' ? 'selected' : '' ?>>
                                             Single
                                         </option>
 
-                                        <option value="married">
+                                        <option value="married" <?= ($values['civil_status'] ?? '') === 'married' ? 'selected' : '' ?>>
                                             Married
                                         </option>
 
-                                        <option value="widowed">
+                                        <option value="widowed" <?= ($values['civil_status'] ?? '') === 'widowed' ? 'selected' : '' ?>>
                                             Widowed
                                         </option>
 
-                                        <option value="separated">
+                                        <option value="separated" <?= ($values['civil_status'] ?? '') === 'separated' ? 'selected' : '' ?>>
                                             Separated
                                         </option>
 
@@ -440,12 +433,12 @@
                                     <select
                                         id="nationality"
                                         name="nationality"
-                                    >
-                                        <option value="Filipino">
+                                     required>
+                                        <option value="Filipino" <?= ($values['nationality'] ?? '') === 'Filipino' ? 'selected' : '' ?>>
                                             Filipino
                                         </option>
 
-                                        <option value="Other">
+                                        <option value="Other" <?= ($values['nationality'] ?? '') === 'Other' ? 'selected' : '' ?>>
                                             Other
                                         </option>
 
@@ -464,27 +457,27 @@
                                         id="religion"
                                         name="religion"
                                     >
-                                        <option value="" selected disabled>
+                                        <option value="" <?= ($values['religion'] ?? '') === '' ? 'selected' : '' ?> disabled>
                                             Select religion
                                         </option>
 
-                                        <option value="Roman Catholic">
+                                        <option value="Roman Catholic" <?= ($values['religion'] ?? '') === 'Roman Catholic' ? 'selected' : '' ?>>
                                             Roman Catholic
                                         </option>
 
-                                        <option value="Christian">
+                                        <option value="Christian" <?= ($values['religion'] ?? '') === 'Christian' ? 'selected' : '' ?>>
                                             Christian
                                         </option>
 
-                                        <option value="Islam">
+                                        <option value="Islam" <?= ($values['religion'] ?? '') === 'Islam' ? 'selected' : '' ?>>
                                             Islam
                                         </option>
 
-                                        <option value="Other">
+                                        <option value="Other" <?= ($values['religion'] ?? '') === 'Other' ? 'selected' : '' ?>>
                                             Other
                                         </option>
 
-                                        <option value="Prefer not to say">
+                                        <option value="Prefer not to say" <?= ($values['religion'] ?? '') === 'Prefer not to say' ? 'selected' : '' ?>>
                                             Prefer not to say
                                         </option>
 
@@ -505,7 +498,7 @@
                                         id="tin"
                                         name="tin"
                                         placeholder="Enter TIN"
-                                    >
+                                     value="<?= e($values['tin'] ?? '') ?>">
 
                                 </div>
 
@@ -540,8 +533,8 @@
                                             type="tel"
                                             id="mobile"
                                             name="mobile"
-                                            placeholder="912 345 6789"
-                                        >
+                                            placeholder="9123456789"
+                                         required inputmode="numeric" maxlength="10" pattern="9[0-9]{9}" title="10 digits starting with 9" value="<?= e($values['mobile'] ?? '') ?>">
 
                                     </div>
 
@@ -559,7 +552,7 @@
                                         id="email"
                                         name="email"
                                         placeholder="Enter email address"
-                                    >
+                                     readonly value="<?= e($values['email'] ?? '') ?>">
 
                                 </div>
 
@@ -570,106 +563,8 @@
 
 
                         <!-- CURRENT ADDRESS -->
-                        <div class="form-section address-section">
-
-                            <h2>
-                                Current Address
-                            </h2>
-
-
-                            <div class="address-grid top-address">
-
-                                <div class="form-group">
-
-                                    <label for="street">
-                                        House No. / Street
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="street"
-                                        name="street"
-                                        placeholder="Enter house number and street"
-                                    >
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label for="barangay">
-                                        Barangay
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="barangay"
-                                        name="barangay"
-                                        placeholder="Enter barangay"
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="address-grid bottom-address">
-
-                                <div class="form-group">
-
-                                    <label for="city">
-                                        City / Municipality
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="city"
-                                        name="city"
-                                        placeholder="Enter city / municipality"
-                                    >
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label for="province">
-                                        Province
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="province"
-                                        name="province"
-                                        placeholder="Enter province"
-                                    >
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label for="zip_code">
-                                        ZIP Code
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="zip_code"
-                                        name="zip_code"
-                                        placeholder="ZIP Code"
-                                    >
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- BUTTONS -->
-                        <div class="form-actions">
+                        <?php borrower_address_fields('', $values); ?>
+<div class="form-actions">
 
                             <a href="verifyacc.php" class="back-button">
 
@@ -800,5 +695,5 @@
 
 </div>
 
-</body>
+<script type="application/json" id="uw-profile-data"><?= json_encode($values, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script><script src="../../assets/js/borrower-profiling.js" defer></script></body>
 </html>

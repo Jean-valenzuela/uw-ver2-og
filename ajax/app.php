@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . '/config.php';
@@ -111,7 +110,8 @@ function base_url()
         '/'
     );
 
-    return substr($root, strlen($doc));
+    $configured = getenv('UW_BASE_URL');
+    return $configured !== false ? rtrim($configured, '/') : substr($root, strlen($doc));
 }
 
 function go($path)
@@ -176,7 +176,7 @@ function destination($u)
     if ($u['account_status'] === 'approved') {
         return (int) $u['user_type_id'] === 1
             ? 'lender/dashboard.php'
-            : 'borrower/dashboard.php';
+            : 'borrower/client-dashboard.php';
     }
 
     // Accounts awaiting approval or other status

@@ -6,7 +6,7 @@
 
     <title>Admin Dashboard | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
 
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
@@ -28,9 +28,7 @@
 
         <div class="brand">
 
-            <div class="brand-icon">
-                ₱
-            </div>
+            <div class="brand-icon"></div>
 
             <div class="brand-text">
                 <h2>UTANG WISE</h2>

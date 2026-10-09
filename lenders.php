@@ -26,7 +26,7 @@
     <!-- CSS -->
     <link
         rel="stylesheet"
-        href="../assets/css/lender.css"
+        href="assets/css/style.css"
     >
 </head>
 
@@ -47,7 +47,7 @@
             class="nav-brand"
         >
             <img
-                src="../logo/utangwiselogo.png"
+                src="../assets/logo/utangwiselogo.png"
                 alt="Utang Wise Logo"
             >
 

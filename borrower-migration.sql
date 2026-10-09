@@ -1,0 +1,5 @@
+-- Borrower profiling uses existing application_profiles.details JSON and
+-- application_documents records; no schema changes are required.
+-- Confirm the database has users.account_status with pending/approved/rejected,
+-- application_profiles(user_id,details), and application_documents(user_id,kind,mime_type,contents).
+-- Import the provided original uw-ver2 SQL dump before running the project.

@@ -1,53 +1,37 @@
+<?php require_once __DIR__.'/../ajax/borrower.php'; $borrowerAccount = borrower_user(); ?>
 <?php
-session_start();
 
-/*
-|--------------------------------------------------------------------------
-| TEMPORARY PROFILE DATA
-|--------------------------------------------------------------------------
-| Later, replace this array with database data using $_SESSION['user_id'].
-*/
 
-$user = [
-    'name' => 'Juan Dela Cruz',
-    'role' => 'Client',
-    'email' => 'juan@email.com',
-    'phone' => '+63 912 345 6789',
-    'address' => '123 Mabini St., Manila',
-    'member_since' => 'July 10, 2025',
 
-    'dob' => 'April 15, 2000',
-    'age' => '25 years old',
-    'gender' => 'Male',
-    'civil_status' => 'Single',
-    'nationality' => 'Filipino',
-    'street' => '123 Mabini St.',
-    'barangay' => 'Barangay 5',
-    'city' => 'Manila',
-    'province' => 'Metro Manila',
-    'zip' => '1000',
 
-    'employment_status' => 'Employed',
-    'occupation' => 'Marketing Staff',
-    'company' => 'ABC Corporation',
-    'monthly_income' => '₱25,000',
-    'other_income' => '₱0',
-
-    'reference_name' => 'Maria Santos',
-    'reference_relationship' => 'Sister',
-    'reference_phone' => '+63 918 765 4321',
-
-    'personal_status' => 'Completed',
-    'financial_status' => 'Completed',
-    'reference_status' => 'Completed',
-    'id_status' => 'Completed',
-    'account_status' => 'Verified',
-
-    'account_type' => 'Client',
-    'account_id' => 'C-20250710-001',
-    'email_verified' => 'Yes',
-    'profile_updated' => 'September 10, 2025'
-];
+$p = profile($borrowerAccount['user_id']);
+$personal = $p['personal-details'] ?? [];
+$financial = $p['financial-details'] ?? [];
+$reference = $p['reference-person'] ?? [];
+$complete = borrower_complete($borrowerAccount['user_id'], $p);
+$user = array_fill_keys(['name','role','email','phone','address','member_since','dob','age','gender','civil_status','nationality','street','barangay','city','province','zip','employment_status','occupation','company','monthly_income','other_income','reference_name','reference_relationship','reference_phone','personal_status','financial_status','reference_status','id_status','account_status','account_type','account_id','email_verified','profile_updated'], 'Not provided');
+$user = array_merge($user, [
+ 'name'=>$borrowerAccount['user_fn'].' '.$borrowerAccount['user_ln'], 'role'=>'Borrower',
+ 'email'=>$borrowerAccount['email'], 'phone'=>'+63 '.preg_replace('/^0/','',$borrowerAccount['phone']),
+ 'address'=>implode(', ',array_filter(array_intersect_key($personal,array_flip(['street','barangay','city','province','region','zip_code'])))),
+ 'dob'=>$personal['birth_date'] ?? 'Not provided',
+ 'age'=>!empty($personal['birth_date']) ? (new DateTimeImmutable($personal['birth_date']))->diff(new DateTimeImmutable('today'))->y.' years old' : 'Not provided',
+ 'gender'=>$personal['gender'] ?? 'Not provided', 'civil_status'=>$personal['civil_status'] ?? 'Not provided',
+ 'nationality'=>$personal['nationality'] ?? 'Not provided', 'street'=>$personal['street'] ?? 'Not provided',
+ 'barangay'=>$personal['barangay'] ?? 'Not provided', 'city'=>$personal['city'] ?? 'Not provided',
+ 'province'=>$personal['province'] ?? 'Not provided', 'zip'=>$personal['zip_code'] ?? 'Not provided',
+ 'employment_status'=>$financial['employment_status'] ?? 'Not provided', 'occupation'=>$financial['job_title'] ?? 'Not provided',
+ 'company'=>$financial['company'] ?? 'Not provided','monthly_income'=>$financial['gross_income'] ?? 'Not provided',
+ 'other_income'=>$financial['other_income'] ?? '0', 'reference_name'=>$reference['reference_name'] ?? 'Not provided',
+ 'reference_relationship'=>$reference['relationship'] ?? 'Not provided', 'reference_phone'=>isset($reference['reference_contact']) ? '+63 '.$reference['reference_contact'] : 'Not provided',
+ 'personal_status'=>!empty($complete['personal-details']) ? 'Completed' : 'Not completed',
+ 'financial_status'=>!empty($complete['financial-details']) ? 'Completed' : 'Not completed',
+ 'reference_status'=>!empty($complete['reference-person']) ? 'Completed' : 'Not completed',
+ 'id_status'=>document_exists($borrowerAccount['user_id'],'valid_id') ? 'Uploaded' : 'Not uploaded',
+ 'account_status'=>ucfirst($borrowerAccount['account_status']), 'account_type'=>'Borrower',
+ 'account_id'=>(string)$borrowerAccount['user_id'], 'email_verified'=>'Not verified',
+ 'profile_updated'=>$borrowerAccount['reviewed_at'] ?? 'Not recorded', 'member_since'=>'Not recorded'
+]);
 
 function initials($name) {
     $parts = preg_split('/\s+/', trim($name));
@@ -71,7 +55,7 @@ function initials($name) {
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
     <link rel="stylesheet" href="css/profile.css">
-</head>
+<link rel="stylesheet" href="../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -141,10 +125,7 @@ function initials($name) {
         <div class="sidebar-divider"></div>
 
         <div class="bottom-menu">
-            <a href="logout.php" class="menu-item">
-                <span class="material-symbols-outlined">logout</span>
-                <span>Log Out</span>
-            </a>
+            <?php borrower_logout_button(); ?>
         </div>
 
     </aside>
@@ -505,7 +486,7 @@ function initials($name) {
 
                             <div class="verification-row">
                                 <span class="material-symbols-outlined">check_circle</span>
-                                <strong>Valid ID & Selfie</strong>
+                                <strong>Valid ID</strong>
                                 <em><?= htmlspecialchars($user['id_status']) ?></em>
                             </div>
 

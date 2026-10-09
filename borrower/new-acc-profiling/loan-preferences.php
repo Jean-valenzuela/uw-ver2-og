@@ -1,3 +1,4 @@
+<?php $step = 'loan-preferences'; require __DIR__.'/../../ajax/profiling_page.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +8,7 @@
 
     <title>Loan Preferences | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/loan-preferences.css">
+    <link rel="stylesheet" href="../../assets/css/loan-preferences.css">
 
     <!-- Google Fonts -->
     <link
@@ -20,7 +21,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
         rel="stylesheet"
     >
-</head>
+<link rel="stylesheet" href="../../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -166,15 +167,7 @@
 
 
             <!-- AGREEMENTS -->
-            <div class="progress-item">
-
-                <div class="progress-dot"></div>
-
-                <div class="progress-text">
-                    <h3>Agreements</h3>
-                </div>
-
-            </div>
+            
 
 
             <!-- REVIEW -->
@@ -226,11 +219,11 @@
 
             <div class="topbar-space"></div>
 
-            <div class="user-area">
+            <?php borrower_logout_button(); ?><div class="user-area">
 
                 <span class="welcome-text">
                     Welcome,
-                    <strong>Juan Dela Cruz</strong>
+                    <strong><?= e($u['user_fn'].' '.$u['user_ln']) ?></strong>
                 </span>
 
                 <span class="material-symbols-outlined">
@@ -265,7 +258,7 @@
             <div class="page-hero">
 
                 <span class="step-label">
-                    STEP 5 OF 6
+                    STEP 5 OF 5
                 </span>
 
 
@@ -303,7 +296,7 @@
                 ========================== -->
                 <section class="form-card">
 
-                    <form action="#" method="POST">
+                    <form action="../../ajax/save_borrower.php" method="POST" enctype="multipart/form-data" data-borrower-form><?php csrf(); notice(); ?><input type="hidden" name="step" value="loan-preferences">
 
 
                         <!-- LOAN AMOUNT -->
@@ -326,8 +319,8 @@
                                     type="number"
                                     name="loan_amount"
                                     placeholder="Enter loan amount"
-                                    min="1000"
-                                >
+                                    min="1000" max="3000" step="0.01"
+                                 required value="<?= e($values['loan_amount'] ?? '') ?>">
 
                             </div>
 
@@ -344,11 +337,11 @@
                                 </button>
 
                                 <button type="button">
-                                    ₱5,000
+                                    ₱2,000
                                 </button>
 
                                 <button type="button">
-                                    ₱10,000
+                                    ₱2,500
                                 </button>
 
                             </div>
@@ -373,41 +366,41 @@
                                     assignment
                                 </span>
 
-                                <select name="loan_purpose">
+                                <select name="loan_purpose" required>
 
-                                    <option value="" selected disabled>
+                                    <option value="" <?= ($values['loan_purpose'] ?? '') === '' ? 'selected' : '' ?> disabled>
                                         Select loan purpose
                                     </option>
 
-                                    <option value="emergency">
+                                    <option value="emergency" <?= ($values['loan_purpose'] ?? '') === 'emergency' ? 'selected' : '' ?>>
                                         Emergency Expenses
                                     </option>
 
-                                    <option value="medical">
+                                    <option value="medical" <?= ($values['loan_purpose'] ?? '') === 'medical' ? 'selected' : '' ?>>
                                         Medical Expenses
                                     </option>
 
-                                    <option value="education">
+                                    <option value="education" <?= ($values['loan_purpose'] ?? '') === 'education' ? 'selected' : '' ?>>
                                         Education
                                     </option>
 
-                                    <option value="business">
+                                    <option value="business" <?= ($values['loan_purpose'] ?? '') === 'business' ? 'selected' : '' ?>>
                                         Business
                                     </option>
 
-                                    <option value="bills">
+                                    <option value="bills" <?= ($values['loan_purpose'] ?? '') === 'bills' ? 'selected' : '' ?>>
                                         Bills / Utilities
                                     </option>
 
-                                    <option value="home">
+                                    <option value="home" <?= ($values['loan_purpose'] ?? '') === 'home' ? 'selected' : '' ?>>
                                         Home Expenses
                                     </option>
 
-                                    <option value="personal">
+                                    <option value="personal" <?= ($values['loan_purpose'] ?? '') === 'personal' ? 'selected' : '' ?>>
                                         Personal Expenses
                                     </option>
 
-                                    <option value="other">
+                                    <option value="other" <?= ($values['loan_purpose'] ?? '') === 'other' ? 'selected' : '' ?>>
                                         Other
                                     </option>
 
@@ -439,7 +432,7 @@
                                         type="radio"
                                         name="loan_term"
                                         value="3"
-                                    >
+                                     required <?= ($values['loan_term'] ?? '') === '3' ? 'checked' : '' ?>>
 
                                     <div class="term-content">
 
@@ -466,8 +459,8 @@
                                         type="radio"
                                         name="loan_term"
                                         value="6"
-                                        checked
-                                    >
+                                       
+                                     required <?= ($values['loan_term'] ?? '') === '6' ? 'checked' : '' ?>>
 
                                     <div class="term-content">
 
@@ -494,7 +487,7 @@
                                         type="radio"
                                         name="loan_term"
                                         value="12"
-                                    >
+                                     required <?= ($values['loan_term'] ?? '') === '12' ? 'checked' : '' ?>>
 
                                     <div class="term-content">
 
@@ -538,7 +531,7 @@
                                     name="additional_information"
                                     maxlength="300"
                                     placeholder="Enter additional details (optional)"
-                                ></textarea>
+                                ><?= e($values['additional_information'] ?? '') ?></textarea>
 
                                 <span class="character-count">
                                     0/300
@@ -706,5 +699,5 @@
 
 </div>
 
-</body>
+<script type="application/json" id="uw-profile-data"><?= json_encode($values, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script><script src="../../assets/js/borrower-profiling.js" defer></script></body>
 </html>

@@ -1,3 +1,4 @@
+<?php require_once __DIR__.'/../ajax/borrower.php'; $borrowerAccount = borrower_user(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +19,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
         rel="stylesheet"
     >
-</head>
+<link rel="stylesheet" href="../assets/css/borrower-flow.css"></head>
 
 <body>
 
@@ -162,15 +163,7 @@
             </a>
 
 
-            <a href="#" class="menu-item">
-
-                <span class="material-symbols-outlined">
-                    logout
-                </span>
-
-                Log Out
-
-            </a>
+            <?php borrower_logout_button(); ?>
 
         </nav>
 
