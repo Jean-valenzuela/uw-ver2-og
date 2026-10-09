@@ -50,7 +50,7 @@
             class="nav-brand"
         >
             <img
-                src="logo/utangwiselogo.png"
+                src="../assets/logo/utangwiselogo.png"
                 alt="Utang Wise Logo"
             >
 

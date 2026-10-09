@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php require __DIR__."/../ajax/app.php"; $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND account_status='approved' ORDER BY user_id DESC")->get_result(); ?><!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -47,7 +47,7 @@
             class="nav-brand"
         >
             <img
-                src="logo/utangwiselogo.png"
+                src="../logo/utangwiselogo.png"
                 alt="Utang Wise Logo"
             >
 
@@ -208,14 +208,11 @@
 
 
             <!-- LENDER 1 -->
-            <article class="lender-card">
+            <?php if (!$approved->num_rows): ?><p>No approved lenders are available yet. Please check back soon.</p><?php endif; while ($lender=$approved->fetch_assoc()): $details=profile($lender["user_id"]); ?><article class="lender-card">
 
                 <div class="lender-image">
 
-                    <img
-                        src="./lenders/hehe.jpg"
-                        alt="riz riz"
-                    >
+                    <span class="material-symbols-outlined" aria-hidden="true">account_circle</span>
 
                     <span class="verified-badge">
                         <span class="material-symbols-outlined">
@@ -230,7 +227,7 @@
 
                 <div class="lender-content">
 
-                    <h2>riz riz</h2>
+                    <h2><?= e($lender["user_fn"]." ".$lender["user_ln"]) ?></h2>
 
                     <div class="lender-details">
 
@@ -239,7 +236,7 @@
                                 work
                             </span>
 
-                            Small Business Owner
+                            Approved lender
                         </p>
 
                         <p>
@@ -247,7 +244,7 @@
                                 location_on
                             </span>
 
-                            Manila
+                            PHP <?= e(number_format((float)($details["requirements"]["lending_limit"]??0),2)) ?> maximum per loan
                         </p>
 
                         <p>
@@ -255,7 +252,7 @@
                                 groups
                             </span>
 
-                            120+ Borrowers
+                            Accepting applications
                         </p>
 
                     </div>
@@ -264,15 +261,11 @@
                     <div class="lender-divider"></div>
 
 
-                    <p class="lender-description">
-                        Helping individuals and small businesses
-                        achieve their goals through flexible and
-                        fair lending.
-                    </p>
+                    <p class="lender-description">Choose this lender to begin your application.</p>
 
 
                     <a
-                        href="loan-application.php?lender_id=1"
+                        href="register.php?lender_id=<?= (int)$lender["user_id"] ?>"
                         class="apply-lender-btn navy-btn"
                     >
                         Apply Now
@@ -284,560 +277,35 @@
 
                 </div>
 
-            </article>
+            </article><?php endwhile; ?>
 
 
             <!-- LENDER 2 -->
-            <article class="lender-card">
-
-                <div class="lender-image">
-
-                    <img
-                        src="./lenders/hihi.jpg"
-                        alt="yseiauh"
-                    >
-
-                    <span class="verified-badge">
-                        <span class="material-symbols-outlined">
-                            verified
-                        </span>
-
-                        Verified Lender
-                    </span>
-
-                </div>
-
-
-                <div class="lender-content">
-
-                    <h2>yseia</h2>
-
-                    <div class="lender-details">
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                work
-                            </span>
-
-                            Freelance Professional
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                location_on
-                            </span>
-
-                            Quezon City
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                groups
-                            </span>
-
-                            90+ Borrowers
-                        </p>
-
-                    </div>
-
-
-                    <div class="lender-divider"></div>
-
-
-                    <p class="lender-description">
-                        Supporting personal and educational needs
-                        with simple and reliable loan options.
-                    </p>
-
-
-                    <a
-                        href="loan-application.php?lender_id=2"
-                        class="apply-lender-btn gold-btn"
-                    >
-                        Apply Now
-
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-                    </a>
-
-                </div>
-
-            </article>
+            
 
 
             <!-- LENDER 3 -->
-            <article class="lender-card">
-
-                <div class="lender-image">
-
-                    <img
-                        src="./lenders/bwehehe.jpg"
-                        alt="Pedro Reyes"
-                    >
-
-                    <span class="verified-badge">
-                        <span class="material-symbols-outlined">
-                            verified
-                        </span>
-
-                        Verified Lender
-                    </span>
-
-                </div>
-
-
-                <div class="lender-content">
-
-                    <h2>riri</h2>
-
-                    <div class="lender-details">
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                work
-                            </span>
-
-                            Entrepreneur
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                location_on
-                            </span>
-
-                            Pasig City
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                groups
-                            </span>
-
-                            150+ Borrowers
-                        </p>
-
-                    </div>
-
-
-                    <div class="lender-divider"></div>
-
-
-                    <p class="lender-description">
-                        Committed to helping hardworking individuals
-                        through accessible and transparent lending.
-                    </p>
-
-
-                    <a
-                        href="loan-application.php?lender_id=3"
-                        class="apply-lender-btn navy-btn"
-                    >
-                        Apply Now
-
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-                    </a>
-
-                </div>
-
-            </article>
+            
 
 
             <!-- LENDER 4 -->
-            <article class="lender-card">
-
-                <div class="lender-image">
-
-                    <img
-                        src="./lenders/hihihi.jpg"
-                        alt="Anna Lim"
-                    >
-
-                    <span class="verified-badge">
-                        <span class="material-symbols-outlined">
-                            verified
-                        </span>
-
-                        Verified Lender
-                    </span>
-
-                </div>
-
-
-                <div class="lender-content">
-
-                    <h2>antartica</h2>
-
-                    <div class="lender-details">
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                work
-                            </span>
-
-                            Retail Business Owner
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                location_on
-                            </span>
-
-                            Makati City
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                groups
-                            </span>
-
-                            100+ Borrowers
-                        </p>
-
-                    </div>
-
-
-                    <div class="lender-divider"></div>
-
-
-                    <p class="lender-description">
-                        Providing financial support for personal,
-                        family, and business needs with flexible terms.
-                    </p>
-
-
-                    <a
-                        href="loan-application.php?lender_id=4"
-                        class="apply-lender-btn gold-btn"
-                    >
-                        Apply Now
-
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-                    </a>
-
-                </div>
-
-            </article>
+            
 
 
             <!-- LENDER 5 -->
-            <article class="lender-card">
-
-                <div class="lender-image">
-
-                    <img
-                        src="images/lenders/lender-5.jpg"
-                        alt="Mark Villanueva"
-                    >
-
-                    <span class="verified-badge">
-                        <span class="material-symbols-outlined">
-                            verified
-                        </span>
-
-                        Verified Lender
-                    </span>
-
-                </div>
-
-
-                <div class="lender-content">
-
-                    <h2>Mark Villanueva</h2>
-
-                    <div class="lender-details">
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                work
-                            </span>
-
-                            IT Professional
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                location_on
-                            </span>
-
-                            Taguig City
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                groups
-                            </span>
-
-                            80+ Borrowers
-                        </p>
-
-                    </div>
-
-
-                    <div class="lender-divider"></div>
-
-
-                    <p class="lender-description">
-                        Supporting your financial goals with fair
-                        terms and hassle-free processing.
-                    </p>
-
-
-                    <a
-                        href="loan-application.php?lender_id=5"
-                        class="apply-lender-btn gold-btn"
-                    >
-                        Apply Now
-
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-                    </a>
-
-                </div>
-
-            </article>
+            
 
 
             <!-- LENDER 6 -->
-            <article class="lender-card">
-
-                <div class="lender-image">
-
-                    <img
-                        src="images/lenders/lender-6.jpg"
-                        alt="Camille Torres"
-                    >
-
-                    <span class="verified-badge">
-                        <span class="material-symbols-outlined">
-                            verified
-                        </span>
-
-                        Verified Lender
-                    </span>
-
-                </div>
-
-
-                <div class="lender-content">
-
-                    <h2>Camille Torres</h2>
-
-                    <div class="lender-details">
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                work
-                            </span>
-
-                            Small Business Owner
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                location_on
-                            </span>
-
-                            Mandaluyong City
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                groups
-                            </span>
-
-                            110+ Borrowers
-                        </p>
-
-                    </div>
-
-
-                    <div class="lender-divider"></div>
-
-
-                    <p class="lender-description">
-                        Helping borrowers move forward with reliable
-                        and personalized loan options.
-                    </p>
-
-
-                    <a
-                        href="loan-application.php?lender_id=6"
-                        class="apply-lender-btn navy-btn"
-                    >
-                        Apply Now
-
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-                    </a>
-
-                </div>
-
-            </article>
+            
 
 
             <!-- LENDER 7 -->
-            <article class="lender-card">
-
-                <div class="lender-image">
-
-                    <img
-                        src="images/lenders/lender-7.jpg"
-                        alt="Rafael Tan"
-                    >
-
-                    <span class="verified-badge">
-                        <span class="material-symbols-outlined">
-                            verified
-                        </span>
-
-                        Verified Lender
-                    </span>
-
-                </div>
-
-
-                <div class="lender-content">
-
-                    <h2>Rafael Tan</h2>
-
-                    <div class="lender-details">
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                work
-                            </span>
-
-                            Entrepreneur
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                location_on
-                            </span>
-
-                            Pasay City
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                groups
-                            </span>
-
-                            130+ Borrowers
-                        </p>
-
-                    </div>
-
-
-                    <div class="lender-divider"></div>
-
-
-                    <p class="lender-description">
-                        Financial assistance for personal and business
-                        needs with a simple application process.
-                    </p>
-
-
-                    <a
-                        href="loan-application.php?lender_id=7"
-                        class="apply-lender-btn gold-btn"
-                    >
-                        Apply Now
-
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-                    </a>
-
-                </div>
-
-            </article>
+            
 
 
             <!-- LENDER 8 -->
-            <article class="lender-card">
-
-                <div class="lender-image">
-
-                    <img
-                        src="images/lenders/lender-8.jpg"
-                        alt="Isabelle Cruz"
-                    >
-
-                    <span class="verified-badge">
-                        <span class="material-symbols-outlined">
-                            verified
-                        </span>
-
-                        Verified Lender
-                    </span>
-
-                </div>
-
-
-                <div class="lender-content">
-
-                    <h2>Isabelle Cruz</h2>
-
-                    <div class="lender-details">
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                work
-                            </span>
-
-                            Freelance Professional
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                location_on
-                            </span>
-
-                            San Juan City
-                        </p>
-
-                        <p>
-                            <span class="material-symbols-outlined">
-                                groups
-                            </span>
-
-                            95+ Borrowers
-                        </p>
-
-                    </div>
-
-
-                    <div class="lender-divider"></div>
-
-
-                    <p class="lender-description">
-                        Supporting students, professionals, and families
-                        with convenient and flexible lending.
-                    </p>
-
-
-                    <a
-                        href="loan-application.php?lender_id=8"
-                        class="apply-lender-btn navy-btn"
-                    >
-                        Apply Now
-
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-                    </a>
-
-                </div>
-
-            </article>
+            
 
         </div>
 

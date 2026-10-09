@@ -1,15 +1,4 @@
-<?php
-session_start();
-
-/*
-|--------------------------------------------------------------------------
-| LOGIN BACKEND
-|--------------------------------------------------------------------------
-| Keep / place your existing login backend function here.
-| Hindi natin kailangang baguhin ang existing login logic mo.
-|--------------------------------------------------------------------------
-*/
-?>
+<?php require __DIR__."/../ajax/app.php"; if ($logged=current_user()) go(destination($logged)); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +50,7 @@ session_start();
                 <div class="brand">
 
                     <img
-                        src="./logo/utangwiselogo.png"
+                        src="../logo/utangwiselogo.png"
                         alt="Utang Wise Logo"
                         class="brand-logo"
                     >
@@ -160,10 +149,10 @@ session_start();
                     ================================================== -->
 
                     <form
-                        action=""
+                        action="../ajax/login.php"
                         method="POST"
                         class="login-form"
-                    >
+                    ><?php csrf(); notice(); ?>
 
                         <!-- EMAIL -->
                         <div class="form-group">
