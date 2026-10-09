@@ -1,8 +1,8 @@
 <?php
     $host="localhost";
-    $u="root";
-    $p="";
-    $dbase="uw-ver2";
+    $u="u133616505_uwver2";
+    $p="Utangwise1";
+    $dbase="u133616505_uwver2";
 
     $conn = new mysqli($host,$u,$p,$dbase);
 
