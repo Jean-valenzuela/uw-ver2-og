@@ -5,6 +5,6 @@ return [
  'public_url'=>'', // Full application URL, e.g. https://your-domain/uw-ver2-og. Required for reset emails.
  'host'=>'smtp.gmail.com', 'port'=>587, 'encryption'=>'tls',
  'username'=>'ayettacore@gmail.com',
- 'password'=>'', // Gmail App Password; do not use the normal account password.
+ 'password'=>'ptvbcbxcuymqknnc', // Gmail App Password; do not use the normal account password.
  'from'=>'ayettacore@gmail.com', 'from_name'=>'Utang Wise',
 ];
