@@ -65,7 +65,7 @@ $counts = db("SELECT COUNT(*) AS total,COALESCE(SUM(u.account_status='approved')
                                 </div>
                             </article><?php endforeach; ?>
                     </section><?php endif; ?>
-                <section class="applications-panel">
+                <section class="applications-panel <?= $adminPage === 'approved-lenders' ? 'approved-lenders-panel' : '' ?>">
                     <header class="panel-heading">
                         <div class="panel-heading-text">
                             <h2><?= $adminPage === 'dashboard' ? 'Recent Lender Applicants' : ($adminPage === 'approved-lenders' ? 'List of Approved Lenders' : 'List of Pending Lender Applications') ?>

@@ -800,6 +800,19 @@ input:checked ~ .radio-design::after {
     color: #929CAA;
 }
 
+.phone-input-wrapper .phone-country-code {
+    flex: 0 0 auto;
+    padding-right: 10px;
+    border-right: 1px solid var(--border);
+    color: var(--navy);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.phone-input-wrapper input {
+    letter-spacing: .04em;
+}
+
 
 /* =========================================================
    PASSWORD EYE
