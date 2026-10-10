@@ -187,6 +187,7 @@ function portal_start($title, $active)
         <link rel="stylesheet" href="../assets/css/borrower-portal.css">
         <link rel="stylesheet" href="../assets/css/portal-integration.css">
         <link rel="stylesheet" href="../assets/css/borrower-portal-pages.css?v=20261010-2">
+        <?php if ($active === 'signed-agreement'): ?><link rel="stylesheet" href="../assets/css/disbursement.css"><?php endif; ?>
         <link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/local-fonts.css">
     </head>
     <body class="uw-borrower-portal">

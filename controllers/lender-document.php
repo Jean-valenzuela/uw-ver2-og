@@ -8,6 +8,10 @@ try {
         $row = db('SELECT mime_type,contents FROM application_documents WHERE user_id=? AND kind=?', [$borrower['user_id'], $kind])->get_result()->fetch_assoc();
         $mime = $row['mime_type'] ?? '';
         $contents = $row['contents'] ?? null;
+    } elseif ($kind === 'receiving_qr') {
+        $row = db('SELECT d.qr_mime,d.qr_contents FROM loan_disbursement_details d JOIN loan_agreements a ON a.agreement_id=d.agreement_id WHERE a.agreement_id=? AND a.lender_id=?', [(int) ($_GET['agreement_id'] ?? 0), $lender['user_id']])->get_result()->fetch_assoc();
+        $mime = $row['qr_mime'] ?? '';
+        $contents = $row['qr_contents'] ?? null;
     } else {
         $row = db('SELECT a.pdf_contents,c.signed_pdf FROM loan_agreements a LEFT JOIN lender_contracts c ON c.agreement_id=a.agreement_id WHERE a.agreement_id=? AND a.lender_id=?', [(int) ($_GET['agreement_id'] ?? 0), $lender['user_id']])->get_result()->fetch_assoc();
         $mime = 'application/pdf';

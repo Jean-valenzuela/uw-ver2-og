@@ -1,0 +1,13 @@
+.portal-form .disbursement-card{padding:24px;border:1px solid #dce1e9;border-radius:12px;background:#f8f9fd;min-width:0}
+.disbursement-eyebrow{color:#ad8232;text-transform:uppercase;font-size:11px;font-weight:700;letter-spacing:1.2px}
+.portal-form .disbursement-card h2{font-family:Georgia,serif;font-size:25px;margin:10px 0;color:#062347}
+.portal-form .disbursement-card p{font-size:14px;line-height:1.7;color:#718397}
+.disbursement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:22px 0}
+.portal-form .disbursement-card label{font-size:13px;font-weight:600;color:#17344e;min-width:0}
+.portal-form .disbursement-card input,.portal-form .disbursement-card select{width:100%;box-sizing:border-box;background:#fff;font-size:14px;font-weight:400}
+.portal-form .disbursement-card [hidden]{display:none!important}
+.portal-form .disbursement-card .disbursement-qr{padding:16px;border:1px dashed #bdcad9;border-radius:9px;background:#fff}
+.disbursement-qr small{color:#718397;font-weight:400}
+.portal-form .disbursement-qr input{border:0;padding:6px 0}
+.portal-form .disbursement-card .disbursement-note{font-size:13px;margin-bottom:0}
+@media(max-width:600px){.disbursement-grid{grid-template-columns:1fr}.portal-form .disbursement-card{padding:18px}}

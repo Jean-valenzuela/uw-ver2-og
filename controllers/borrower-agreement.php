@@ -1,5 +1,6 @@
 <?php define('UW_AGREEMENT_PAGE', true);
 require __DIR__ . '/../helpers/borrower_portal.php';
+require_once __DIR__ . '/../helpers/disbursement.php';
 $u = borrower_user();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $r = db('SELECT a.pdf_contents,c.signed_pdf FROM loan_agreements a LEFT JOIN lender_contracts c ON c.agreement_id=a.agreement_id WHERE a.agreement_id=? AND a.borrower_id=?', [(int) ($_GET['id'] ?? 0), $u['user_id']])->get_result()->fetch_assoc();
@@ -25,6 +26,17 @@ try {
     $a = db('SELECT a.agreement_id,c.signed_pdf IS NOT NULL signed FROM loan_agreements a JOIN lender_contracts c ON c.agreement_id=a.agreement_id WHERE a.agreement_id=? AND a.borrower_id=? FOR UPDATE', [(int) ($_POST['agreement_id'] ?? 0), $u['user_id']])->get_result()->fetch_assoc();
     if (!$a || $a['signed'])
         throw new DomainException('This agreement is unavailable or already submitted.');
+    $receiving = validate_disbursement($_POST);
+    $qr = $_FILES['receiving_qr'] ?? null;
+    $qrMime = $qrBytes = null;
+    if ($qr && $qr['error'] !== UPLOAD_ERR_NO_FILE) {
+        if ($qr['error'] !== UPLOAD_ERR_OK || $qr['size'] > 3 * 1024 * 1024 || !is_uploaded_file($qr['tmp_name']))
+            throw new DomainException('Upload a receiving QR image in PNG or JPG format up to 3 MB.');
+        $qrMime = (new finfo(FILEINFO_MIME_TYPE))->file($qr['tmp_name']);
+        if (!in_array($qrMime, ['image/png', 'image/jpeg'], true) || !@getimagesize($qr['tmp_name']))
+            throw new DomainException('The receiving QR image must be a valid PNG or JPG.');
+        $qrBytes = file_get_contents($qr['tmp_name']);
+    }
     $f = $_FILES['signed_agreement'] ?? null;
     if (($_POST['confirm'] ?? '') !== 'yes' || !$f || $f['error'] !== UPLOAD_ERR_OK || $f['size'] > 5 * 1024 * 1024 || !is_uploaded_file($f['tmp_name']) || (new finfo(FILEINFO_MIME_TYPE))->file($f['tmp_name']) !== 'application/pdf')
         throw new DomainException('Confirm and upload a signed PDF up to 5 MB.');
@@ -32,6 +44,7 @@ try {
     if (strncmp($bytes, '%PDF-', 5) !== 0 || strpos($bytes, '%%EOF') === false)
         throw new DomainException('Upload a complete PDF document.');
     db('UPDATE lender_contracts SET signed_pdf=? WHERE agreement_id=?', [$bytes, $a['agreement_id']]);
+    db('INSERT INTO loan_disbursement_details (agreement_id,receiving_method,account_holder_name,bank_name,bank_account_number,gcash_mobile_number,qr_mime,qr_contents) VALUES (?,?,?,?,?,?,?,?)', array_merge([$a['agreement_id']], $receiving, [$qrMime, $qrBytes]));
     db('INSERT INTO borrower_agreement_uploads(agreement_id,borrower_id) VALUES (?,?)', [$a['agreement_id'], $u['user_id']]);
     $conn->commit();
     unset($_SESSION['notice'], $_SESSION['notice_kind']);
