@@ -17,15 +17,15 @@ function lender_mail_config() {
     ]);
     $config = [];
 
-    foreach ($privateFiles as $file) {
+    // Merge available sources instead of stopping at the first file. This lets
+    // a partial local config inherit values from the private host config.
+    foreach (array_reverse($privateFiles) as $file) {
         if (is_file($file)) {
-            $config = require $file;
-            break;
+            $loaded = require $file;
+            if (is_array($loaded)) {
+                $config = array_replace($config, $loaded);
+            }
         }
-    }
-
-    if (!is_array($config)) {
-        $config = [];
     }
 
     $defaults = [
@@ -34,7 +34,7 @@ function lender_mail_config() {
         'encryption' => 'tls',
         'username' => 'ayettacore@gmail.com',
         'password' => '',
-        'from' => 'ayettacore@gmail.com',
+        'from' => '',
         'from_name' => 'Utang Wise',
     ];
 
@@ -43,14 +43,20 @@ function lender_mail_config() {
         $config['password'] = $envPassword;
     }
 
-    return array_replace($defaults, $config);
+    $config = array_replace($defaults, $config);
+    $config['username'] = trim((string)$config['username']);
+    // Google displays App Passwords in groups. Ignore copied whitespace.
+    $config['password'] = preg_replace('/\s+/', '', (string)$config['password']);
+    $config['from'] = trim((string)($config['from'] ?: $config['username']));
+
+    return $config;
 }
 
 function lender_mail_failure_reason(Throwable $error) {
     $message = strtolower($error->getMessage());
 
     if (strpos($message, 'authenticat') !== false || preg_match('/\b(534|535)\b/', $message)) {
-        return 'Gmail rejected SMTP login. Check that the username and new App Password belong to the same Google account.';
+        return 'Gmail rejected SMTP login. Use a newly generated App Password for the configured Gmail username; pasted spaces are removed automatically.';
     }
 
     if (strpos($message, 'connect') !== false || strpos($message, 'timed out') !== false || strpos($message, 'getaddrinfo') !== false) {
