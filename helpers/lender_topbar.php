@@ -9,7 +9,6 @@ $lenderTabLabels = [
 ];
 $lenderTab = basename($_SERVER['SCRIPT_NAME'] ?? '', '.php');
 $lenderTabTitle = $lenderTabLabels[$lenderTab] ?? 'Lender workspace';
-$lenderInitials = strtoupper(substr($lenderAccount['user_fn'] ?? 'L', 0, 1) . substr($lenderAccount['user_ln'] ?? '', 0, 1));
 ?>
 <header class="uw-live-topbar">
     <div class="uw-live-page-title">
@@ -30,8 +29,7 @@ $lenderInitials = strtoupper(substr($lenderAccount['user_fn'] ?? 'L', 0, 1) . su
             </div>
         </div>
         <div class="uw-live-user">
-            <span class="uw-live-avatar" aria-hidden="true"><span><?= e($lenderInitials) ?></span><img src="../controllers/my-lender-photo.php" alt="" onerror="this.remove()"></span>
-            <span><strong><?= e(($lenderAccount['user_fn'] ?? '') . ' ' . ($lenderAccount['user_ln'] ?? '')) ?></strong><small>Lender</small></span>
+            <strong><?= e(trim(($lenderAccount['user_fn'] ?? '') . ' ' . ($lenderAccount['user_ln'] ?? ''))) ?></strong>
         </div>
     </div>
 </header>
