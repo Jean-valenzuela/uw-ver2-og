@@ -78,7 +78,6 @@ $counts = db("SELECT COUNT(*) AS total,COALESCE(SUM(u.account_status='approved')
                                         id="statusFilter">
                                         <option value="">All</option>
                                         <option>Pending</option>
-                                        <option>Approved</option>
                                         <option>Rejected</option>
                                     </select></label><?php endif; ?></div><?php endif; ?>
                     <div class="table-container">
