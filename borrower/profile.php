@@ -1,4 +1,4 @@
-<?php require_once __DIR__.'/../ajax/borrower.php'; $borrowerAccount = borrower_user(); ?>
+<?php require_once __DIR__.'/../helpers/borrower_portal.php'; $borrowerAccount = borrower_user(); ?>
 <?php
 
 
@@ -30,7 +30,7 @@ $user = array_merge($user, [
  'id_status'=>document_exists($borrowerAccount['user_id'],'valid_id') ? 'Uploaded' : 'Not uploaded',
  'account_status'=>ucfirst($borrowerAccount['account_status']), 'account_type'=>'Borrower',
  'account_id'=>(string)$borrowerAccount['user_id'], 'email_verified'=>'Not verified',
- 'profile_updated'=>$borrowerAccount['reviewed_at'] ?? 'Not recorded', 'member_since'=>'Not recorded'
+ 'profile_updated'=>(db('SELECT MAX(changed_at) changed FROM borrower_profile_audit WHERE borrower_id=?',[$borrowerAccount['user_id']])->get_result()->fetch_assoc()['changed']??$borrowerAccount['reviewed_at']??'Not recorded'), 'member_since'=>'Not recorded'
 ]);
 
 function initials($name) {
@@ -54,7 +54,7 @@ function initials($name) {
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="../assets/css/profile.css">
 <link rel="stylesheet" href="../assets/css/borrower-flow.css"></head>
 
 <body>
@@ -67,7 +67,7 @@ function initials($name) {
     <div class="brand">
 
         <div class="brand-icon">
-            <img src="./logo/utangwiselogo.png" alt="Utang Wise Logo">
+            <img src="../assets/logo/utangwiselogo.png" alt="Utang Wise Logo">
         </div>
 
         <div class="brand-text">
@@ -147,13 +147,10 @@ function initials($name) {
 
             <div class="user-area">
 
-                <div class="notification">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="notification-dot"></span>
-                </div>
+                <a class="notification" href="client-dashboard.php" aria-label="View payment notifications"><span class="material-symbols-outlined">notifications</span><span><?= count(borrower_notices($borrowerAccount['user_id'])) ?></span></a>
 
                 <div class="user-avatar">
-                    <?= htmlspecialchars(initials($user['name'])) ?>
+                    <?php if(document_exists($borrowerAccount['user_id'],'profile_photo')): ?><img src="../ajax/borrower_document.php?kind=profile_photo" alt="Your profile picture" style="width:100%;height:100%;object-fit:cover;border-radius:50%"><?php else: ?><?= htmlspecialchars(initials($user['name'])) ?><?php endif; ?>
                 </div>
 
                 <div class="user-text">
@@ -194,7 +191,7 @@ function initials($name) {
                 <div class="profile-identity">
 
                     <div class="profile-avatar-large">
-                        <?= htmlspecialchars(initials($user['name'])) ?>
+                        <?php if(document_exists($borrowerAccount['user_id'],'profile_photo')): ?><img src="../ajax/borrower_document.php?kind=profile_photo" alt="Your profile picture" style="width:100%;height:100%;object-fit:cover;border-radius:50%"><?php else: ?><?= htmlspecialchars(initials($user['name'])) ?><?php endif; ?>
 
                         <span class="avatar-edit">
                             <span class="material-symbols-outlined">photo_camera</span>
@@ -546,7 +543,7 @@ function initials($name) {
 
         </section>
 
-    </main>
+    <section class="uw-review-card"><?php notice(); ?><h2>Submitted requirements</h2><?php foreach(['idverification'=>'Identification','personal-details'=>'Personal details','financial-details'=>'Financial details','reference-person'=>'Reference person'] as $section=>$title): ?><p><a href="edit-profile.php?section=<?= e($section) ?>">Edit <?= e($title) ?></a></p><?php endforeach; foreach(['valid_id'=>'Government ID','coe'=>'Certificate of employment','profile_photo'=>'Profile picture'] as $kind=>$title)if(document_exists($borrowerAccount['user_id'],$kind)): ?><p><a href="../ajax/borrower_document.php?kind=<?= e($kind) ?>">View <?= e($title) ?></a></p><?php endif; ?><?php foreach($p as $section=>$values): if(!is_array($values)||$section==='agreements')continue; ?><details style="margin:16px 0"><summary><?= e(ucwords(str_replace('-',' ',$section))) ?> — submitted details</summary><table style="width:100%;border-collapse:collapse"><?php foreach($values as $key=>$value): if($key==='profile_photo_required'||!is_scalar($value))continue; ?><tr><th style="padding:8px;text-align:left"><?= e(ucwords(str_replace('_',' ',$key))) ?></th><td style="padding:8px"><?= e($value===''?'Not provided':$value) ?></td></tr><?php endforeach; ?></table></details><?php endforeach; ?><p>Your signed agreements and approved loan terms stay unchanged when you edit your profile.</p></section></main>
 
 </div>
 
@@ -570,5 +567,5 @@ function initials($name) {
     }
 </script>
 
-</body>
+<?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 </html>

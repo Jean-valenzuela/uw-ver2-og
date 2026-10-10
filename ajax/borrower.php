@@ -6,6 +6,7 @@ function borrower_user($profiling = false) {
     $u = require_user(2);
     if ($profiling && $u['account_status'] !== 'incomplete') go(destination($u));
     if (!$profiling && $u['account_status'] !== 'approved') go(destination($u));
+    if (!$profiling && !defined('UW_AGREEMENT_PAGE') && borrower_needs_agreement($u['user_id'])) go('borrower/signed-agreement.php');
     return $u;
 }
 
@@ -67,11 +68,14 @@ function validate_borrower_step($step, $input) {
 }
 
 function borrower_complete($id, $profile) {
+    $account=db('SELECT account_status FROM users WHERE user_id=?',[$id])->get_result()->fetch_assoc();
+    $photoRequired=($account['account_status']??'')==='incomplete'||!empty($profile['idverification']['profile_photo_required']);
     $result = [];
     foreach (borrower_schema() as $step => $unused) {
         try {
             if (empty($profile[$step])) throw new RuntimeException('Not saved.');
             validate_borrower_step($step, $profile[$step]);
+            if ($step === 'idverification' && $photoRequired && !document_exists($id, 'profile_photo')) throw new RuntimeException('Missing profile photo.');
             if ($step === 'idverification' && !document_exists($id, 'valid_id')) throw new RuntimeException('Missing ID.');
             if ($step === 'financial-details' && $profile[$step]['employment_status'] === 'employed' && !document_exists($id, 'coe')) throw new RuntimeException('Missing certificate.');
             $result[$step] = true;

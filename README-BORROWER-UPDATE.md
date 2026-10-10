@@ -1,5 +1,9 @@
+> For the latest installation and payment setup, start with [README-BORROWER-PORTAL.md](README-BORROWER-PORTAL.md). This older guide describes an earlier update.
+
 # Borrower profiling, account review and logout update
 
+For this release, follow README-DASHBOARD-UPDATE.md first. It supersedes earlier notes about manual migrations, lender photos, payment entry and final-installment interest-only charges.
+For this combined release, also follow README-ADMIN-UPDATE.md and import sql/admin-update.sql. Its admin and lender-registration changes supersede older scope notes.
 This documents the earlier borrower phase. For this combined release, follow README-LENDER-UPDATE.md, which supersedes the lender-work section below and includes the additional SQL and Gmail setup.
 
 ## Install in XAMPP
@@ -9,7 +13,7 @@ This documents the earlier borrower phase. For this combined release, follow REA
 3. If setting up a new database, import the original `uw-ver2 (1).sql` supplied with this request into `uw-ver2` first. Do not re-import that backup over an existing database with newer data.
 4. Select `uw-ver2` in phpMyAdmin and import `sql/borrower-update.sql`. This adds the submission timestamp table without replacing existing users, profiles, documents, or lender records. It can be run again safely.
 5. Check `ajax/config.php`. Defaults remain localhost, root, blank password, database `uw-ver2`. Optional environment variables: `UW_DB_HOST`, `UW_DB_USER`, `UW_DB_PASSWORD`, `UW_DB_NAME`, `UW_BASE_URL`.
-6. In PHP configuration, enable mysqli and fileinfo; set `upload_max_filesize=5M` and `post_max_size=12M` or higher. The database packet limit also needs room for a 5 MB document. Restart Apache after configuration changes.
+6. In PHP configuration, enable mysqli and fileinfo; set `upload_max_filesize=5M` and `post_max_size=20M` or higher. The database packet limit also needs room for a 5 MB document. Restart Apache after configuration changes.
 7. Open `public/lenders.php`, choose an approved lender, and register a borrower. An approved lender record must already exist.
 
 The delivered files are a separate working copy. The original ZIP, original SQL backup, existing XAMPP application, and existing `uw-ver2` database were not overwritten.

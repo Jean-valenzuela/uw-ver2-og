@@ -1,6 +1,9 @@
 <?php
 
 require_once __DIR__ . '/config.php';
+require_once __DIR__.'/../helpers/schema.php';
+uw_ensure_update_schema($conn);
+require_once __DIR__.'/../helpers/success_alerts.php';
 
 // Set default timezone
 date_default_timezone_set(
@@ -149,7 +152,7 @@ function require_user($role = null)
         go(
             $role === 3
                 ? 'admin/login.php'
-                : 'public/login.php'
+                : 'login.php'
         );
     }
 
@@ -176,12 +179,12 @@ function destination($u)
     if ($u['account_status'] === 'approved') {
         return (int) $u['user_type_id'] === 1
             ? 'lender/dashboard.php'
-            : 'borrower/client-dashboard.php';
+            : (borrower_needs_agreement($u['user_id']) ? 'borrower/signed-agreement.php' : 'borrower/client-dashboard.php');
     }
 
     // Accounts awaiting approval or other status
     if ($u['account_status'] !== 'incomplete') {
-        return 'public/status.php';
+        return (int)$u['user_type_id']===2 ? 'borrower/new-acc-profiling/ready-for-review.php' : 'lender/new-acc-profiling/requirements.php';
     }
 
     // Incomplete account profiling
@@ -434,4 +437,9 @@ function page_end()
         </main>
     </body>
     </html>';
+}
+
+function borrower_needs_agreement($id) {
+ $r=db("SELECT a.agreement_id,c.signed_pdf IS NOT NULL AS signed FROM loan_agreements a LEFT JOIN lender_contracts c ON c.agreement_id=a.agreement_id WHERE a.borrower_id=? ORDER BY a.agreement_id DESC LIMIT 1",[$id])->get_result()->fetch_assoc();
+ return !$r || !$r['signed'];
 }

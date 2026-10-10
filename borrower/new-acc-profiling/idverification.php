@@ -308,7 +308,8 @@
 
 
                     <!-- FILE PREVIEW STATE -->
-                    <div class="upload-box"><label for="valid_id">Select your ID file</label><input type="file" id="valid_id" name="valid_id" accept=".png,.jpg,.jpeg,.pdf"><p class="uw-file-status"><?php if(document_exists($u['user_id'],'valid_id')): ?>Your ID is saved. Choose a file only to replace it.<?php else: ?>No ID uploaded yet.<?php endif; ?></p></div><div class="file-note">
+
+<div class="upload-box"><label for="valid_id">Select your ID file</label><input type="file" id="valid_id" name="valid_id" accept=".png,.jpg,.jpeg,.pdf"><p class="uw-file-status"><?php if(document_exists($u['user_id'],'valid_id')): ?>Your ID is saved. Choose a file only to replace it.<?php else: ?>No ID uploaded yet.<?php endif; ?></p></div><div class="file-note">
 
                         <p>
                             Make sure the ID is clear, not blurry,
@@ -328,6 +329,9 @@
                     </div>
 
 
+
+                    <p class="section-label upload-label">Upload Selfie</p>
+                    <div class="upload-box" style="flex-direction:column;align-items:flex-start;gap:12px"><label for="profile_photo">Upload selfie / profile picture (JPG or PNG)</label><input type="file" id="profile_photo" name="profile_photo" accept=".jpg,.jpeg,.png" <?= document_exists($u['user_id'],'profile_photo')?'':'required' ?>><p class="uw-file-status">Upload a clear selfie showing your face. Up to 5 MB. This photo is shown to your selected lender when reviewing your profile.</p><?php if(document_exists($u['user_id'],'profile_photo')): ?><img src="../../ajax/borrower_document.php?kind=profile_photo" alt="Saved profile picture" width="96" height="96" style="object-fit:cover;border-radius:50%"><p>Your photo is saved. Choose a file only to replace it.</p><?php endif; ?></div>
 
                     <!-- TIPS -->
                     <div class="tips-box">
@@ -492,5 +496,5 @@
 
 </div>
 
-<script type="application/json" id="uw-profile-data"><?= json_encode($values, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script><script src="../../assets/js/borrower-profiling.js" defer></script></body>
+<script type="application/json" id="uw-profile-data"><?= json_encode($values, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script><script src="../../assets/js/borrower-profiling.js" defer></script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 </html>

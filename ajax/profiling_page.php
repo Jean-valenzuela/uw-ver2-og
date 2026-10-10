@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__.'/borrower.php';
-$u = borrower_user(true);
+$u = require_user(2);
+$reviewLocked=$u['account_status']!=='incomplete';
+if($u['account_status']==='approved')go(destination($u));
+if($reviewLocked && $step!=='ready-for-review')go('borrower/new-acc-profiling/ready-for-review.php');
 $p = profile($u['user_id']);
 $complete = borrower_complete($u['user_id'], $p);
 $values = $p[$step] ?? [];

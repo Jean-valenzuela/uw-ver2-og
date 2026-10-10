@@ -4,7 +4,7 @@ require __DIR__ . '/app.php';
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    go('public/login.php');
+    go('login.php');
 }
 
 // Validate CSRF token
@@ -15,7 +15,7 @@ $admin = ($_POST['portal'] ?? '') === 'admin';
 
 $back = $admin
     ? 'admin/login.php'
-    : 'public/login.php';
+    : 'login.php';
 
 // Get and normalize email
 $email = strtolower(trim($_POST['email'] ?? ''));
@@ -94,6 +94,10 @@ if ((int)$u['user_type_id'] === 2 && in_array($u['account_status'], ['pending', 
     unset($_SESSION['uid']);
     fail_form($u['account_status'] === 'pending' ? 'Your application is under lender review. You can log in after approval.' : 'Your application was rejected. Please contact your lender for details.', $back);
 }
+if ((int)$u['user_type_id'] === 1 && in_array($u['account_status'], ['pending','rejected'], true)) {
+ unset($_SESSION['uid']);fail_form($u['account_status']==='pending'?'Your lender application is under administrator review. You can sign in after approval.':'Your lender account is not approved. Please check your decision email or contact the administrator.',$back);
+}
+if ((int)$u['user_type_id'] === 3 && $u['account_status'] !== 'approved') { unset($_SESSION['uid']);fail_form('This administrator account is not active.',$back); }
 // Regenerate session ID for security
 session_regenerate_id(true);
 

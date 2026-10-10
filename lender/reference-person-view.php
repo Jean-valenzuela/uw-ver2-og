@@ -700,5 +700,5 @@
 
 </div>
 
-</body>
+<?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 </html>

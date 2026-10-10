@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/borrower.php';
+require __DIR__ . '/borrower.php';require __DIR__.'/../helpers/borrower_photo.php';
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') go('borrower/new-acc-profiling/verifyacc.php');
 check_csrf();
 $u = borrower_user(true);
@@ -19,10 +19,12 @@ try {
         db("UPDATE users SET account_status = 'pending' WHERE user_id = ?", [$u['user_id']]);
         db('INSERT INTO borrower_submissions (user_id, submitted_at) VALUES (?, NOW()) ON DUPLICATE KEY UPDATE submitted_at = NOW()', [$u['user_id']]);
         $conn->commit();
-        go('public/status.php');
+        unset($_SESSION['notice'], $_SESSION['notice_kind']);
+        $_SESSION['uw_success']=['title'=>'Application submitted','text'=>'Your application has been submitted to your selected lender for review. You can access the borrower dashboard after approval. Your account email is '.$u['email'].'.'];
+        go('borrower/new-acc-profiling/ready-for-review.php');
     }
     $values = validate_borrower_step($step, $_POST);
-    if ($step === 'idverification') upload_document($u['user_id'], 'valid_id');
+    if ($step === 'idverification') { upload_document($u['user_id'], 'valid_id');upload_borrower_photo($u['user_id']);$values['profile_photo_required']=true; }
     if ($step === 'financial-details') upload_document($u['user_id'], 'coe', $values['employment_status'] === 'employed');
     if ($step === 'personal-details') {
         $values['email'] = $u['email'];
@@ -32,7 +34,8 @@ try {
     db('INSERT INTO application_profiles (user_id, details) VALUES (?, ?) ON DUPLICATE KEY UPDATE details = VALUES(details)', [$u['user_id'], json_encode($p, JSON_THROW_ON_ERROR)]);
     $conn->commit();
     unset($_SESSION['borrower_old']);
-    $_SESSION['notice'] = 'Your details have been saved.';
+    unset($_SESSION['notice'], $_SESSION['notice_kind']);
+    $_SESSION['uw_success'] = ['title'=>'Details saved', 'text'=>'Your details have been saved.'];
     go('borrower/new-acc-profiling/'.($step === 'loan-preferences' ? 'ready-for-review' : 'verifyacc').'.php');
 } catch (RuntimeException $error) {
     rollback_safely();

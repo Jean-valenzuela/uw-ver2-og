@@ -1,1 +1,1 @@
-<?php require __DIR__.'/../helpers/borrower_extension_view.php';
+<?php $extension=true;require __DIR__.'/../helpers/borrower_payments_view.php';

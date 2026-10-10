@@ -2,6 +2,8 @@
 require __DIR__ . '/app.php';
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); header('Allow: POST'); exit('Use the Log out button.'); }
 check_csrf();
+$logoutUser=current_user();
+$logoutTarget=$logoutUser && (int)$logoutUser['user_type_id']===3?'admin/login.php':'login.php';
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {
     $p = session_get_cookie_params();
@@ -9,4 +11,4 @@ if (ini_get('session.use_cookies')) {
 }
 session_destroy();
 header('Cache-Control: no-store');
-go('public/login.php');
+go($logoutTarget);

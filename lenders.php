@@ -1,4 +1,4 @@
-<?php require __DIR__."/../ajax/app.php"; 
+<?php require __DIR__."/ajax/app.php"; 
 $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND account_status='approved' ORDER BY user_id DESC")->get_result(); ?>
 
 <!DOCTYPE html>
@@ -29,9 +29,9 @@ $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND
     <!-- CSS -->
     <link
         rel="stylesheet"
-        href="assets/css/style.css"
+        href="<?= e(base_url()) ?>/assets/css/lender.css?v=<?= filemtime(__DIR__.'/assets/css/lender.css') ?>"
     >
-</head>
+<style>.lender-symbol{font-family:Arial,sans-serif;display:inline-flex;align-items:center;justify-content:center;min-width:16px;font-size:16px;color:inherit}.verified-badge .lender-symbol{color:#cb8f22}.lender-photo-placeholder{height:100%;display:grid;place-items:center;font:700 64px Georgia,serif;color:#062347;background:linear-gradient(145deg,#f8e5c4,#e0e8f0)}.lender-description{min-height:45px}</style></head>
 
 <body>
 
@@ -50,7 +50,7 @@ $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND
             class="nav-brand"
         >
             <img
-                src="../assets/logo/utangwiselogo.png"
+                src="assets/logo/utangwiselogo.png"
                 alt="Utang Wise Logo"
             >
 
@@ -113,9 +113,7 @@ $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND
             id="mobileMenuBtn"
             aria-label="Open navigation"
         >
-            <span class="material-symbols-outlined">
-                menu
-            </span>
+            <span class="lender-symbol" aria-hidden="true">☰</span>
         </button>
 
     </nav>
@@ -211,16 +209,14 @@ $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND
 
 
             <!-- LENDER 1 -->
-            <?php if (!$approved->num_rows): ?><p>No approved lenders are available yet. Please check back soon.</p><?php endif; while ($lender=$approved->fetch_assoc()): $details=profile($lender["user_id"]); ?><article class="lender-card">
+            <?php if (!$approved->num_rows): ?><p>No approved lenders are available yet. Please check back soon.</p><?php endif; $cardIndex=0; while ($lender=$approved->fetch_assoc()): $details=profile($lender["user_id"]); ?><article class="lender-card">
 
                 <div class="lender-image">
 
-                    <span class="material-symbols-outlined" aria-hidden="true">account_circle</span>
+                    <?php if (!empty($details['requirements']['photo_public']) && document_exists($lender['user_id'],'lender_photo')): ?><img src="controllers/lender-photo.php?id=<?= (int)$lender['user_id'] ?>" alt="<?= e($lender['user_fn'].' '.$lender['user_ln']) ?>" loading="lazy"><?php else: ?><div class="lender-photo-placeholder" aria-label="No public profile photo"><?= e(strtoupper(substr($lender['user_fn'],0,1).substr($lender['user_ln'],0,1))) ?></div><?php endif; ?>
 
                     <span class="verified-badge">
-                        <span class="material-symbols-outlined">
-                            verified
-                        </span>
+                        <span class="lender-symbol" aria-hidden="true">✓</span>
 
                         Verified Lender
                     </span>
@@ -235,27 +231,21 @@ $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND
                     <div class="lender-details">
 
                         <p>
-                            <span class="material-symbols-outlined">
-                                work
-                            </span>
+                            <span class="lender-symbol" aria-hidden="true">▣</span>
 
                             Approved lender
                         </p>
 
                         <p>
-                            <span class="material-symbols-outlined">
-                                location_on
-                            </span>
+                            <span class="lender-symbol" aria-hidden="true">₱</span>
 
-                            PHP <?= e(number_format((float)($details["requirements"]["lending_limit"]??0),2)) ?> maximum per loan
+                            <?= !empty($details["requirements"]["lending_limit"]) ? "PHP ".e(number_format((float)$details["requirements"]["lending_limit"],2))." lending limit" : "Lending limit not provided" ?>
                         </p>
 
                         <p>
-                            <span class="material-symbols-outlined">
-                                groups
-                            </span>
+                            <span class="lender-symbol" aria-hidden="true">♙</span>
 
-                            Accepting applications
+                            <?= (int)db("SELECT COUNT(*) AS n FROM users WHERE user_type_id=2 AND selected_lender_id=? AND account_status='approved'",[$lender['user_id']])->get_result()->fetch_assoc()['n'] ?> approved borrowers
                         </p>
 
                     </div>
@@ -269,13 +259,11 @@ $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND
 
                     <a
                         href="register.php?lender_id=<?= (int)$lender["user_id"] ?>"
-                        class="apply-lender-btn navy-btn"
+                        class="apply-lender-btn <?= $cardIndex++%2 ? 'gold-btn' : 'navy-btn' ?>"
                     >
                         Apply Now
 
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
+                        <span class="lender-symbol" aria-hidden="true">→</span>
                     </a>
 
                 </div>
@@ -332,5 +320,5 @@ $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND
     });
 </script>
 
-</body>
+<?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 </html>

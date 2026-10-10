@@ -1,5 +1,9 @@
+> For the latest installation and payment setup, start with [README-BORROWER-PORTAL.md](README-BORROWER-PORTAL.md). This older guide describes an earlier update.
+
 # Lender review, loan tracking, agreements and Gmail notifications
 
+For this release, follow README-DASHBOARD-UPDATE.md first. It supersedes earlier notes about manual migrations, lender photos, payment entry and final-installment interest-only charges.
+For this combined release, also follow README-ADMIN-UPDATE.md and import sql/admin-update.sql. Its admin and lender-registration changes supersede older scope notes.
 This package includes the previous borrower update plus the new lender workflow. The original ZIP, SQL backup and existing XAMPP application/database were not overwritten.
 
 ## Installation
@@ -9,7 +13,7 @@ This package includes the previous borrower update plus the new lender workflow.
 3. For a new database only, import the supplied original `uw-ver2 (1).sql`. Do not restore that old backup over a database with newer records.
 4. Select your `uw-ver2` database in phpMyAdmin and import `sql/borrower-update.sql`, then `sql/lender-update.sql`. Both are repeatable additions and preserve existing records.
 5. Check `ajax/config.php`. Defaults remain localhost / root / blank database password / `uw-ver2`; environment overrides are supported. The connection uses Philippine local time (+08:00).
-6. Enable PHP mysqli, mbstring, fileinfo, openssl, curl and zlib. Allow 5 MB uploads (`upload_max_filesize=5M`, `post_max_size=12M` or higher) and a database packet limit large enough for the documents. TCPDF and PHPMailer are bundled, with their licenses; Composer installation is not required.
+6. Enable PHP mysqli, mbstring, fileinfo, openssl, curl and zlib. Allow 5 MB uploads (`upload_max_filesize=5M`, `post_max_size=20M` or higher) and a database packet limit large enough for the documents. TCPDF and PHPMailer are bundled, with their licenses; Composer installation is not required.
 7. Sign in with an existing approved lender account. Open Applications from the dashboard/sidebar.
 
 ## Gmail setup — one local secret still required

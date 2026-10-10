@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/app.php';
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') go('public/register.php');
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') go('register.php');
 check_csrf();
 if (current_user()) go(destination(current_user()));
 if (($_POST['account_type'] ?? '') !== 'loaner') {
@@ -13,18 +13,18 @@ $email = strtolower(trim($_POST['email'] ?? ''));
 $phone = preg_replace('/^(?:\+63|0)/', '', trim($_POST['phone'] ?? ''));
 $password = $_POST['password'] ?? '';
 $lenderId = (int)($_POST['lender_id'] ?? 0);
-$back = 'public/register.php?lender_id='.$lenderId;
+$back = 'register.php?lender_id='.$lenderId;
 if (!$first || !$last || strlen($first)>255 || strlen($last)>255 || strlen($email)>255 || !filter_var($email,FILTER_VALIDATE_EMAIL)) fail_form('Enter your name and a valid email address.', $back);
 if (!preg_match('/^9[0-9]{9}$/D',$phone)) fail_form('Enter 10 mobile digits starting with 9 after +63.', $back);
 if (strlen($password)<8 || strlen($password)>72 || $password !== ($_POST['confirm-password'] ?? '')) fail_form('Use 8-72 characters and enter the same password twice.',$back);
 if (empty($_POST['terms'])) fail_form('Please accept the registration terms.', $back);
-if (!selected_lender($lenderId)) fail_form('Please choose an approved lender.','public/lenders.php');
+if (!selected_lender($lenderId)) fail_form('Please choose an approved lender.','lenders.php');
 try {
     db("INSERT INTO users (user_type_id,user_fn,user_ln,email,phone,password_hash,selected_lender_id,account_status) VALUES (2,?,?,?,?,?,?,'incomplete')",[$first,$last,$email,'0'.$phone,password_hash($password,PASSWORD_DEFAULT),$lenderId]);
     session_regenerate_id(true);
     $_SESSION['uid'] = $conn->insert_id;
     $_SESSION['csrf'] = bin2hex(random_bytes(32));
-    go('borrower/new-acc-profiling/verifyacc.php');
+    $_SESSION['uw_success']=['title'=>'Account created','text'=>'Complete your profile and requirements to submit your application for review.'];go('borrower/new-acc-profiling/verifyacc.php');
 } catch (mysqli_sql_exception $error) {
     error_log('Borrower registration: '.$error->getCode());
     fail_form($error->getCode() === 1062 ? 'This email is already registered. Please log in.' : 'Registration could not be saved. Please try again.', $back);

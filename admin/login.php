@@ -50,7 +50,7 @@
                 <div class="brand">
 
                     <img
-                        src="./logo/utangwiselogo.png"
+                        src="../assets/logo/utangwiselogo.png"
                         alt="Utang Wise Logo"
                         class="brand-logo"
                     >
@@ -263,17 +263,7 @@
 
 
                     <!-- REGISTER -->
-                    <div class="register-link">
-
-                        <span>
-                            Don't have an account?
-                        </span>
-
-                        <a href="register.php">
-                            Register here
-                        </a>
-
-                    </div>
+                    
 
                 </div>
 
@@ -340,6 +330,6 @@
 
     </script>
 
-</body>
+<?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 
 </html>

@@ -50,7 +50,7 @@
             class="nav-brand"
         >
             <img
-                src="../assets/logo/utangwiselogo.png"
+                src="assets/logo/utangwiselogo.png"
                 alt="Utang Wise Logo"
             >
 
@@ -606,7 +606,7 @@
         >
 
             <img
-                src="logo/utangwiselogo.png"
+                src="assets/logo/utangwiselogo.png"
                 alt="Utang Wise Logo"
             >
 
@@ -681,5 +681,5 @@
 </script>
 
 
-</body>
+<?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 </html>

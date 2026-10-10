@@ -25,7 +25,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
         rel="stylesheet"
     >
-</head>
+<link rel="stylesheet" href="../assets/css/lender-live.css"></head>
 
 <body>
 
@@ -50,7 +50,7 @@
         </div>
 
 
-        <nav class="sidebar-menu"><?php foreach (['dashboard'=>'Dashboard','applications'=>'Applications','loaners'=>'Loaners','loans'=>'Loans','extension-requests'=>'Extension Requests'] as $key=>$name): ?><a href="<?= e($key) ?>.php" class="menu-item <?= $mode===$key?'active':'' ?>"><?= e($name) ?></a><?php endforeach; ?><form class="uw-logout" method="post" action="../ajax/logout.php"><?php csrf(); ?><button class="uw-button secondary" type="submit">Log out</button></form></nav>
+        <nav class="sidebar-menu"><?php foreach (['dashboard'=>'Dashboard','applications'=>'Applications','loaners'=>'Loaners','loans'=>'Loans','payments'=>'Payments','extension-requests'=>'Extension Requests'] as $key=>$name): ?><a href="<?= e($key) ?>.php" class="menu-item <?= $mode===$key?'active':'' ?>"><?= e($name) ?></a><?php endforeach; ?><form class="uw-logout" method="post" action="../ajax/logout.php"><?php csrf(); ?><button class="uw-button secondary" type="submit">Log out</button></form></nav>
 
 
         <div class="sidebar-divider"></div>
@@ -116,4 +116,4 @@
     <!-- ==================================================
          MAIN CONTENT
     =================================================== -->
-    <main class="main-content"><header class="uw-topbar"><div><strong><?= e($lender['user_fn'].' '.$lender['user_ln']) ?></strong><p>Lender workspace</p></div><span><?= e(date('M j, Y')) ?></span></header><div class="page-content"><?php require __DIR__.'/../helpers/lender_view.php'; ?></div></main></div><script src="../assets/js/datatables.min.js"></script><script src="../assets/js/lender-flow.js"></script></body></html>
+    <main class="main-content"><?php $lenderAccount=$lender;require __DIR__.'/../helpers/lender_topbar.php'; ?><div class="page-content"><?php require __DIR__.'/../helpers/lender_view.php'; ?></div></main></div><script src="../assets/js/datatables.min.js"></script><script src="../assets/js/lender-flow.js"></script><script src="../assets/js/lender-notifications.js"></script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body></html>

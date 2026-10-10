@@ -1,4 +1,4 @@
-<?php require __DIR__."/../ajax/app.php"; if ($logged=current_user()) go(destination($logged)); ?>
+<?php require __DIR__."/ajax/app.php"; if ($logged=current_user()) go(destination($logged)); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +16,7 @@
     <!-- LOGIN CSS -->
     <link
         rel="stylesheet"
-        href="assets/css/style.css"
+        href="assets/css/login.css"
     >
 
     <!-- DM SANS -->
@@ -50,7 +50,7 @@
                 <div class="brand">
 
                     <img
-                        src="../assets/logo/utangwiselogo.png"
+                        src="assets/logo/utangwiselogo.png"
                         alt="Utang Wise Logo"
                         class="brand-logo"
                     >
@@ -149,7 +149,7 @@
                     ================================================== -->
 
                     <form
-                        action="../ajax/login.php"
+                        action="ajax/login.php"
                         method="POST"
                         class="login-form"
                     ><?php csrf(); notice(); ?>
@@ -340,6 +340,6 @@
 
     </script>
 
-</body>
+<?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 
 </html>

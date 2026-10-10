@@ -26,9 +26,11 @@
   form.querySelectorAll('input[type=file]').forEach(input => {
     input.addEventListener('change', () => {
       const file = input.files[0];
-      const error = file && (!/\.(pdf|jpe?g|png)$/i.test(file.name) || file.size > 5*1024*1024) ? 'Choose a PNG, JPG or PDF file up to 5 MB.' : '';
+      const photo=input.name==='profile_photo';
+      const allowed=photo?/\.(jpe?g|png)$/i:/\.(pdf|jpe?g|png)$/i;
+      const error=file&&(!allowed.test(file.name)||file.size>5*1024*1024)?(photo?'Choose a JPG or PNG photo up to 5 MB.':'Choose a PNG, JPG or PDF file up to 5 MB.'):'';
       input.setCustomValidity(error);
-      const label = input.name === 'coe' ? document.getElementById('coeFileName') : document.querySelector('.uw-file-status');
+      const label = input.name === 'coe' ? document.getElementById('coeFileName') : (input.closest('.upload-box')?.querySelector('.uw-file-status')||document.querySelector('.uw-file-status'));
       if (label) label.textContent = error || (file ? file.name : 'No replacement selected. Any previously saved file is retained.');
     });
   });
@@ -63,7 +65,7 @@
   selects.forEach(select=>{select.disabled=true;});
   let addressReady = false;
   form.addEventListener('submit',event=>{if(!addressReady){event.preventDefault();message.textContent='Address data is unavailable. Reload the page to try again.';}});
-  fetch('../../assets/data/addresses.json').then(response => {
+  fetch(new URL('../data/addresses.json',document.currentScript.src)).then(response => {
     if (!response.ok) throw Error('Address data unavailable');
     return response.json();
   }).then(tree => {

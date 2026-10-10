@@ -1,4 +1,4 @@
-<?php require __DIR__."/../ajax/app.php"; if ($logged=current_user()) go(destination($logged)); $chosen_id=(int)($_GET["lender_id"]??0); if ($chosen_id && !selected_lender($chosen_id)) fail_form("Please choose an approved lender.","public/lenders.php"); ?><!DOCTYPE html>
+<?php require __DIR__."/ajax/app.php"; if ($logged=current_user()) go(destination($logged)); $chosen_id=(int)($_GET["lender_id"]??0); if ($chosen_id && !selected_lender($chosen_id)) fail_form("Please choose an approved lender.","lenders.php"); ?><!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -13,7 +13,7 @@
 
     <link
         rel="stylesheet"
-        href="assets/css/style.css"
+        href="assets/css/register.css"
     >
 
     <!-- Google Fonts -->
@@ -41,7 +41,7 @@
                 <div class="brand">
 
                     <img
-                        src="../assets/logo/utangwiselogo.png"
+                        src="assets/logo/utangwiselogo.png"
                         alt="Utang Wise Logo"
                         class="brand-logo"
                     >
@@ -143,7 +143,7 @@
                          REGISTER FORM
                     ================================================== -->
 
-                    <form action="../ajax/register_borrower.php"method="POST" id="registerForm">
+                    <form action="ajax/register_borrower.php"method="POST" id="registerForm">
                         <?php csrf(); notice(); ?><input type="hidden" name="lender_id" value="<?= (int)$chosen_id ?>">
 
 
@@ -554,6 +554,6 @@
 
             });</script>
 
-<script>document.querySelector('input[value="loaner"]').addEventListener("change",function(){if(!<?= (int)$chosen_id ?>)location.href="lenders.php";});</script></body>
+<script>document.querySelector('input[value="loaner"]').addEventListener("change",function(){if(!<?= (int)$chosen_id ?>)location.href="lenders.php";});</script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 
 </html>
