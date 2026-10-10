@@ -10,16 +10,18 @@ class UWTrackedSMTP extends \PHPMailer\PHPMailer\SMTP {
 }
 function lender_mail_config() {
     $configuredFile = getenv('UW_MAIL_CONFIG');
+    // Apply defaults first, then local/host config, and the explicitly
+    // configured file last so UW_MAIL_CONFIG always has highest priority.
     $privateFiles = array_filter([
-        $configuredFile ?: null,
-        dirname(__DIR__, 2) . '/uw-mail.private.php',
         __DIR__ . '/../config/mail.local.php',
+        dirname(__DIR__, 2) . '/uw-mail.private.php',
+        $configuredFile ?: null,
     ]);
     $config = [];
 
-    // Merge available sources instead of stopping at the first file. This lets
-    // a partial local config inherit values from the private host config.
-    foreach (array_reverse($privateFiles) as $file) {
+    // Merge available sources instead of stopping at the first file, allowing
+    // partial configs to inherit defaults while preserving explicit priority.
+    foreach ($privateFiles as $file) {
         if (is_file($file)) {
             $loaded = require $file;
             if (is_array($loaded)) {
@@ -67,6 +69,13 @@ function lender_mail_failure_reason(Throwable $error) {
         return 'The secure SMTP connection failed. Check the server clock and OpenSSL/TLS support.';
     }
 
+    // Keep the actionable PHPMailer server response for other SMTP failures,
+    // while avoiding any possibility of exposing credentials in the UI.
+    $safeMessage = trim(strip_tags($error->getMessage()));
+    $safeMessage = preg_replace('/\s+/', ' ', $safeMessage);
+    if ($safeMessage !== '' && strlen($safeMessage) <= 240) {
+        return 'SMTP error: ' . $safeMessage;
+    }
     return 'SMTP rejected the email before delivery. Check the recipient address and Gmail sending limits.';
 }
 
