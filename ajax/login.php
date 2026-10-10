@@ -10,12 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Validate CSRF token
 check_csrf();
 
-// Determine the login portal
-$admin = ($_POST['portal'] ?? '') === 'admin';
-
-$back = $admin
-    ? 'admin/login.php'
-    : 'login.php';
+// One shared login form accepts every account role. Role is determined only
+// after credentials are verified; a client-supplied portal flag is ignored.
+$back = 'login.php';
 
 // Get and normalize email
 $email = strtolower(trim($_POST['email'] ?? ''));
@@ -57,8 +54,7 @@ if (
     !password_verify(
         $_POST['password'] ?? '',
         $u['password_hash']
-    ) ||
-    ($admin !== ((int) $u['user_type_id'] === 3))
+    )
 ) {
 
     // Record failed login attempt
@@ -77,7 +73,7 @@ if (
 
     // Display login error
     fail_form(
-        'Invalid email or password for this login page.',
+        'Invalid email or password.',
         $back
     );
 }

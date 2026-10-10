@@ -158,7 +158,7 @@ function require_user($role = null)
         if (uw_form_request()) uw_form_error('Your session expired. Sign in again in another tab, then retry this form. Your entered details are still here.', null, 401);
         go(
             $role === 3
-                ? 'admin/login.php'
+                ? 'login.php'
                 : 'login.php'
         );
     }

@@ -29,5 +29,5 @@ try{
  db('INSERT INTO account_security(user_id,auth_version) VALUES (?,1) ON DUPLICATE KEY UPDATE auth_version=auth_version+1',[$row['user_id']]);
  db('UPDATE password_reset_tokens SET used_at=NOW() WHERE user_id=? AND used_at IS NULL',[$row['user_id']]);$conn->commit();
  unset($_SESSION['uid'],$_SESSION['auth_version']);session_regenerate_id(true);$_SESSION['csrf']=bin2hex(random_bytes(32));
- $_SESSION['uw_success']=['title'=>'Password changed','text'=>'Sign in with your new password.'];go((int)$row['user_type_id']===3?'admin/login.php':'login.php');
+ $_SESSION['uw_success']=['title'=>'Password changed','text'=>'Sign in with your new password.'];go('login.php');
 }catch(Throwable $error){rollback_safely();fail_form($error instanceof DomainException?$error->getMessage():'Your password could not be changed. Please try again.',$back);}

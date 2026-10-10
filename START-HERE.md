@@ -8,7 +8,7 @@ This package combines the supplied frontend with the database-backed borrower, l
 2. Copy the contents of the included `uw-ver2-og` folder into `C:\xampp\htdocs\uw-ver2-og`, replacing matching application files. Do not create a second nested `uw-ver2-og` folder. Keep your private database, mail and payment settings outside the public folder.
 3. Start Apache and MySQL. Select your existing `uw-ver2` database in phpMyAdmin and import `sql/all-updates.sql`. It adds the missing tables and supports repeated imports without deleting existing users, documents, loans or payments. The application also detects missing update tables.
 4. Database defaults are in `ajax/config.php`. To use different credentials, supply a private configuration through `UW_DB_CONFIG`, or use `UW_DB_HOST`, `UW_DB_USER`, `UW_DB_PASSWORD` and `UW_DB_NAME` in the Apache environment. Never use the test-database names from the verification report for the real site.
-5. Restart Apache and refresh the browser with Ctrl+F5. Open `http://localhost/uw-ver2-og/`. Administrator sign-in is `http://localhost/uw-ver2-og/admin/login.php`.
+5. Restart Apache and refresh the browser with Ctrl+F5. Open `http://localhost/uw-ver2-og/`. All account roles use this same login page; successful sign-in routes each account to its role-specific dashboard.
 
 The package includes PHP upload settings for 5 MB files and 20 MB total POST requests. If your host ignores `.htaccess` or `.user.ini`, set `upload_max_filesize=5M` and `post_max_size=20M` in the PHP configuration and restart Apache. Required PHP extensions: mysqli, mbstring, fileinfo, OpenSSL and cURL. PDF and email libraries are included.
 

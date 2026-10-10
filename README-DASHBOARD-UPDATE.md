@@ -11,7 +11,7 @@ Built from the current C:/xampp/htdocs/uw-ver2-og files supplied for this sessio
 3. Open login.php. The application checks for missing update tables and applies only the necessary additive update scripts. This repairs the missing borrower_submissions table shown in the screenshot and installs the dashboard/payment support tables. It does not recreate, replace or erase existing users, loans, documents or payments.
 4. If the database user cannot create tables, select the existing uw-ver2 database in phpMyAdmin and import sql/all-updates.sql, then reload. The error page provides this instruction instead of exposing a stack trace. Do not restore the old full database backup over current records.
 5. Set upload_max_filesize=5M and post_max_size=20M or higher in PHP for the three lender requirement uploads. Restart Apache after changing PHP configuration.
-6. Sign in through login.php for lenders/borrowers or admin/login.php for administrators.
+6. Sign in through login.php for every account role; successful sign-in routes each role to its dashboard.
 
 The original schema (users, user_type, loan_agreements, loan_installments, loan_payments and related original tables) must already exist. The automatic check adds application update tables only. Default database settings remain those from the supplied project, with environment overrides supported. Gmail settings remain unchanged and no passwords are included.
 

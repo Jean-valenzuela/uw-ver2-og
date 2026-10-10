@@ -158,7 +158,7 @@
                                     mail
                                 </span>
 
-                                <input
+                        <input
                                     type="email"
                                     id="email"
                                     name="email"

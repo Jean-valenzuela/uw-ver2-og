@@ -1,4 +1,4 @@
-<?php require __DIR__."/../ajax/app.php"; if ($logged=current_user()) go(destination($logged)); ?>
+<?php require __DIR__."/../ajax/app.php"; header('Location: '.base_url().'/login.php', true, 302); exit; ?>
 
 <!DOCTYPE html>
 <html lang="en">
