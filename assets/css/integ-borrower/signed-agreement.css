@@ -9,7 +9,8 @@
     inset: 0 auto 0 0;
     z-index: 30;
     width: 250px;
-    padding: 22px 16px;
+    height: 100vh;
+    padding: 25px 18px;
     overflow-y: auto;
     background: linear-gradient(180deg, #041a35, #062347);
     color: #fff;
@@ -40,19 +41,24 @@
 .uw-borrower-portal .sidebar-menu {
     display: grid;
     gap: 5px;
+    margin-top: 42px;
 }
 
 .uw-borrower-portal .sidebar-menu .menu-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    min-height: 44px;
+    min-height: 48px;
     padding: 0 13px;
     border-radius: 8px;
-    color: #dce7f5;
+    color: #dce7f5 !important;
     font-size: 13px;
     text-decoration: none;
     transition: background .15s ease, color .15s ease;
+}
+
+.uw-borrower-portal .sidebar-menu .menu-item:visited {
+    color: #dce7f5 !important;
 }
 
 .uw-borrower-portal .sidebar-menu .menu-item .material-symbols-outlined {
@@ -67,7 +73,8 @@
 }
 
 .uw-borrower-portal .sidebar-menu .menu-item.active {
-    box-shadow: inset 3px 0 #e5a129;
+    box-shadow: inset 4px 0 #e5a129;
+    color: #f5b843 !important;
 }
 
 .uw-borrower-portal .sidebar-menu .menu-item.active .material-symbols-outlined,
@@ -79,6 +86,17 @@
     height: 1px;
     margin: 22px 8px 12px;
     background: rgb(255 255 255 / 16%);
+}
+
+.uw-borrower-portal .sidebar .uw-logout {
+    margin: 14px 0 0;
+    padding: 0;
+}
+
+.uw-borrower-portal .sidebar .uw-logout button {
+    width: 100%;
+    min-height: 44px;
+    border-radius: 8px;
 }
 
 .uw-borrower-portal .main-content {
@@ -241,12 +259,21 @@
 
 @media (max-width: 1100px) {
     .uw-borrower-portal .sidebar {
-        transform: translateX(-100%);
+        left: -260px;
         transition: transform .2s ease;
     }
 
     .uw-borrower-portal .sidebar.portal-open {
+        left: 0;
         transform: translateX(0);
+    }
+
+    .uw-borrower-portal .sidebar-overlay:not([hidden]) {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: block;
+        background: rgb(0 20 45 / 45%);
     }
 
     .uw-borrower-portal .main-content {

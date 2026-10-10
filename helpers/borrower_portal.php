@@ -179,7 +179,10 @@ function portal_start($title, $active)
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?= e($title) ?> | Utang Wise</title>
-        <link rel="stylesheet" href="../assets/css/integ-borrower/<?= e($design) ?>.css">
+        <link rel="stylesheet" href="../assets/css/integ-borrower/<?= e($isDashboard ? $design : 'client-dashboard') ?>.css">
+        <?php if (!$isDashboard && $design !== 'client-dashboard'): ?>
+            <link rel="stylesheet" href="../assets/css/integ-borrower/<?= e($design) ?>.css">
+        <?php endif; ?>
         <link rel="stylesheet" href="../assets/css/borrower-flow.css">
         <link rel="stylesheet" href="../assets/css/borrower-portal.css">
         <link rel="stylesheet" href="../assets/css/portal-integration.css">
