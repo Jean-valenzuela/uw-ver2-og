@@ -1,13 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/*
- * Production credentials belong in a private PHP file outside public_html.
- * Create uw-private-db.php in the parent folder of public_html, returning:
- * ['host' => '...', 'user' => '...', 'password' => '...', 'database' => '...']
- *
- * Environment variables can also be used when the hosting panel supports them.
- */
 $privateConfigPath = dirname(__DIR__, 2) . '/uw-private-db.php';
 $privateConfig = is_file($privateConfigPath) ? require $privateConfigPath : [];
 if (!is_array($privateConfig)) {
