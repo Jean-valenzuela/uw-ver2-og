@@ -48,7 +48,16 @@ function db($sql, $values = [])
 {
     global $conn;
 
-    $s = $conn->prepare($sql);
+    try {
+        $s = $conn->prepare($sql);
+    } catch (mysqli_sql_exception $exception) {
+        error_log('UtangWise SQL prepare failed: ' . $exception->getMessage() . ' | ' . $sql);
+        throw $exception;
+    }
+    if (!$s) {
+        error_log('UtangWise SQL prepare failed (' . $conn->errno . '): ' . $conn->error . ' | ' . $sql);
+        throw new RuntimeException('Database query could not be prepared.');
+    }
 
     if ($values) {
         $s->bind_param(
