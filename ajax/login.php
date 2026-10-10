@@ -103,6 +103,7 @@ session_regenerate_id(true);
 
 // Store authenticated user information
 $_SESSION['uid'] = $u['user_id'];
+$_SESSION['auth_version']=(int)(db('SELECT auth_version FROM account_security WHERE user_id=?',[$u['user_id']])->get_result()->fetch_assoc()['auth_version']??0);
 
 // Generate a new CSRF token
 $_SESSION['csrf'] = bin2hex(random_bytes(32));

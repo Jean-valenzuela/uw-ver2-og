@@ -17,17 +17,11 @@
     >
 
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet"
-    >
+    
 
     <!-- Material Symbols -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-        rel="stylesheet"
-    >
-</head>
+    
+<style>#lenderSelection[hidden]{display:none}#registrationLender{width:100%;padding:12px;border:1px solid #dfe5ec;border-radius:8px;font:inherit;background:white;color:#10264a}</style><link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/local-fonts.css"></head>
 
 <body>
 
@@ -144,7 +138,7 @@
                     ================================================== -->
 
                     <form action="ajax/register_borrower.php"method="POST" id="registerForm">
-                        <?php csrf(); notice(); ?><input type="hidden" name="lender_id" value="<?= (int)$chosen_id ?>">
+                        <?php csrf(); notice(); ?><div class="form-group" id="lenderSelection" <?= !$chosen_id?'hidden':'' ?>><label for="registrationLender">Choose your lender</label><select id="registrationLender" name="lender_id" <?= $chosen_id?'required':'disabled' ?>><option value="">Choose an approved lender</option><?php $approvedLenders=db("SELECT u.user_id,u.user_fn,u.user_ln FROM users u LEFT JOIN lender_submissions s ON s.user_id=u.user_id WHERE u.user_type_id=1 AND u.account_status='approved' AND s.deleted_at IS NULL ORDER BY u.user_fn,u.user_ln")->get_result();while($l=$approvedLenders->fetch_assoc()): ?><option value="<?= (int)$l['user_id'] ?>" <?= (int)$l['user_id']===$chosen_id?'selected':'' ?>><?= e($l['user_fn'].' '.$l['user_ln']) ?></option><?php endwhile; ?></select></div>
 
 
                         <div class="account-type-group">
@@ -554,6 +548,6 @@
 
             });</script>
 
-<script>document.querySelector('input[value="loaner"]').addEventListener("change",function(){if(!<?= (int)$chosen_id ?>)location.href="lenders.php";});</script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
+<script>document.querySelectorAll('[name="account_type"]').forEach(r=>r.addEventListener('change',()=>{const borrower=document.querySelector('[name="account_type"]:checked')?.value==='loaner';document.getElementById('lenderSelection').hidden=!borrower;const s=document.getElementById('registrationLender');s.disabled=!borrower;s.required=borrower;}));</script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body>
 
 </html>

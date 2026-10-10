@@ -1,8 +1,7 @@
 <?php
 function uw_role_design_assets($role, $page) {
     $root=e(base_url());
-    echo '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">';
-    echo '<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">';
+    echo '<link rel="stylesheet" href="'.$root.'/assets/css/local-fonts.css">';
     if ($role === 'admin') {
         $file=['dashboard'=>'superadmin','lender-applications'=>'lender-applications','approved-lenders'=>'approved-lenders'][$page] ?? 'superadmin';
         echo '<link rel="stylesheet" href="'.$root.'/assets/css/integ-lender/datatables.min.css?v=20261010">';

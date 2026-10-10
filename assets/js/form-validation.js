@@ -120,7 +120,7 @@
         const destination = new URL(data.redirect, location.href);
         if (destination.origin !== location.origin) {
           // Hosted payment checkout redirects may use an external HTTPS URL.
-          if (destination.protocol !== 'https:') throw new Error('Invalid checkout address.');
+          if (destination.protocol !== 'https:' || destination.hostname !== 'checkout.paymongo.com') throw new Error('Invalid checkout address.');
         }
         location.assign(destination.href);
         navigating = true;
