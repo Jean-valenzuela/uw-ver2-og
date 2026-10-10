@@ -1,26 +1,17 @@
 <?php
+$config = require dirname(__DIR__, 2) . '/uw-private-db.php';
 
+$conn = new mysqli(
+    $config['host'],
+    $config['user'],
+    $config['password'],
+    $config['database']
+);
 
-
-
-
-
-$host = getenv("UW_DB_HOST") ?: "localhost";
-$u = getenv("UW_DB_USER") ?: "root";
-$p = getenv("UW_DB_PASSWORD") ?: "";
-$dbase = getenv("UW_DB_NAME") ?: "uw-ver2";
-
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-try {
-    $conn = new mysqli($host, $u, $p, $dbase);
-
-    $conn->set_charset("utf8mb4");
-
-    $conn->query("SET time_zone = '+08:00'");
-
-} catch (mysqli_sql_exception $e) {
-
-    die("Database connection failed: " . $e->getMessage());
-
+if ($conn->connect_error) {
+    error_log('Database connection failed: ' . $conn->connect_error);
+    http_response_code(500);
+    exit('Database connection failed.');
 }
+
+$conn->set_charset('utf8mb4');

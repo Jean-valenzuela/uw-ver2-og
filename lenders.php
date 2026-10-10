@@ -1,7 +1,4 @@
-<?php require __DIR__."/ajax/app.php"; 
-$approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND account_status='approved' ORDER BY user_id DESC")->get_result(); ?>
-
-<!DOCTYPE html>
+<?php require __DIR__."/../ajax/app.php"; $approved=db("SELECT user_id,user_fn,user_ln FROM users WHERE user_type_id=1 AND account_status='approved' ORDER BY user_id DESC")->get_result(); ?><!DOCTYPE html>
 <html lang="en">
 
 <head>
