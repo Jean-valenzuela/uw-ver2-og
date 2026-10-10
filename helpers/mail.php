@@ -9,9 +9,41 @@ class UWTrackedSMTP extends \PHPMailer\PHPMailer\SMTP {
     public function data($msg_data) { $this->dataAttempted=true; return parent::data($msg_data); }
 }
 function lender_mail_config() {
-    $file=getenv('UW_MAIL_CONFIG');
-    $config=$file && is_file($file) ? require $file : [];
-    return $config + ['host'=>'smtp.gmail.com','port'=>587,'encryption'=>'tls','username'=>'ayettacore@gmail.com','password'=>getenv('UW_SMTP_PASSWORD')?:'','from'=>'ayettacore@gmail.com','from_name'=>'Utang Wise'];
+    $configuredFile = getenv('UW_MAIL_CONFIG');
+    $privateFiles = array_filter([
+        $configuredFile ?: null,
+        dirname(__DIR__, 2) . '/uw-mail.private.php',
+        __DIR__ . '/../config/mail.local.php',
+    ]);
+    $config = [];
+
+    foreach ($privateFiles as $file) {
+        if (is_file($file)) {
+            $config = require $file;
+            break;
+        }
+    }
+
+    if (!is_array($config)) {
+        $config = [];
+    }
+
+    $defaults = [
+        'host' => 'smtp.gmail.com',
+        'port' => 587,
+        'encryption' => 'tls',
+        'username' => 'ayettacore@gmail.com',
+        'password' => '',
+        'from' => 'ayettacore@gmail.com',
+        'from_name' => 'Utang Wise',
+    ];
+
+    $envPassword = getenv('UW_SMTP_PASSWORD');
+    if ($envPassword !== false && $envPassword !== '') {
+        $config['password'] = $envPassword;
+    }
+
+    return array_replace($defaults, $config);
 }
 function send_lender_email($id,$lenderId,$allowUncertain=false) {
     global $conn;

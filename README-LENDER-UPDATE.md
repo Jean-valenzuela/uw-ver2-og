@@ -21,7 +21,7 @@ This package includes the previous borrower update plus the new lender workflow.
 Sender: **ayettacore@gmail.com**. The password is intentionally not included. No real email was sent during development.
 
 1. For this Gmail account, enable 2-Step Verification and create an App Password if the account permits it. Follow [Google's App Password instructions](https://support.google.com/accounts/answer/185833). Use an App Password, not the ordinary Google account password.
-2. Copy `config/mail.example.php` to a private location **outside `htdocs`**, for example `C:/xampp/uw-mail.private.php`. Fill the `password` value locally. Keep this private file out of shared ZIPs and source control.
+2. Copy `config/mail.example.php` to a private location **outside the web root**, then set its `password` locally. On Hostinger, place `uw-mail.private.php` beside `public_html`; the app checks that location automatically. Keep the private file out of shared ZIPs and source control.
 3. Tell Apache where to find it. For XAMPP, add the following to the application's `.htaccess` if `SetEnv` is allowed, or to its Apache virtual-host configuration, then restart Apache:
 
    ```apache
