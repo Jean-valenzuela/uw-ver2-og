@@ -27,7 +27,7 @@ try {
  }
  if ($step==='idverification') upload_document($u['user_id'],'valid_id',true);
  if ($step==='financial-details') upload_document($u['user_id'],'coe',false);
- if ($step==='loan-preferences' && (!(is_numeric($fields['loan_amount']??null)) || (float)$fields['loan_amount']<=0 || (float)$fields['loan_amount']>3000)) throw new RuntimeException('Loan amount must be between ₱1 and ₱3,000.');
+ if ($step==='loan-preferences' && (!preg_match('/^\d+(\.\d{1,2})?$/D',(string)($fields['loan_amount']??'')) || !in_array((float)$fields['loan_amount'],[3000.0,5000.0,10000.0,15000.0],true))) throw new RuntimeException('Choose a loan amount of PHP 3,000, 5,000, 10,000, or 15,000.');
  $data[$step]=$fields;
  db('INSERT INTO application_profiles (user_id,details) VALUES (?,?) ON DUPLICATE KEY UPDATE details=VALUES(details)',[$u['user_id'],json_encode($data,JSON_THROW_ON_ERROR)]);
  go('borrower/new-acc-profiling/'.$next[$step].'.php');

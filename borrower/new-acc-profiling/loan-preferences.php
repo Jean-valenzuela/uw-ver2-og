@@ -313,8 +313,15 @@
                                     type="number"
                                     name="loan_amount"
                                     placeholder="Enter loan amount"
-                                    min="1000" max="3000" step="0.01"
+                                    min="3000" max="15000" step="1"
+                                    list="allowedLoanAmounts"
                                  required value="<?= e($values['loan_amount'] ?? '') ?>">
+                                <datalist id="allowedLoanAmounts">
+                                    <option value="3000"></option>
+                                    <option value="5000"></option>
+                                    <option value="10000"></option>
+                                    <option value="15000"></option>
+                                </datalist>
 
                             </div>
 
@@ -323,19 +330,19 @@
                             <div class="quick-amounts">
 
                                 <button type="button">
-                                    ₱1,000
+                                    ₱3,000.00
                                 </button>
 
                                 <button type="button">
-                                    ₱3,000
+                                    ₱5,000.00
                                 </button>
 
                                 <button type="button">
-                                    ₱2,000
+                                    ₱10,000.00
                                 </button>
 
                                 <button type="button">
-                                    ₱2,500
+                                    ₱15,000.00
                                 </button>
 
                             </div>

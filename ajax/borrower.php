@@ -71,7 +71,7 @@ function validate_borrower_step($step, $input) {
         }
         $out['total_income'] = number_format((float)$out['gross_income'] + (float)$out['other_income'], 2, '.', '');
     }
-    if ($step === 'loan-preferences' && (!preg_match('/^\d+(\.\d{1,2})?$/D', $out['loan_amount']) || (float)$out['loan_amount'] < 1000 || (float)$out['loan_amount'] > 3000)) throw new RuntimeException(uw_field_message('loan_amount','Your starting loan amount must be between PHP 1,000 and PHP 3,000.'));
+    if ($step === 'loan-preferences' && (!preg_match('/^\d+(\.\d{1,2})?$/D', $out['loan_amount']) || !in_array((float)$out['loan_amount'], [3000.0, 5000.0, 10000.0, 15000.0], true))) throw new RuntimeException(uw_field_message('loan_amount','Choose a loan amount of PHP 3,000, 5,000, 10,000, or 15,000.'));
     return $out;
 }
 
