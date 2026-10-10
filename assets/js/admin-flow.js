@@ -15,8 +15,9 @@ async function api(action,values={}){
  if(!r.headers.get('content-type')?.includes('application/json'))throw new Error('Your session expired or the request was rejected. Reload and sign in again.');
  const d=await r.json();if(d.csrf)cfg.csrf=d.csrf;if(!r.ok)throw Object.assign(new Error(d.error||'Request failed.'),{field:d.field});return d;
 }
-const statusMessage=s=>({sent:'The mail server accepted the notification.',queued:'Email is queued. Configure the Gmail App Password, then retry.',failed:'Email failed. Check Gmail settings and retry.',uncertain:'Delivery is uncertain. Check Gmail Sent before retrying.',sending:'Email is currently being sent.'}[s]||'');
-async function finish(d){await window.UWSuccess.show({title:'Saved successfully',text:[d.message,statusMessage(d.mail_status)].filter(Boolean).join(' ')||'Your changes were saved.'});location.reload();}
+const statusMessage=s=>({sent:'The mail server accepted the notification.',queued:'Email is queued. Configure the Gmail App Password, then retry.',failed:'Email failed.',uncertain:'Delivery is uncertain. Check Gmail Sent before retrying.',sending:'Email is currently being sent.'}[s]||'');
+const mailStatusText=d=>[statusMessage(d.mail_status),d.mail_status==='failed'?d.mail_error:''].filter(Boolean).join(' ');
+async function finish(d){await window.UWSuccess.show({title:'Saved successfully',text:[d.message,mailStatusText(d)].filter(Boolean).join(' ')||'Your changes were saved.'});location.reload();}
 function error(e){const form=body.querySelector('form');if(form&&window.UWForms){window.UWForms.showError(form,e.message,e.field);if(e.field)return;}let el=body.querySelector('[role="alert"]');if(!el){el=document.createElement('p');el.setAttribute('role','alert');el.className='admin-error';body.prepend(el);}el.textContent=e.message;}
 let generation=0;
 async function show(id){
@@ -43,7 +44,7 @@ async function show(id){
  document.getElementById('mailArea').innerHTML=u.emails.map(m=>`<section class="admin-mail"><strong>Email: ${esc(m.status)}</strong><p>${esc(m.last_error||statusMessage(m.status))}</p>${['queued','failed','uncertain'].includes(m.status)?`${m.status==='uncertain'?'<label><input type="checkbox" class="ack"> I checked Gmail Sent and acknowledge that retrying may duplicate the email.</label>':''}<button class="view-btn" type="button" data-retry="${Number(m.email_id)}" data-uncertain="${m.status==='uncertain'}">Retry email</button>`:''}</section>`).join('');
  body.querySelectorAll('[data-retry]').forEach(b=>b.addEventListener('click',async()=>{
  if(b.dataset.uncertain==='true'&&!b.closest('section').querySelector('.ack').checked){error(new Error('Check Gmail Sent and acknowledge before retrying.'));return;}
- b.disabled=true;try{const d=await api('retry',{id:b.dataset.retry,confirm_uncertain:b.dataset.uncertain==='true'?'1':'0'});feedback.textContent=statusMessage(d.mail_status);await window.UWSuccess.show({title:'Email status updated',text:feedback.textContent||d.message||'Email retry completed.'});await show(id);}catch(err){error(err);b.disabled=false;}
+ b.disabled=true;try{const d=await api('retry',{id:b.dataset.retry,confirm_uncertain:b.dataset.uncertain==='true'?'1':'0'});feedback.textContent=mailStatusText(d);await window.UWSuccess.show({title:'Email status updated',text:feedback.textContent||d.message||'Email retry completed.'});await show(id);}catch(err){error(err);b.disabled=false;}
  }));
  await api('read',{id});await notifications();
  }catch(e){if(request===generation)error(e);}

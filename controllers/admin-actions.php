@@ -20,7 +20,9 @@ try {
         if (!$m)
             throw new DomainException('Email not found.');
         admin_lender($m['applicant_id']);
-        admin_json(['ok' => true, 'mail_status' => send_admin_email($id, $admin['user_id'], ($_POST['confirm_uncertain'] ?? '') === '1')]);
+        $mailStatus = send_admin_email($id, $admin['user_id'], ($_POST['confirm_uncertain'] ?? '') === '1');
+        $mailError = db('SELECT last_error FROM admin_outbox WHERE email_id=?', [$id])->get_result()->fetch_assoc()['last_error'] ?? null;
+        admin_json(['ok' => true, 'mail_status' => $mailStatus, 'mail_error' => $mailError]);
     }
     if (!in_array($action, ['approve', 'reject', 'delete'], true))
         throw new DomainException('Unknown action.');
@@ -60,7 +62,8 @@ try {
         error_log('Admin mail failed: ' . $e->getCode());
         $status = 'queued';
     }
-    admin_json(['ok' => true, 'message' => 'Application ' . $decision . '.', 'mail_status' => $status]);
+    $mailError = db('SELECT last_error FROM admin_outbox WHERE email_id=?', [$mailId])->get_result()->fetch_assoc()['last_error'] ?? null;
+    admin_json(['ok' => true, 'message' => 'Application ' . $decision . '.', 'mail_status' => $status, 'mail_error' => $mailError]);
 } catch (DomainException $e) {
     rollback_safely();
     admin_json(['error' => $e->getMessage()], 422);
