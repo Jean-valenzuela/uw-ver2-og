@@ -13,8 +13,9 @@ try {
     $amount = amount_cents($_POST['amount'] ?? '');
     $term = (int) ($_POST['term_months'] ?? 0);
     $purpose = trim($_POST['purpose'] ?? '');
-    if ($amount < 100 || $amount > 100000000 || !in_array($term, [3, 6, 12], true) || !$purpose || mb_strlen($purpose) > 1000)
-        throw new DomainException('Enter a valid amount, term and purpose.');
+    if ($amount < 100 || $amount > 100000000) throw new DomainException(uw_field_message('amount','Enter an amount between PHP 1 and PHP 1,000,000.'));
+    if (!in_array($term,[3,6,12],true)) throw new DomainException(uw_field_message('term_months','Choose a term of 3, 6 or 12 months.'));
+    if (!$purpose || mb_strlen($purpose)>1000) throw new DomainException(uw_field_message('purpose','Enter a loan purpose of up to 1,000 characters.'));
     db('INSERT INTO borrower_loan_requests(borrower_id,lender_id,amount,term_months,purpose) VALUES (?,?,?,?,?)', [$u['user_id'], $u['selected_lender_id'], $amount / 100, $term, $purpose]);
     $conn->commit();
     unset($_SESSION['notice'], $_SESSION['notice_kind']);

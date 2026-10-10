@@ -13,9 +13,9 @@ function lender_borrower($id, $lenderId, $lock = false) {
     return $u;
 }
 function money($amount) { return 'PHP '.number_format((float)$amount,2); }
-function lender_date($value) {
+function lender_date($value, $field = null) {
     $date=DateTimeImmutable::createFromFormat('!Y-m-d',$value);
-    if (!$date || $date->format('Y-m-d')!==$value) throw new DomainException('Please enter a valid date.');
+    if (!$date || $date->format('Y-m-d')!==$value) throw new DomainException(uw_field_message($field,'Please enter a valid date.'));
     return $date;
 }
 function amount_cents($value) {
@@ -34,9 +34,9 @@ function contract_quote($input) {
     if (!preg_match('/^\d{1,3}(\.\d{1,4})?$/D',$rate) || (float)$rate>100) throw new DomainException('Enter a monthly interest percentage from 0 to 100, with up to four decimal places.');
     $term=filter_var($input['term_months']??null,FILTER_VALIDATE_INT);
     if (!in_array($term,[3,6,12],true)) throw new DomainException('Select 3, 6 or 12 monthly installments.');
-    $release=lender_date($input['release_date']??'');
-    $first=lender_date($input['first_due_date']??'');
-    if ($first <= $release || $first > $release->modify('+2 months')) throw new DomainException('The first due date must be after release and within two months.');
+    $release=lender_date($input['release_date']??'', 'release_date');
+    $first=lender_date($input['first_due_date']??'', 'first_due_date');
+    if ($first <= $release || $first > $release->modify('+2 months')) throw new DomainException(uw_field_message('first_due_date','The first due date must be after release and within two months.'));
     $purpose=trim($input['purpose']??'');
     if ($purpose==='' || mb_strlen($purpose)>1000) throw new DomainException('Enter a loan purpose of up to 1,000 characters.');
     $interest=(int)round($principal*(float)$rate*$term/100,0,PHP_ROUND_HALF_UP);
@@ -46,7 +46,7 @@ function contract_quote($input) {
     for($i=0;$i<$term;$i++) $schedule[]=['number'=>$i+1,'due_date'=>monthly_due_date($first->format('Y-m-d'),$i),'cents'=>$i===$term-1?$total-$regular*($term-1):$regular];
     return ['principal_cents'=>$principal,'rate'=>$rate,'term'=>$term,'interest_cents'=>$interest,'total_cents'=>$total,'regular_cents'=>$regular,'monthly_interest_cents'=>$principal*(float)$rate/100,'release_date'=>$release->format('Y-m-d'),'first_due_date'=>$first->format('Y-m-d'),'purpose'=>$purpose,'schedule'=>$schedule];
 }
-function lender_json($data,$status=200) { http_response_code($status); header('Content-Type: application/json; charset=utf-8'); echo json_encode($data,JSON_THROW_ON_ERROR); exit; }
+function lender_json($data,$status=200) { if (isset($data['error']) && !isset($data['field'])) $data['field']=uw_error_field($data['error']);  http_response_code($status); header('Content-Type: application/json; charset=utf-8'); echo json_encode($data,JSON_THROW_ON_ERROR); exit; }
 function lender_post() { if($_SERVER['REQUEST_METHOD']!=='POST'){header('Allow: POST');lender_json(['error'=>'POST required.'],405);} check_csrf(); }
 function lender_rows($sql,$values=[]) { return db($sql,$values)->get_result()->fetch_all(MYSQLI_ASSOC); }
 function queue_lender_email($event,$borrower,$lenderId,$subject,$body,$agreementId=null) {

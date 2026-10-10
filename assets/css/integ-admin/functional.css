@@ -1,0 +1,7 @@
+/* Preserve functional tables, actions and dialogs with the supplied adminadmin theme. */
+[hidden]{display:none!important}.brand-icon img{width:100%;height:100%;object-fit:contain;display:block}
+.top-user{margin-left:auto}.admin-filters{gap:12px}.admin-filters label{min-width:0}#adminTable{width:100%}
+#adminModal,#lenderDialog{z-index:2000}#notificationsPanel{z-index:1200}
+.status-approved{background:#e5f7ee;color:#128553}.status-pending{background:#fff2dc;color:#ad6b08}.status-rejected{background:#ffebed;color:#c72839}
+@media(max-width:1100px){.main-area{width:100%;margin-left:0}.sidebar.open{z-index:1500}.topbar{height:auto;min-height:68px}.top-user{min-width:0}.dashboard-body{width:calc(100% - 32px);padding:20px 0}.admin-filters input{min-width:0;width:100%}.admin-filters label{flex:1 1 180px}}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr}.top-user{gap:8px}.table-container{padding:10px}.admin-filters{padding:14px}}

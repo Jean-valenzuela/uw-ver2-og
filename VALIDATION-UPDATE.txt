@@ -1,0 +1,15 @@
+Form validation update
+
+Install by merging the included uw-ver2-og folder into C:/xampp/htdocs/uw-ver2-og and replacing matching files. Start Apache and MySQL. Refresh with Ctrl+F5 to load the updated scripts.
+
+Invalid submissions stay on the same page and retain typed text, password fields, dropdowns, checkboxes and selected uploads. Field validation uses a popup at the relevant input and clears when that input is edited. Required fields, email formatting, password matching, uploads and server validation are handled without clearing the form. General account, connection or server errors display a clear form message. Submit buttons are restored after errors; repeated submissions are blocked while saving. Successful submissions keep their existing next-page flow.
+
+Applies to shared form submissions including login, registration, borrower profiling and profile edits, loan requests, agreements, lender requirements and photo settings, and existing lender/admin/payment AJAX forms.
+
+Passwords and uploaded documents are kept in the current page only. They are not added to browser storage. Reloading or closing the page clears unsaved fields and file selections. JavaScript must be enabled for retention without a page reload.
+
+Existing CSS, images, fonts and layout were preserved. No existing account records or passwords were changed. The prior localhost login fixes are included.
+
+Verification: PHP and JavaScript syntax checks; DOM interaction checks for field focus, text/password/select/checkbox/file retention, corrected-field retry, password mismatch, upload limits, duplicate submissions, refreshed form tokens, network/invalid response errors and existing AJAX compatibility; backend profiling validation and JSON redirect/error checks; byte comparisons of CSS, images and fonts; ZIP integrity.
+
+The complete submission workflow still needs verification against your local XAMPP database and email/payment configuration.

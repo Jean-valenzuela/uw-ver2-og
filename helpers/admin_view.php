@@ -11,9 +11,8 @@ $counts = db("SELECT COUNT(*) AS total,COALESCE(SUM(u.account_status='approved')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title><?= e($title) ?> | Utang Wise</title>
-    <link rel="stylesheet" href="../assets/css/superadmin.css">
-    <link rel="stylesheet" href="../assets/css/lender-applications.css">
     <link rel="stylesheet" href="../assets/css/admin-flow.css">
+    <?php uw_role_design_assets('admin', $adminPage); ?>
 </head>
 
 <body>
@@ -59,7 +58,7 @@ $counts = db("SELECT COUNT(*) AS total,COALESCE(SUM(u.account_status='approved')
                 <?php if ($adminPage === 'dashboard'): ?>
                     <section class="stats-grid">
                         <?php foreach (['total' => 'Total Applicants', 'approved' => 'Approved Applicants', 'rejected' => 'Rejected Applicants'] as $key => $label): ?>
-                            <article class="stat-card stat-<?= e($key) ?>">
+                            <article class="stat-card stat-<?= e($key) ?>"><div class="stat-icon"><span class="material-symbols-outlined" aria-hidden="true"><?= ['total'=>'groups','approved'=>'check_circle','rejected'=>'cancel'][$key] ?></span></div>
                                 <div class="stat-content">
                                     <h2><?= e($label) ?></h2><strong
                                         data-count="<?= e($key) ?>"><?= number_format($counts[$key]) ?></strong>
@@ -126,7 +125,7 @@ $counts = db("SELECT COUNT(*) AS total,COALESCE(SUM(u.account_status='approved')
     <script type="application/json"
         id="adminConfig"><?= json_encode(['csrf' => $_SESSION['csrf'], 'page' => $adminPage], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
     <script src="../assets/js/datatables.min.js"></script>
-    <script src="../assets/js/admin-flow.js"></script>
+    <script src="../assets/js/admin-flow.js?v=20261010"></script>
     <?php if (function_exists('uw_success_assets'))
         uw_success_assets(); ?>
 </body>

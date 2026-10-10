@@ -14,9 +14,12 @@ $phone = preg_replace('/^(?:\+63|0)/', '', trim($_POST['phone'] ?? ''));
 $password = $_POST['password'] ?? '';
 $lenderId = (int)($_POST['lender_id'] ?? 0);
 $back = 'register.php?lender_id='.$lenderId;
-if (!$first || !$last || strlen($first)>255 || strlen($last)>255 || strlen($email)>255 || !filter_var($email,FILTER_VALIDATE_EMAIL)) fail_form('Enter your name and a valid email address.', $back);
+if (!$first || strlen($first)>255) fail_form('Enter your first name (up to 255 characters).', $back, 'user_fn');
+if (!$last || strlen($last)>255) fail_form('Enter your last name (up to 255 characters).', $back, 'user_ln');
+if (strlen($email)>255 || !filter_var($email,FILTER_VALIDATE_EMAIL)) fail_form('Enter a valid email address.', $back, 'email');
 if (!preg_match('/^9[0-9]{9}$/D',$phone)) fail_form('Enter 10 mobile digits starting with 9 after +63.', $back);
-if (strlen($password)<8 || strlen($password)>72 || $password !== ($_POST['confirm-password'] ?? '')) fail_form('Use 8-72 characters and enter the same password twice.',$back);
+if (strlen($password)<8 || strlen($password)>72) fail_form('Use a password of 8 to 72 bytes.', $back, 'password');
+if ($password !== ($_POST['confirm-password'] ?? '')) fail_form('The passwords do not match.', $back, 'confirm-password');
 if (empty($_POST['terms'])) fail_form('Please accept the registration terms.', $back);
 if (!selected_lender($lenderId)) fail_form('Please choose an approved lender.','lenders.php');
 try {

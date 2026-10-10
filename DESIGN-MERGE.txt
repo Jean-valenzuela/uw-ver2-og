@@ -1,0 +1,18 @@
+Installation
+1. Merge the included uw-ver2-og folder into C:/xampp/htdocs/uw-ver2-og, replacing matching files. Do not nest another uw-ver2-og folder inside it.
+2. Start Apache and MySQL in XAMPP. Keep your existing database and private mail/payment settings.
+3. Refresh with Ctrl+F5 so the new styles and scripts load.
+
+Design mapping
+The integ/admin pages are the lender design; these map to the functional lender folder.
+The integ/adminadmin pages are the administrator design; these map to the functional admin folder.
+Supplied lender CSS is preserved in assets/css/integ-lender. Supplied admin CSS is preserved in assets/css/integ-admin. Matching design styles are loaded through helpers/design_assets.php using the application base URL, including nested lender requirements pages.
+Functional styling for dialogs, forms, notifications and charts is retained. Older lender sidebar overrides are removed from the role-specific component copies. Borrower CSS and existing shared CSS files remain unchanged.
+
+Successful submissions
+Confirmed saves show SweetAlert before continuing to the next page or reloading. The server returns the saved success message for scripted form submissions, and consumes that message once so it does not repeat on the next page. Lender/admin decisions, payments and email retries use the same success display. Validation errors retain the current form entries.
+Queued or failed email delivery is described as such; a saved decision does not mean that the email was delivered.
+
+Verification
+PHP and JavaScript syntax checks; rendered-template asset path checks; supplied CSS parsing and byte comparisons; role mapping and navigation-toggle checks; one-time success alerts and dialog ordering; validation/input-retention regression checks; ZIP integrity.
+Full database, SMTP and PayMongo flows must still be verified on your local XAMPP installation. No live email or payment was sent during verification.

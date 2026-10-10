@@ -1,0 +1,29 @@
+/* Bind database-driven components to the supplied integ design. */
+[hidden]{display:none!important}
+.admin-layout>.main-content{margin-left:0!important;width:100%;min-width:0}
+.admin-layout>.sidebar{display:flex;flex-direction:column;min-height:0}
+.sidebar>.brand>img{width:48px;height:48px;flex:0 0 48px;object-fit:contain}
+.sidebar .uw-logout button,.sidebar .live-logout{border:0;background:transparent;color:inherit;text-align:left;font:inherit;width:100%}
+.sidebar .sidebar-bottom{margin-top:auto}
+.uw-live-topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;height:80px;padding:0 28px;border-bottom:1px solid var(--border);background:white}
+.uw-live-topbar>div:first-of-type{min-width:0}.uw-live-topbar strong{color:var(--navy);font-size:19px}.uw-live-topbar small{color:var(--muted);font-size:12px}
+.uw-live-topbar a{font-size:12px;color:var(--navy)}
+.live-body{width:min(1215px,calc(100% - 40px));max-width:none;margin:0 auto;padding:20px 0 40px}
+.live-body>h1{font-family:"Playfair Display",serif;font-size:32px;color:var(--navy)}
+.dashboard-card{background:white;border:1px solid var(--border);border-radius:9px;min-width:0}
+.uw-table-card.applications-table-card{border-radius:9px;padding:12px;border-color:var(--border)}
+.uw-filters{gap:9px;align-items:end}.uw-filters label{color:var(--muted)}
+.uw-filters input,.uw-filters select{height:39px;border-radius:6px;padding:0 10px;min-width:0}
+#lenderTable{width:100%;font-size:12px}#lenderTable th{background:#f6f9fc;color:var(--navy)}
+.summary-card strong{font-size:24px}.uw-summary-symbol{font-size:24px}
+.uw-live-notifications{position:relative}#lenderNotificationPanel{z-index:1200}
+.uw-lender-menu{display:none;border:0;border-radius:7px;background:#f1f5f9;color:var(--navy);padding:9px 12px;cursor:pointer}
+.uw-lender-overlay{display:none}.uw-standalone-theme{min-height:100vh;background:var(--page-bg,#f7faff)}
+@media(min-width:1101px){.admin-layout>.sidebar{position:fixed;inset:0 auto 0 0;width:250px!important;height:100vh}.admin-layout>.main-content{grid-column:2}}
+@media(max-width:1100px){.admin-layout{display:block}.admin-layout>.sidebar{position:fixed;inset:0 auto 0 0;width:250px!important;height:100dvh;overflow-y:auto!important;padding:25px 18px;transform:translateX(-105%);z-index:1300}.admin-layout>.sidebar.open{transform:translateX(0)}.sidebar .sidebar-menu{display:grid}.uw-lender-menu{display:block;flex:0 0 auto}.uw-lender-overlay.show{display:block;position:fixed;inset:0;background:#00142d73;z-index:1290}.uw-live-topbar{height:auto;min-height:80px;padding:14px 18px}.live-body{width:calc(100% - 32px)}body.uw-lender-menu-open{overflow:hidden}}
+@media(max-width:650px){.uw-live-topbar{gap:10px;flex-wrap:wrap}.uw-live-topbar strong{font-size:15px}.live-body>h1{font-size:27px}.uw-filters label{flex:1 1 130px}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.uw-live-notifications{margin-left:auto}.summary-card{min-width:0}.summary-icon{width:40px;height:40px}.summary-card strong{font-size:22px}}
+
+.live-stats.stats-grid{gap:10px}.live-stats .stat-card{padding:12px;min-width:0}.live-stats .stat-card strong{font-size:15px;margin:5px 0 0}.live-stats .stat-card small{font-size:9px;line-height:1.5}.live-stats .stat-card>div:last-child{min-width:0}.live-stats .stat-card .stat-icon{width:44px;height:44px}.live-stats .stat-card .stat-icon span{font-size:27px}
+
+.uw-lender-overlay{border:0;padding:0}
+@media(min-width:1101px) and (max-height:800px){.admin-layout>.sidebar{overflow-y:auto!important}}

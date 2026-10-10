@@ -30,6 +30,7 @@ try {
     if (!preg_match('/^cs_[a-zA-Z0-9]+$/D', $session) || parse_url($url, PHP_URL_SCHEME) !== 'https' || parse_url($url, PHP_URL_HOST) !== 'checkout.paymongo.com')
         throw new RuntimeException('Payment checkout response requires verification.');
     db("UPDATE paymongo_orders SET session_id=?,checkout_url=?,state=CASE WHEN state='creating' THEN 'pending' ELSE state END WHERE order_id=?", [$session, $url, $orderId]);
+    if (uw_form_request()) uw_form_json(['ok'=>true,'redirect'=>$url]);
     header('Location: ' . $url);
     exit;
 } catch (Throwable $e) {

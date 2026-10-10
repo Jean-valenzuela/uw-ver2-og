@@ -9,10 +9,10 @@
     <title><?= e($title) ?> | Utang Wise</title>
 
     <!-- APPLICATIONS CSS -->
-    <link rel="stylesheet" href="../assets/css/applications.css">
+    
 
     <!-- DATATABLES -->
-    <link rel="stylesheet" href="../assets/css/lender-flow.css">
+    <link rel="stylesheet" href="../assets/css/integ-lender/lender-flow.css?v=20261010">
 
     <!-- GOOGLE FONTS -->
     <link
@@ -25,7 +25,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
         rel="stylesheet"
     >
-<link rel="stylesheet" href="../assets/css/lender-live.css"></head>
+<link rel="stylesheet" href="../assets/css/integ-lender/lender-live.css?v=20261010"><?php uw_role_design_assets('lender', basename(__FILE__, '.php')); ?></head>
 
 <body>
 
@@ -116,4 +116,4 @@
     <!-- ==================================================
          MAIN CONTENT
     =================================================== -->
-    <main class="main-content"><?php $lenderAccount=$lender;require __DIR__.'/../helpers/lender_topbar.php'; ?><div class="page-content"><?php require __DIR__.'/../helpers/lender_view.php'; ?></div></main></div><script src="../assets/js/datatables.min.js"></script><script src="../assets/js/lender-flow.js"></script><script src="../assets/js/lender-notifications.js"></script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body></html>
+    <main class="main-content"><?php $lenderAccount=$lender;require __DIR__.'/../helpers/lender_topbar.php'; ?><div class="page-content"><?php require __DIR__.'/../helpers/lender_view.php'; ?></div></main></div><script src="../assets/js/datatables.min.js"></script><script src="../assets/js/lender-flow.js?v=20261010"></script><script src="../assets/js/lender-notifications.js"></script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body></html>

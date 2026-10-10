@@ -14,8 +14,9 @@ try {
     if ($u['account_status'] !== 'incomplete')
         throw new RuntimeException('This application has already been submitted.');
     $v = ['source_of_funds' => trim($_POST['source_of_funds'] ?? ''), 'lending_limit' => trim($_POST['lending_limit'] ?? ''), 'lender_reason' => trim($_POST['lender_reason'] ?? '')];
-    if (!$v['source_of_funds'] || strlen($v['source_of_funds']) > 1000 || !$v['lender_reason'] || strlen($v['lender_reason']) > 2000 || !preg_match('/^\d{1,10}(\.\d{1,2})?$/D', $v['lending_limit']) || (float) $v['lending_limit'] <= 0)
-        throw new RuntimeException('Complete the requirements and enter a positive lending limit.');
+    if (!$v['source_of_funds'] || strlen($v['source_of_funds']) > 1000) throw new RuntimeException(uw_field_message('source_of_funds','Enter your source of funds (up to 1,000 characters).'));
+    if (!$v['lender_reason'] || strlen($v['lender_reason']) > 2000) throw new RuntimeException(uw_field_message('lender_reason','Enter your reason for lending (up to 2,000 characters).'));
+    if (!preg_match('/^\d{1,10}(\.\d{1,2})?$/D', $v['lending_limit']) || (float)$v['lending_limit'] <= 0) throw new RuntimeException(uw_field_message('lending_limit','Enter a positive lending limit with up to two decimal places.'));
     upload_lender_photo($u['user_id']);
     $v['photo_required'] = true;
     $v['photo_public'] = true;

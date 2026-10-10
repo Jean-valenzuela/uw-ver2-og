@@ -13,11 +13,11 @@ if(cfg.page!=='dashboard'){
 async function api(action,values={}){
  const r=await fetch('../controllers/admin-actions.php',{method:'POST',body:new URLSearchParams({csrf:cfg.csrf,action,...values})});
  if(!r.headers.get('content-type')?.includes('application/json'))throw new Error('Your session expired or the request was rejected. Reload and sign in again.');
- const d=await r.json();if(!r.ok)throw new Error(d.error||'Request failed.');return d;
+ const d=await r.json();if(!r.ok)throw Object.assign(new Error(d.error||'Request failed.'),{field:d.field});return d;
 }
 const statusMessage=s=>({sent:'The mail server accepted the notification.',queued:'Email is queued. Configure the Gmail App Password, then retry.',failed:'Email failed. Check Gmail settings and retry.',uncertain:'Delivery is uncertain. Check Gmail Sent before retrying.',sending:'Email is currently being sent.'}[s]||'');
-function finish(d){sessionStorage.setItem('uwAdminFeedback',[d.message,statusMessage(d.mail_status)].filter(Boolean).join(' '));location.reload();}
-function error(e){let el=body.querySelector('[role="alert"]');if(!el){el=document.createElement('p');el.setAttribute('role','alert');el.className='admin-error';body.prepend(el);}el.textContent=e.message;}
+async function finish(d){await window.UWSuccess.show({title:'Saved successfully',text:[d.message,statusMessage(d.mail_status)].filter(Boolean).join(' ')||'Your changes were saved.'});location.reload();}
+function error(e){const form=body.querySelector('form');if(form&&window.UWForms){window.UWForms.showError(form,e.message,e.field);if(e.field)return;}let el=body.querySelector('[role="alert"]');if(!el){el=document.createElement('p');el.setAttribute('role','alert');el.className='admin-error';body.prepend(el);}el.textContent=e.message;}
 let generation=0;
 async function show(id){
  const request=++generation;body.textContent='Loading application…';if(!modal.open)modal.showModal();
@@ -31,19 +31,19 @@ async function show(id){
  if(u.account_status==='pending'){
  area.innerHTML='<form id="decisionForm" class="admin-form"><label>Review note (required for rejection)<textarea name="note" maxlength="2000"></textarea></label><div class="admin-actions"><button class="approve-btn" type="submit" value="approve">Approve & Send email</button><button class="reject-btn" type="submit" value="reject">Reject & Send email</button></div></form>';
  document.getElementById('decisionForm').addEventListener('submit',async e=>{
- e.preventDefault();const action=e.submitter?.value;if(!action)return;const note=e.target.elements.note.value.trim();
- if(action==='reject'&&note.length<5){error(new Error('Provide a rejection reason of at least 5 characters.'));return;}
- const buttons=[...e.target.querySelectorAll('button')];buttons.forEach(b=>b.disabled=true);
- try{finish(await api(action,{id,note}));}catch(err){error(err);buttons.forEach(b=>b.disabled=false);}
+ e.preventDefault();if(e.target.dataset.uwPending==='1')return;const action=e.submitter?.value;if(!action)return;const note=e.target.elements.note.value.trim();
+ if(action==='reject'&&note.length<5){error(Object.assign(new Error('Provide a rejection reason of at least 5 characters.'),{field:'note'}));return;}
+ e.target.dataset.uwPending='1';const buttons=[...e.target.querySelectorAll('button')];buttons.forEach(b=>b.disabled=true);
+ try{await finish(await api(action,{id,note}));}catch(err){error(err);delete e.target.dataset.uwPending;buttons.forEach(b=>b.disabled=false);}
  });
  }else if(u.account_status==='approved'&&cfg.page==='approved-lenders'){
  area.innerHTML='<form id="deleteForm" class="admin-form"><h3>Delete profile</h3><p>This removes the lender from the lists and disables login. Linked loan records are retained.</p><label>Type DELETE to confirm<input name="confirm_delete" required pattern="DELETE" autocomplete="off"></label><button class="reject-btn" type="submit">Delete profile</button></form>';
- document.getElementById('deleteForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;try{finish(await api('delete',{id,confirm_delete:e.target.elements.confirm_delete.value}));}catch(err){error(err);b.disabled=false;}});
+ document.getElementById('deleteForm').addEventListener('submit',async e=>{e.preventDefault();if(e.target.dataset.uwPending==='1')return;e.target.dataset.uwPending='1';const b=e.target.querySelector('button');b.disabled=true;try{await finish(await api('delete',{id,confirm_delete:e.target.elements.confirm_delete.value}));}catch(err){error(err);delete e.target.dataset.uwPending;b.disabled=false;}});
  }
  document.getElementById('mailArea').innerHTML=u.emails.map(m=>`<section class="admin-mail"><strong>Email: ${esc(m.status)}</strong><p>${esc(m.last_error||statusMessage(m.status))}</p>${['queued','failed','uncertain'].includes(m.status)?`${m.status==='uncertain'?'<label><input type="checkbox" class="ack"> I checked Gmail Sent and acknowledge that retrying may duplicate the email.</label>':''}<button class="view-btn" type="button" data-retry="${Number(m.email_id)}" data-uncertain="${m.status==='uncertain'}">Retry email</button>`:''}</section>`).join('');
  body.querySelectorAll('[data-retry]').forEach(b=>b.addEventListener('click',async()=>{
  if(b.dataset.uncertain==='true'&&!b.closest('section').querySelector('.ack').checked){error(new Error('Check Gmail Sent and acknowledge before retrying.'));return;}
- b.disabled=true;try{const d=await api('retry',{id:b.dataset.retry,confirm_uncertain:b.dataset.uncertain==='true'?'1':'0'});feedback.textContent=statusMessage(d.mail_status);await show(id);}catch(err){error(err);b.disabled=false;}
+ b.disabled=true;try{const d=await api('retry',{id:b.dataset.retry,confirm_uncertain:b.dataset.uncertain==='true'?'1':'0'});feedback.textContent=statusMessage(d.mail_status);await window.UWSuccess.show({title:'Email status updated',text:feedback.textContent||d.message||'Email retry completed.'});await show(id);}catch(err){error(err);b.disabled=false;}
  }));
  await api('read',{id});await notifications();
  }catch(e){if(request===generation)error(e);}

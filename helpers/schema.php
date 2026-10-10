@@ -1,6 +1,7 @@
 <?php
 function uw_ensure_update_schema(mysqli $conn) {
  $groups=[
+  'login-update.sql'=>['login_attempts'],
   'borrower-portal.sql'=>['borrower_agreement_uploads','borrower_loan_requests','borrower_profile_audit','borrower_notification_reads','paymongo_orders'],
   'borrower-update.sql'=>['borrower_submissions'],
   'lender-update.sql'=>['lender_contracts','lender_outbox','extension_requests'],

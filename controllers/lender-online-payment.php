@@ -22,7 +22,6 @@ try {
     db('UPDATE paymongo_orders SET session_id=? WHERE order_id=? AND session_id IS NULL', [$session, $o['order_id']]);
     $_SESSION['uw_success'] = ['title' => 'Payment status checked', 'text' => 'Current status: ' . $state];
 } catch (Throwable $e) {
-    $_SESSION['notice_kind'] = 'error';
-    $_SESSION['notice'] = $e instanceof DomainException ? $e->getMessage() : 'PayMongo could not confirm the status. No balance was changed.';
+    fail_form($e instanceof DomainException ? $e->getMessage() : 'PayMongo could not confirm the status. No balance was changed.', 'lender/online-payments.php');
 }
 go('lender/online-payments.php');

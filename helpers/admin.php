@@ -6,7 +6,7 @@ function admin_user() {
  if($u['account_status']!=='approved'){http_response_code(403);exit('An approved administrator account is required.');}
  return $u;
 }
-function admin_json($data,$status=200){http_response_code($status);header('Content-Type: application/json');echo json_encode($data,JSON_INVALID_UTF8_SUBSTITUTE);exit;}
+function admin_json($data,$status=200){ if (isset($data['error']) && !isset($data['field'])) $data['field']=uw_error_field($data['error']); http_response_code($status);header('Content-Type: application/json');echo json_encode($data,JSON_INVALID_UTF8_SUBSTITUTE);exit;}
 function admin_lender($id,$lock=false){
  $u=db("SELECT u.user_id,u.user_fn,u.user_ln,u.email,u.phone,u.account_status,u.review_note,u.reviewed_at,s.submitted_at,s.deleted_at FROM users u LEFT JOIN lender_submissions s ON s.user_id=u.user_id WHERE u.user_id=? AND u.user_type_id=1".($lock?' FOR UPDATE':''),[$id])->get_result()->fetch_assoc();
  if(!$u||$u['deleted_at'])throw new DomainException('Lender profile not found.');return $u;

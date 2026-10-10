@@ -25,7 +25,7 @@ try {
         throw new DomainException('Reload the payment form.');
     if (db('SELECT payment_id FROM loan_payments WHERE request_token=?', [$token])->get_result()->num_rows)
         throw new DomainException('This payment was already recorded. Reload the history.');
-    $date = lender_date($_POST['payment_date'] ?? '')->format('Y-m-d');
+    $date = lender_date($_POST['payment_date'] ?? '', 'payment_date')->format('Y-m-d');
     $release = db('SELECT released_at FROM lender_contracts WHERE agreement_id=?', [$id])->get_result()->fetch_assoc();
     $earliest = substr($release['released_at'] ?? $a['approval_date'], 0, 10);
     if ($date > date('Y-m-d') || $date < $earliest)

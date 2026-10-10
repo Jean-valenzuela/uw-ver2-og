@@ -1,0 +1,10 @@
+Installation:
+1. Start Apache and MySQL in XAMPP.
+2. Merge this uw-ver2-og folder into C:/xampp/htdocs/uw-ver2-og, replacing matching files. Avoid a nested project folder.
+3. Default database: localhost, root, empty password, uw-ver2. Adjust ajax/config.php if your local credentials differ. An empty password is not a space.
+4. Open http://localhost/uw-ver2-og/login.php (borrower/lender) or /admin/login.php (administrator).
+5. Continue using your existing account credentials. Pending/rejected account approval restrictions remain in place.
+The missing private database file is now optional. Existing private settings and UW_DB_* environment overrides are supported.
+The login_attempts table is added automatically if missing. If the database user cannot create tables, import sql/all-updates.sql into your existing database.
+Also corrected the broken PHP include path on the root lenders.php page.
+No CSS, JavaScript, page markup, passwords or existing account records were changed.

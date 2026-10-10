@@ -2,7 +2,7 @@
 require __DIR__.'/../../ajax/app.php';header('Cache-Control: no-store, private');$u=require_user(1);
 if($u['account_status']!=='incomplete'){if($u['account_status']==='approved')go(destination($u));unset($_SESSION['uid']);go('login.php');}
 $v=(profile($u['user_id'])?:[])['requirements']??[];
-?><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lender Requirements | Utang Wise</title><link rel="stylesheet" href="../../assets/css/superadmin.css"><link rel="stylesheet" href="../../assets/css/admin-flow.css"></head><body><main class="requirements-page"><h1>Lender Requirements</h1><p>Submit these requirements for administrator review.</p><?php notice(); ?>
+?><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lender Requirements | Utang Wise</title><link rel="stylesheet" href="../../assets/css/superadmin.css"><link rel="stylesheet" href="../../assets/css/admin-flow.css"><?php uw_role_design_assets('lender', basename(__FILE__, '.php')); ?></head><body><main class="requirements-page"><h1>Lender Requirements</h1><p>Submit these requirements for administrator review.</p><?php notice(); ?>
 <form method="post" action="../../controllers/lender-submit.php" enctype="multipart/form-data" class="admin-form"><?php csrf(); ?>
 <label>Source of funds<textarea name="source_of_funds" maxlength="1000" required><?= e($v['source_of_funds']??'') ?></textarea></label>
 <label>Lending limit (PHP)<input type="number" name="lending_limit" min="0.01" max="9999999999.99" step="0.01" value="<?= e($v['lending_limit']??'') ?>" required></label>

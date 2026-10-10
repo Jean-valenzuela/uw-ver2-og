@@ -8,7 +8,7 @@
 
     <title>Loan Application | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/request.css">
+    
 
     <!-- GOOGLE FONTS -->
     <link
@@ -21,7 +21,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
         rel="stylesheet"
     >
-</head>
+<?php uw_role_design_assets('lender', basename(__FILE__, '.php')); ?></head>
 
 <body>
 

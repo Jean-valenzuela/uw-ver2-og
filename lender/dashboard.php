@@ -17,9 +17,9 @@ $max = max(1, ...array_column($d['months'], 'lent'), ...array_column($d['months'
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Lender Dashboard | Utang Wise</title>
-    <link rel="stylesheet" href="../assets/css/client-dashboard.css">
-    <link rel="stylesheet" href="../assets/css/lender-live.css">
-</head>
+    
+    <link rel="stylesheet" href="../assets/css/integ-lender/lender-live.css?v=20261010">
+<?php uw_role_design_assets('lender', basename(__FILE__, '.php')); ?></head>
 
 <body>
     <div class="admin-layout">
@@ -40,10 +40,10 @@ $max = max(1, ...array_column($d['months'], 'lent'), ...array_column($d['months'
             <div class="live-body">
                 <h1>Lender Dashboard</h1>
                 <p>Your lending activity, balances and upcoming payments.</p>
-                <section class="live-stats">
+                <section class="live-stats stats-grid">
                     <?php foreach (['lent' => 'Total Amount Lent', 'paid' => 'Total Paid', 'overdue' => 'Total Overdue', 'interest' => 'Interest Collection', 'loaners' => 'Total Loaners'] as $key => $label): ?>
-                        <article class="dashboard-card"><span><?= e($label) ?></span><strong
-                                data-metric="<?= e($key) ?>"><?= $key === 'loaners' ? (int) $d['totals'][$key] : e(dash_money($d['totals'][$key])) ?></strong><small><?= ['lent' => 'Released principal, excluding draft loans', 'paid' => 'Payments applied to installments', 'overdue' => 'Unpaid installments before today', 'interest' => 'Interest portion of recorded payments', 'loaners' => 'Approved borrower accounts'][$key] ?></small>
+                        <article class="dashboard-card stat-card"><div class="stat-icon <?= ['lent'=>'blue','paid'=>'green','overdue'=>'orange','interest'=>'purple','loaners'=>'blue'][$key] ?>"><span class="material-symbols-outlined" aria-hidden="true"><?= ['lent'=>'account_balance_wallet','paid'=>'payments','overdue'=>'schedule','interest'=>'trending_up','loaners'=>'group'][$key] ?></span></div><div><span><?= e($label) ?></span><strong
+                                data-metric="<?= e($key) ?>"><?= $key === 'loaners' ? (int) $d['totals'][$key] : e(dash_money($d['totals'][$key])) ?></strong><small><?= ['lent' => 'Released principal, excluding draft loans', 'paid' => 'Payments applied to installments', 'overdue' => 'Unpaid installments before today', 'interest' => 'Interest portion of recorded payments', 'loaners' => 'Approved borrower accounts'][$key] ?></small></div>
                         </article><?php endforeach; ?>
                 </section>
                 <?php if ($d['totals']['legacy_interest']): ?>

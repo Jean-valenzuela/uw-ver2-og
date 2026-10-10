@@ -8,7 +8,7 @@
 
     <title>Supporting Documents | Utang Wise</title>
 
-    <link rel="stylesheet" href="../css/loaners-priv.css">
+    
 
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
@@ -19,7 +19,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
         rel="stylesheet"
     >
-</head>
+<?php uw_role_design_assets('lender', basename(__FILE__, '.php')); ?></head>
 
 <body>
 

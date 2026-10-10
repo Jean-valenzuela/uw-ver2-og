@@ -1,9 +1,11 @@
 <?php
 
+require_once __DIR__.'/../helpers/form_validation.php';
 require_once __DIR__ . '/config.php';
 require_once __DIR__.'/../helpers/schema.php';
 uw_ensure_update_schema($conn);
 require_once __DIR__.'/../helpers/success_alerts.php';
+require_once __DIR__.'/../helpers/design_assets.php';
 
 // Set default timezone
 date_default_timezone_set(
@@ -14,6 +16,7 @@ date_default_timezone_set(
 foreach ($_POST as $value) {
     if (!is_string($value)) {
         http_response_code(400);
+        if (uw_form_request()) uw_form_error('Invalid form field.', null, 400);
         exit('Invalid form field.');
     }
 }
@@ -87,6 +90,7 @@ function check_csrf()
         !hash_equals($_SESSION['csrf'], $_POST['csrf'])
     ) {
         http_response_code(403);
+        if (uw_form_request()) uw_form_json(['ok'=>false,'error'=>'Your form token expired. Your details are retained; please submit again.','csrf'=>$_SESSION['csrf']],403);
         exit('Invalid form token. Reload the page.');
     }
 }
@@ -119,6 +123,12 @@ function base_url()
 
 function go($path)
 {
+    if (uw_form_request()) {
+        $success=$_SESSION['uw_success'] ?? null;
+        if (!$success && ($_SESSION['notice_kind'] ?? '') === 'success' && !empty($_SESSION['notice'])) $success=['title'=>'Saved successfully','text'=>$_SESSION['notice']];
+        if ($success) unset($_SESSION['uw_success'],$_SESSION['notice'],$_SESSION['notice_kind']);
+        uw_form_json(['ok'=>true,'redirect'=>base_url().'/'.$path,'success'=>$success]);
+    }
     header(
         'Location: ' . base_url() . '/' . $path
     );
@@ -149,6 +159,7 @@ function require_user($role = null)
 
     // Redirect unauthenticated users
     if (!$u) {
+        if (uw_form_request()) uw_form_error('Your session expired. Sign in again in another tab, then retry this form. Your entered details are still here.', null, 401);
         go(
             $role === 3
                 ? 'admin/login.php'
@@ -214,8 +225,12 @@ function notice()
     }
 }
 
-function fail_form($message, $path)
+function fail_form($message, $path, $field = null)
 {
+    if (uw_form_request()) {
+        unset($_SESSION['borrower_old']);
+        uw_form_error($message, $field);
+    }
     $_SESSION['notice'] = $message;
     $_SESSION['notice_kind'] = 'error';
 
@@ -299,11 +314,9 @@ function upload_document($id, $kind, $required = true)
             $required &&
             !document_exists($id, $kind)
         ) {
-            throw new RuntimeException(
-                'Please upload '
+            throw new RuntimeException(uw_field_message($kind, 'Please upload '
                 . str_replace('_', ' ', $kind)
-                . '.'
-            );
+                . '.'));
         }
 
         return;
@@ -315,9 +328,7 @@ function upload_document($id, $kind, $required = true)
         $f['size'] > 5 * 1024 * 1024 ||
         !is_uploaded_file($f['tmp_name'])
     ) {
-        throw new RuntimeException(
-            'Upload failed. Files must be at most 5 MB.'
-        );
+        throw new RuntimeException(uw_field_message($kind, 'Upload failed. Files must be at most 5 MB.'));
     }
 
     // Detect file MIME type
@@ -336,9 +347,7 @@ function upload_document($id, $kind, $required = true)
             true
         )
     ) {
-        throw new RuntimeException(
-            'Only JPG, PNG and PDF documents are accepted.'
-        );
+        throw new RuntimeException(uw_field_message($kind, 'Only JPG, PNG and PDF documents are accepted.'));
     }
 
     // Retrieve database packet size limit
@@ -350,11 +359,9 @@ function upload_document($id, $kind, $required = true)
     if (
         filesize($f['tmp_name']) + 65536 > $packetLimit
     ) {
-        throw new RuntimeException(
-            'This document exceeds the server’s current upload capacity. '
+        throw new RuntimeException(uw_field_message($kind, 'This document exceeds the server’s current upload capacity. '
             . 'Please choose a smaller file or ask the administrator '
-            . 'to increase the document upload capacity.'
-        );
+            . 'to increase the document upload capacity.'));
     }
 
     // Insert or update application document
@@ -435,7 +442,7 @@ function page_end()
 
           </section>
         </main>
-    </body>
+    <script src="../assets/js/form-validation.js" defer></script></body>
     </html>';
 }
 
