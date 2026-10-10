@@ -20,23 +20,14 @@
     >
 
     <!-- DM SANS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    
 
     <!-- PLAYFAIR DISPLAY -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet"
-    >
+    
 
     <!-- MATERIAL SYMBOLS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-        rel="stylesheet"
-    >
-</head>
+    
+<link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/local-fonts.css"></head>
 
 
 <body>

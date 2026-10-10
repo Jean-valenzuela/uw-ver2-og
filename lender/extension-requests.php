@@ -15,17 +15,11 @@
     <link rel="stylesheet" href="../assets/css/integ-lender/lender-flow.css?v=20261010">
 
     <!-- GOOGLE FONTS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet"
-    >
+    
 
     <!-- MATERIAL ICONS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-        rel="stylesheet"
-    >
-<link rel="stylesheet" href="../assets/css/integ-lender/lender-live.css?v=20261010"><?php uw_role_design_assets('lender', basename(__FILE__, '.php')); ?></head>
+    
+<link rel="stylesheet" href="../assets/css/integ-lender/lender-live.css?v=20261010"><?php uw_role_design_assets('lender', basename(__FILE__, '.php')); ?><link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/local-fonts.css"></head>
 
 <body>
 
@@ -34,83 +28,7 @@
     <!-- ==================================================
          SIDEBAR
     =================================================== -->
-    <aside class="sidebar">
-
-        <div class="brand">
-
-            <div class="brand-icon">
-                ₱
-            </div>
-
-            <div class="brand-text">
-                <h2>UTANG WISE</h2>
-                <span>LENDING MADE SIMPLE</span>
-            </div>
-
-        </div>
-
-
-        <nav class="sidebar-menu"><?php foreach (['dashboard'=>'Dashboard','applications'=>'Applications','loaners'=>'Loaners','loans'=>'Loans','payments'=>'Payments','extension-requests'=>'Extension Requests'] as $key=>$name): ?><a href="<?= e($key) ?>.php" class="menu-item <?= $mode===$key?'active':'' ?>"><?= e($name) ?></a><?php endforeach; ?><form class="uw-logout" method="post" action="../ajax/logout.php"><?php csrf(); ?><button class="uw-button secondary" type="submit">Log out</button></form></nav>
-
-
-        <div class="sidebar-divider"></div>
-
-
-        <nav class="sidebar-menu sidebar-bottom">
-
-            <a href="#" class="menu-item">
-
-                <span class="material-symbols-outlined">
-                    settings
-                </span>
-
-                Settings
-
-            </a>
-
-
-            <a href="#" class="menu-item">
-
-                <span class="material-symbols-outlined">
-                    support_agent
-                </span>
-
-                Help & Support
-
-            </a>
-
-
-            
-
-        </nav>
-
-
-        <div class="security-box">
-
-            <div class="security-icon">
-
-                <span class="material-symbols-outlined">
-                    verified_user
-                </span>
-
-            </div>
-
-            <div>
-
-                <strong>
-                    Secure & Trusted
-                </strong>
-
-                <p>
-                    Client information is protected
-                    and handled securely.
-                </p>
-
-            </div>
-
-        </div>
-
-    </aside>
+    <?php require __DIR__.'/../helpers/lender_sidebar.php'; ?>
 
 
     <!-- ==================================================

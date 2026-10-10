@@ -48,14 +48,14 @@ function initials($name) {
 
     <title>My Profile | Utang Wise</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    
 
-    <link rel="stylesheet" href="../assets/css/profile.css">
-<link rel="stylesheet" href="../assets/css/borrower-flow.css"></head>
+    <link rel="stylesheet" href="../assets/css/integ-borrower/profile.css">
+<link rel="stylesheet" href="../assets/css/borrower-flow.css"><link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/local-fonts.css"></head>
 
 <body>
 

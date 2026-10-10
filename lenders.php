@@ -12,23 +12,17 @@
     <title>Our Lenders | Utang Wise</title>
 
     <!-- GOOGLE FONTS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet"
-    >
+    
 
     <!-- MATERIAL SYMBOLS -->
-    <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-    >
+    
 
     <!-- CSS -->
     <link
         rel="stylesheet"
         href="<?= e(base_url()) ?>/assets/css/lender.css?v=<?= filemtime(__DIR__.'/assets/css/lender.css') ?>"
     >
-<style>.lender-symbol{font-family:Arial,sans-serif;display:inline-flex;align-items:center;justify-content:center;min-width:16px;font-size:16px;color:inherit}.verified-badge .lender-symbol{color:#cb8f22}.lender-photo-placeholder{height:100%;display:grid;place-items:center;font:700 64px Georgia,serif;color:#062347;background:linear-gradient(145deg,#f8e5c4,#e0e8f0)}.lender-description{min-height:45px}</style></head>
+<style>.lender-symbol{font-family:Arial,sans-serif;display:inline-flex;align-items:center;justify-content:center;min-width:16px;font-size:16px;color:inherit}.verified-badge .lender-symbol{color:#cb8f22}.lender-photo-placeholder{height:100%;display:grid;place-items:center;font:700 64px Georgia,serif;color:#062347;background:linear-gradient(145deg,#f8e5c4,#e0e8f0)}.lender-description{min-height:45px}</style><link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/local-fonts.css"></head>
 
 <body>
 

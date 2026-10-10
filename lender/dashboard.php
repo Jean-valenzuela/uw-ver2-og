@@ -23,19 +23,7 @@ $max = max(1, ...array_column($d['months'], 'lent'), ...array_column($d['months'
 
 <body>
     <div class="admin-layout">
-        <aside class="sidebar">
-            <div class="brand"><img src="../assets/logo/utangwiselogo.png" width="42" alt="Utang Wise">
-                <div class="brand-text">
-                    <h2>UTANG WISE</h2><span>LENDING MADE SIMPLE</span>
-                </div>
-            </div>
-            <nav class="sidebar-menu">
-                <?php foreach (['dashboard' => 'Dashboard', 'applications' => 'Applications', 'loaners' => 'Loaners', 'loans' => 'Loans', 'payments' => 'Payments', 'extension-requests' => 'Extension Requests', 'profile-photo' => 'Profile Photo'] as $path => $label): ?><a
-                        class="menu-item <?= $path === 'dashboard' ? 'active' : '' ?>"
-                        href="<?= e($path) ?>.php"><?= e($label) ?></a><?php endforeach; ?></nav>
-            <form method="post" action="../ajax/logout.php"><?php csrf(); ?><button class="menu-item live-logout">Log
-                    out</button></form>
-        </aside>
+        <?php require __DIR__.'/../helpers/lender_sidebar.php'; ?>
         <main class="main-content"><?php require __DIR__ . '/../helpers/lender_topbar.php'; ?>
             <div class="live-body">
                 <h1>Lender Dashboard</h1>

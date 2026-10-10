@@ -12,23 +12,17 @@
     <title>Utang Wise</title>
 
     <!-- GOOGLE FONTS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet"
-    >
+    
 
     <!-- MATERIAL SYMBOLS -->
-    <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-    >
+    
 
     <!-- CSS -->
     <link
         rel="stylesheet"
         href="assets/css/style.css"
     >
-</head>
+<link rel="stylesheet" href="assets/css/local-fonts.css"></head>
 
 <body>
 

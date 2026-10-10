@@ -11,9 +11,9 @@ if(cfg.page!=='dashboard'){
  document.getElementById('statusFilter')?.addEventListener('change',e=>table.column(4).search(e.target.value,{exact:true}).draw());
 }
 async function api(action,values={}){
- const r=await fetch('../controllers/admin-actions.php',{method:'POST',body:new URLSearchParams({csrf:cfg.csrf,action,...values})});
+ const r=await fetch('../controllers/admin-actions.php',{method:'POST',headers:{'X-UW-Form':'1'},body:new URLSearchParams({csrf:cfg.csrf,action,...values})});
  if(!r.headers.get('content-type')?.includes('application/json'))throw new Error('Your session expired or the request was rejected. Reload and sign in again.');
- const d=await r.json();if(!r.ok)throw Object.assign(new Error(d.error||'Request failed.'),{field:d.field});return d;
+ const d=await r.json();if(d.csrf)cfg.csrf=d.csrf;if(!r.ok)throw Object.assign(new Error(d.error||'Request failed.'),{field:d.field});return d;
 }
 const statusMessage=s=>({sent:'The mail server accepted the notification.',queued:'Email is queued. Configure the Gmail App Password, then retry.',failed:'Email failed. Check Gmail settings and retry.',uncertain:'Delivery is uncertain. Check Gmail Sent before retrying.',sending:'Email is currently being sent.'}[s]||'');
 async function finish(d){await window.UWSuccess.show({title:'Saved successfully',text:[d.message,statusMessage(d.mail_status)].filter(Boolean).join(' ')||'Your changes were saved.'});location.reload();}
@@ -54,7 +54,7 @@ modal.addEventListener('cancel',()=>generation++);
 const panel=document.getElementById('notificationsPanel'),toggle=document.getElementById('notificationsToggle');
 toggle.addEventListener('click',()=>{panel.hidden=!panel.hidden;toggle.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)notifications();});
 async function notifications(){
- try{const r=await fetch('../controllers/admin-data.php?kind=notifications');if(!r.ok||!r.headers.get('content-type')?.includes('application/json'))throw new Error('Sign in again to refresh notifications.');const d=await r.json();
+ try{const r=await fetch('../controllers/admin-data.php?kind=notifications');if(!r.ok||!r.headers.get('content-type')?.includes('application/json'))throw new Error('Sign in again to refresh notifications.');const d=await r.json();if(d.csrf)cfg.csrf=d.csrf;
  document.getElementById('notificationCount').textContent=d.count;
  document.getElementById('notificationsList').innerHTML=d.items.map(n=>`<button type="button" data-view="${Number(n.user_id)}">${esc(n.user_fn+' '+n.user_ln)} submitted a lender application<small>${esc(n.submitted_at||'Earlier application — date not recorded')}</small></button>`).join('')||'<p>No unread applications.</p>';
  document.getElementById('notificationError').textContent='';

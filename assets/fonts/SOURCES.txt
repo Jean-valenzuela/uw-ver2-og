@@ -1,0 +1,4 @@
+Fonts downloaded from the Google Fonts CSS API and fonts.gstatic.com for the font families already used by the supplied design: DM Sans (400,500,600,700), Playfair Display (600,700), Material Symbols Outlined. License texts are included beside the font files.
+DM Sans license: https://github.com/google/fonts/blob/main/ofl/dmsans/OFL.txt
+Playfair Display license: https://github.com/google/fonts/blob/main/ofl/playfairdisplay/OFL.txt
+Material Symbols license: https://github.com/google/material-design-icons/blob/master/LICENSE

@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="../../assets/css/personal-details.css">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
 
     <!-- Material Symbols -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/css/borrower-flow.css"></head>
+    
+<link rel="stylesheet" href="../../assets/css/borrower-flow.css"><link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/local-fonts.css"></head>
 
 <body>
 

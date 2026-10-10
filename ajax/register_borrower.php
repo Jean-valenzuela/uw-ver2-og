@@ -21,7 +21,7 @@ if (!preg_match('/^9[0-9]{9}$/D',$phone)) fail_form('Enter 10 mobile digits star
 if (strlen($password)<8 || strlen($password)>72) fail_form('Use a password of 8 to 72 bytes.', $back, 'password');
 if ($password !== ($_POST['confirm-password'] ?? '')) fail_form('The passwords do not match.', $back, 'confirm-password');
 if (empty($_POST['terms'])) fail_form('Please accept the registration terms.', $back);
-if (!selected_lender($lenderId)) fail_form('Please choose an approved lender.','lenders.php');
+if (!selected_lender($lenderId)) fail_form('Please choose an approved lender.',$back,'lender_id');
 try {
     db("INSERT INTO users (user_type_id,user_fn,user_ln,email,phone,password_hash,selected_lender_id,account_status) VALUES (2,?,?,?,?,?,?,'incomplete')",[$first,$last,$email,'0'.$phone,password_hash($password,PASSWORD_DEFAULT),$lenderId]);
     session_regenerate_id(true);
