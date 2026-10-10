@@ -16,7 +16,10 @@ async function api(action,values={}){
  const d=await r.json();if(d.csrf)cfg.csrf=d.csrf;if(!r.ok)throw Object.assign(new Error(d.error||'Request failed.'),{field:d.field});return d;
 }
 const statusMessage=s=>({sent:'The mail server accepted the notification.',queued:'Email is queued. Configure the Gmail App Password, then retry.',failed:'Email failed.',uncertain:'Delivery is uncertain. Check Gmail Sent before retrying.',sending:'Email is currently being sent.'}[s]||'');
-const mailStatusText=d=>[statusMessage(d.mail_status),d.mail_status==='failed'?d.mail_error:''].filter(Boolean).join(' ');
+const mailStatusText=d=>[
+ statusMessage(d.mail_status),
+ d.mail_error || ''
+].filter(Boolean).join(' ');
 async function finish(d){await window.UWSuccess.show({title:'Saved successfully',text:[d.message,mailStatusText(d)].filter(Boolean).join(' ')||'Your changes were saved.'});location.reload();}
 function error(e){const form=body.querySelector('form');if(form&&window.UWForms){window.UWForms.showError(form,e.message,e.field);if(e.field)return;}let el=body.querySelector('[role="alert"]');if(!el){el=document.createElement('p');el.setAttribute('role','alert');el.className='admin-error';body.prepend(el);}el.textContent=e.message;}
 let generation=0;
