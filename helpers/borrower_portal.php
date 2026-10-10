@@ -179,13 +179,14 @@ function portal_start($title, $active)
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?= e($title) ?> | Utang Wise</title>
-        <link rel="stylesheet" href="../assets/css/integ-borrower/<?= e($isDashboard ? $design : 'client-dashboard') ?>.css">
+        <link rel="stylesheet" href="../assets/css/integ-borrower/<?= e($isDashboard ? $design : 'client-dashboard') ?>.css?v=20261010-shell2">
         <?php if (!$isDashboard && $design !== 'client-dashboard'): ?>
-            <link rel="stylesheet" href="../assets/css/integ-borrower/<?= e($design) ?>.css">
+            <link rel="stylesheet" href="../assets/css/integ-borrower/<?= e($design) ?>.css?v=20261010-shell2">
         <?php endif; ?>
         <link rel="stylesheet" href="../assets/css/borrower-flow.css">
         <link rel="stylesheet" href="../assets/css/borrower-portal.css">
         <link rel="stylesheet" href="../assets/css/portal-integration.css">
+        <link rel="stylesheet" href="../assets/css/borrower-portal-pages.css?v=20261010-2">
         <link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/local-fonts.css">
     </head>
     <body class="uw-borrower-portal">

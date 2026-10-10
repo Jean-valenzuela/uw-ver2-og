@@ -1,0 +1,298 @@
+/* Shared shell and centered content for borrower non-dashboard pages. */
+.uw-borrower-portal .client-layout {
+    display: block;
+    min-height: 100vh;
+    background: #f7faff;
+}
+
+.uw-borrower-portal .sidebar {
+    position: fixed !important;
+    inset: 0 auto 0 0 !important;
+    z-index: 1001 !important;
+    display: flex;
+    flex-direction: column;
+    width: 250px !important;
+    min-width: 250px;
+    height: 100vh;
+    padding: 22px 18px;
+    overflow-y: auto;
+    background: linear-gradient(180deg, #041a35, #062347) !important;
+    color: #fff;
+}
+
+.uw-borrower-portal .sidebar .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin: 0;
+}
+
+.uw-borrower-portal .sidebar .brand-text h2 {
+    color: #fff;
+    font: 700 21px/1.05 'Playfair Display', Georgia, serif;
+    white-space: nowrap;
+}
+
+.uw-borrower-portal .sidebar .brand-text span {
+    display: block;
+    margin-top: 4px;
+    color: #e5a129;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+}
+
+.uw-borrower-portal .sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 36px;
+}
+
+.uw-borrower-portal .sidebar-menu .menu-item,
+.uw-borrower-portal .sidebar-menu .menu-item:visited {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 46px;
+    padding: 0 13px;
+    border-radius: 8px;
+    color: #d5deeb !important;
+    font-size: 13px;
+    text-decoration: none;
+    transition: color .18s ease, background .18s ease;
+}
+
+.uw-borrower-portal .sidebar-menu .menu-item .material-symbols-outlined {
+    flex: 0 0 22px;
+    color: #c5d3e5;
+    font-size: 22px;
+}
+
+.uw-borrower-portal .sidebar-menu .menu-item:hover,
+.uw-borrower-portal .sidebar-menu .menu-item.active {
+    background: rgb(255 255 255 / 10%);
+    color: #f5b843 !important;
+}
+
+.uw-borrower-portal .sidebar-menu .menu-item.active::before {
+    position: absolute;
+    inset: 0 auto 0 -18px;
+    width: 4px;
+    background: #e5a129;
+    content: '';
+}
+
+.uw-borrower-portal .sidebar-menu .menu-item.active .material-symbols-outlined,
+.uw-borrower-portal .sidebar-menu .menu-item:hover .material-symbols-outlined {
+    color: #f5b843;
+}
+
+.uw-borrower-portal .sidebar-divider {
+    height: 1px;
+    margin: 20px 10px 0;
+    background: rgb(255 255 255 / 25%);
+}
+
+.uw-borrower-portal .sidebar .uw-logout {
+    margin: 14px 0 0;
+    padding: 0;
+}
+
+.uw-borrower-portal .sidebar .uw-logout button {
+    width: 100%;
+    min-height: 46px;
+    border: 0;
+    border-radius: 8px;
+    background: #fff;
+    color: #062347;
+    font-weight: 700;
+}
+
+.uw-borrower-portal .main-content {
+    width: calc(100% - 250px);
+    min-width: 0;
+    min-height: 100vh;
+    margin-left: 250px !important;
+    background: #f7faff;
+}
+
+.uw-borrower-portal .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    min-height: 76px;
+    padding: 12px 28px;
+    border-bottom: 1px solid #dfe5ec;
+    background: #fff;
+}
+
+.uw-borrower-portal .topbar-left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 15px;
+    min-width: 0;
+}
+
+.uw-borrower-portal .topbar-page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.uw-borrower-portal .topbar-page-title > span {
+    color: #71839a;
+    font-size: 11px;
+}
+
+.uw-borrower-portal .topbar-page-title h2 {
+    margin: 0;
+    color: #062347;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.uw-borrower-portal .top-user {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 14px;
+    margin-left: auto;
+}
+
+.uw-borrower-portal .portal-notifications > summary {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: #f4f7fb;
+    color: #062347;
+    cursor: pointer;
+    list-style: none;
+}
+
+.uw-borrower-portal .portal-notifications > summary::-webkit-details-marker {
+    display: none;
+}
+
+.uw-borrower-portal .topbar-profile-name {
+    min-width: 0;
+    max-width: min(240px, 35vw);
+    color: #062347;
+    font-size: 14px;
+}
+
+.uw-borrower-portal .topbar-profile-name strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.uw-borrower-portal .page-content {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 30px clamp(24px, 3vw, 52px) 48px;
+}
+
+.uw-borrower-portal .dashboard-content {
+    width: 100%;
+    min-width: 0;
+}
+
+.uw-borrower-portal .page-heading {
+    margin: 0 0 20px;
+}
+
+.uw-borrower-portal .page-heading h1 {
+    color: #062347;
+}
+
+.uw-borrower-portal .portal-card {
+    margin: 0 0 18px;
+    padding: 24px;
+    border: 1px solid #e4e0d8;
+    border-radius: 16px;
+    background: #fff;
+}
+
+@media (max-width: 1100px) {
+    .uw-borrower-portal .main-content {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+
+    .uw-borrower-portal .sidebar {
+        left: -260px !important;
+        transition: left .25s ease;
+    }
+
+    .uw-borrower-portal .sidebar.portal-open {
+        left: 0 !important;
+    }
+
+    .uw-borrower-portal .mobile-menu-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 7px;
+        background: #f1f5f9;
+        color: #062347;
+        cursor: pointer;
+    }
+
+    .uw-borrower-portal .sidebar-overlay:not([hidden]) {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: rgb(0 20 45 / 45%);
+    }
+}
+
+@media (max-width: 600px) {
+    .uw-borrower-portal .topbar {
+        min-height: 68px;
+        gap: 8px;
+        padding: 10px 14px;
+    }
+
+    .uw-borrower-portal .top-user {
+        gap: 8px;
+    }
+
+    .uw-borrower-portal .topbar-profile-name {
+        max-width: 34vw;
+        font-size: 12px;
+    }
+
+    .uw-borrower-portal .page-content {
+        width: 100%;
+        padding: 22px 14px 32px;
+    }
+
+    .uw-borrower-portal .portal-card {
+        padding: 18px 16px;
+    }
+}
