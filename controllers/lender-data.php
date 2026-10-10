@@ -17,6 +17,7 @@ try {
         if (!$loan)
             throw new DomainException('Loan not found.');
         $loan['disbursement'] = db('SELECT receiving_method,account_holder_name,bank_name,bank_account_number,gcash_mobile_number,qr_contents IS NOT NULL AS has_qr FROM loan_disbursement_details WHERE agreement_id=?', [$id])->get_result()->fetch_assoc();
+        $loan['has_repayment_qr'] = db('SELECT agreement_id FROM loan_repayment_qr WHERE agreement_id=?', [$id])->get_result()->num_rows > 0;
         lender_json(['loan' => $loan, 'installments' => lender_rows('SELECT installment_number,due_date,amount_due,amount_paid FROM loan_installments WHERE agreement_id=? ORDER BY installment_number', [$id])]);
     }
     if ($kind === 'extension') {

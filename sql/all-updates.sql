@@ -191,3 +191,11 @@ CREATE TABLE IF NOT EXISTS loan_disbursement_details (
  submitted_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  FOREIGN KEY (agreement_id) REFERENCES loan_agreements(agreement_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS loan_repayment_qr (
+ agreement_id INT NOT NULL PRIMARY KEY,
+ mime_type VARCHAR(20) NOT NULL,
+ contents MEDIUMBLOB NOT NULL,
+ updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ FOREIGN KEY (agreement_id) REFERENCES loan_agreements(agreement_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

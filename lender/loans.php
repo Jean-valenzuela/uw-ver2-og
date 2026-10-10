@@ -34,4 +34,4 @@
     <!-- ==================================================
          MAIN CONTENT
     =================================================== -->
-    <main class="main-content"><?php $lenderAccount=$lender;require __DIR__.'/../helpers/lender_topbar.php'; ?><div class="page-content"><?php require __DIR__.'/../helpers/lender_view.php'; ?></div></main></div><script src="../assets/js/datatables.min.js"></script><script src="../assets/js/lender-flow.js?v=20261010"></script><script src="../assets/js/lender-notifications.js"></script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body></html>
+    <main class="main-content"><?php $lenderAccount=$lender;require __DIR__.'/../helpers/lender_topbar.php'; ?><div class="page-content"><?php require __DIR__.'/../helpers/lender_view.php'; ?></div></main></div><script src="../assets/js/datatables.min.js"></script><script src="../assets/js/lender-flow.js?v=20261010-repayment-qr"></script><script src="../assets/js/lender-notifications.js"></script><?php if(function_exists('uw_success_assets'))uw_success_assets(); ?></body></html>

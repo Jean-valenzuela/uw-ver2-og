@@ -1,6 +1,7 @@
 <?php
 function uw_ensure_update_schema(mysqli $conn) {
  $groups=[
+  'loan-repayment-qr.sql'=>['loan_repayment_qr'],
   'loan-disbursement.sql'=>['loan_disbursement_details'],
   'password-reset.sql'=>['account_security','password_reset_tokens','password_reset_limits'],
   'login-update.sql'=>['login_attempts'],

@@ -115,6 +115,20 @@ try {
         $borrower = lender_borrower($request['borrower_id'], $lender['user_id']);
         $body = 'Dear ' . $borrower['user_fn'] . ",\n\nYour extension request EXT-$requestId was " . $decision . '.' . ($decision === 'approved' ? "\nThe installment formerly due on " . $request['original_due_date'] . ' is now due on ' . $request['requested_due_date'] . ". This and the following unpaid installments move by $days days. No additional interest or fees are charged." : "\nReason: $reason") . "\n\nUtang Wise";
         $emailId = queue_lender_email('extension-' . $requestId, $borrower, $lender['user_id'], 'Utang Wise - Extension request ' . $decision, $body);
+    } elseif ($action === 'upload-repayment-qr') {
+        $id = (int) ($_POST['agreement_id'] ?? 0);
+        $agreement = db('SELECT a.status,c.signed_pdf IS NOT NULL AS has_signed FROM loan_agreements a JOIN lender_contracts c ON c.agreement_id=a.agreement_id WHERE a.agreement_id=? AND a.lender_id=? FOR UPDATE', [$id, $lender['user_id']])->get_result()->fetch_assoc();
+        if (!$agreement || !$agreement['has_signed'] || !in_array($agreement['status'], ['draft', 'active'], true))
+            throw new DomainException('Upload a repayment QR only for your signed, unreleased or active loan.');
+        $f = $_FILES['repayment_qr'] ?? null;
+        if (!$f || $f['error'] !== UPLOAD_ERR_OK || $f['size'] > 3 * 1024 * 1024 || !is_uploaded_file($f['tmp_name']))
+            throw new DomainException('Upload a repayment QR image in PNG or JPG format up to 3 MB.');
+        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($f['tmp_name']);
+        if (!in_array($mime, ['image/png', 'image/jpeg'], true) || !@getimagesize($f['tmp_name']))
+            throw new DomainException('The repayment QR must be a valid PNG or JPG image.');
+        $bytes = file_get_contents($f['tmp_name']);
+        if ($bytes === false) throw new RuntimeException('Unable to read repayment QR upload.');
+        db('INSERT INTO loan_repayment_qr (agreement_id,mime_type,contents) VALUES (?,?,?) ON DUPLICATE KEY UPDATE mime_type=VALUES(mime_type),contents=VALUES(contents),updated_at=CURRENT_TIMESTAMP', [$id, $mime, $bytes]);
     } elseif ($action === 'release-loan') {
         $id = (int) ($_POST['agreement_id'] ?? 0);
         $agreement = db('SELECT a.*,c.planned_release_date,c.signed_pdf FROM loan_agreements a JOIN lender_contracts c ON c.agreement_id=a.agreement_id WHERE a.agreement_id=? AND a.lender_id=? FOR UPDATE', [$id, $lender['user_id']])->get_result()->fetch_assoc();
