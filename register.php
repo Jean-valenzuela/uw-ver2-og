@@ -257,7 +257,7 @@
                                         type="text"
                                         id="user_fn"
                                         name="user_fn"
-                                        placeholder="Enter your first name"
+                                        placeholder="e.g. Juan"
                                     >
 
                                 </div>
@@ -282,7 +282,7 @@
                                         type="text"
                                         id="user_ln"
                                         name="user_ln"
-                                        placeholder="Enter your last name"
+                                        placeholder="e.g. dela Cruz"
                                     >
 
                                 </div>
@@ -299,7 +299,7 @@
                                 Email Address
                             </label>
 
-                            <div class="input-wrapper">
+                            <div class="input-wrapper phone-input-wrapper">
 
                                 <span class="material-symbols-outlined">
                                     mail
@@ -309,7 +309,7 @@
                                     type="email"
                                     id="email"
                                     name="email"
-                                    placeholder="Enter your email" 
+                                    placeholder="e.g. juan.delaCruz@example.com"
                                 >
 
                             </div>
@@ -329,10 +329,19 @@
                                     call
                                 </span>
 
+                                <span class="phone-country-code" aria-hidden="true">+63</span>
+
                                 <input type="tel"
                                     id="phone"
                                     name="phone"
-                                    placeholder="Enter your phone number"
+                                    placeholder="9XXXXXXXXX"
+                                    inputmode="numeric"
+                                    autocomplete="tel-national"
+                                    pattern="9[0-9]{9}"
+                                    minlength="10"
+                                    maxlength="10"
+                                    title="Enter 10 digits starting with 9. The +63 country code is already included."
+                                    required
                                 >
 
                             </div>
@@ -508,7 +517,18 @@
 
     <script>
 
-    
+        const phoneInput = document.getElementById('phone');
+        phoneInput?.addEventListener('input', () => {
+            phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+            if (phoneInput.value.length > 0 && !phoneInput.value.startsWith('9')) {
+                phoneInput.setCustomValidity('Enter a Philippine mobile number starting with 9.');
+            } else if (phoneInput.value.length > 0 && phoneInput.value.length < 10) {
+                phoneInput.setCustomValidity('Enter all 10 mobile digits after +63.');
+            } else {
+                phoneInput.setCustomValidity('');
+            }
+        });
+
         /* PASSWORD SHOW / HIDE */
 
         document
