@@ -30,7 +30,7 @@ $lenderInitials = strtoupper(substr($lenderAccount['user_fn'] ?? 'L', 0, 1) . su
             </div>
         </div>
         <div class="uw-live-user">
-            <span class="uw-live-avatar" aria-hidden="true"><?= e($lenderInitials) ?></span>
+            <span class="uw-live-avatar" aria-hidden="true"><span><?= e($lenderInitials) ?></span><img src="../controllers/my-lender-photo.php" alt="" onerror="this.remove()"></span>
             <span><strong><?= e(($lenderAccount['user_fn'] ?? '') . ' ' . ($lenderAccount['user_ln'] ?? '')) ?></strong><small>Lender</small></span>
         </div>
     </div>
