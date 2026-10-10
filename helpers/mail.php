@@ -45,6 +45,25 @@ function lender_mail_config() {
 
     return array_replace($defaults, $config);
 }
+
+function lender_mail_failure_reason(Throwable $error) {
+    $message = strtolower($error->getMessage());
+
+    if (strpos($message, 'authenticat') !== false || preg_match('/\b(534|535)\b/', $message)) {
+        return 'Gmail rejected SMTP login. Check that the username and new App Password belong to the same Google account.';
+    }
+
+    if (strpos($message, 'connect') !== false || strpos($message, 'timed out') !== false || strpos($message, 'getaddrinfo') !== false) {
+        return 'Could not connect to smtp.gmail.com:587. Check DNS and whether the host allows outbound SMTP on port 587.';
+    }
+
+    if (strpos($message, 'certificate') !== false || strpos($message, 'tls') !== false || strpos($message, 'ssl') !== false) {
+        return 'The secure SMTP connection failed. Check the server clock and OpenSSL/TLS support.';
+    }
+
+    return 'SMTP rejected the email before delivery. Check the recipient address and Gmail sending limits.';
+}
+
 function send_lender_email($id,$lenderId,$allowUncertain=false) {
     global $conn;
     $conn->begin_transaction();
@@ -85,7 +104,10 @@ function send_lender_email($id,$lenderId,$allowUncertain=false) {
     } catch(Throwable $error) {
         $status=$accepted||$smtp->dataAttempted?'uncertain':'failed';
         // Do not persist SMTP debug output or credentials.
-        db('UPDATE lender_outbox SET status=?,last_error=? WHERE email_id=?',[$status,$status==='uncertain'?'Delivery is uncertain. Check the sender mailbox before retrying.':'Email could not be sent. Check Gmail configuration and connectivity, then retry.',$id]);
+        $reason = $status === 'uncertain'
+            ? 'Delivery is uncertain. Check the sender mailbox before retrying.'
+            : lender_mail_failure_reason($error);
+        db('UPDATE lender_outbox SET status=?,last_error=? WHERE email_id=?',[$status,$reason,$id]);
         return $status;
     }
 }

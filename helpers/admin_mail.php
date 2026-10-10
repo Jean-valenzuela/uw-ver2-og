@@ -70,7 +70,10 @@ function send_admin_email($id, $adminId, $allowUncertain = false)
     } catch (Throwable $error) {
         $status = $accepted || $smtp->dataAttempted ? 'uncertain' : 'failed';
         // Do not persist SMTP debug output or credentials.
-        db('UPDATE admin_outbox SET status=?,last_error=? WHERE email_id=?', [$status, $status === 'uncertain' ? 'Delivery is uncertain. Check the sender mailbox before retrying.' : 'Email could not be sent. Check Gmail configuration and connectivity, then retry.', $id]);
+        $reason = $status === 'uncertain'
+            ? 'Delivery is uncertain. Check the sender mailbox before retrying.'
+            : lender_mail_failure_reason($error);
+        db('UPDATE admin_outbox SET status=?,last_error=? WHERE email_id=?', [$status, $reason, $id]);
         return $status;
     }
 }
